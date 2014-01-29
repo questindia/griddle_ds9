@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="/img/favicon.png">
+    <link rel="shortcut icon" href="/img/favicon.ico">
     <link rel="apple-touch-icon" href="/img/app_icon.png">
     <title>Griddle</title>
     <link href="/css/bootstrap.min.css" rel="stylesheet">
