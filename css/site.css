@@ -1,0 +1,112 @@
+.feedImg {
+  max-width: 98%;
+}
+.tablePro {
+       margin-top: 10px;
+}
+.soFarImg {
+  max-width: 30px;
+}
+.byLine {
+  font-size: x-small;
+}
+.commLine {
+  font-size: small;
+}
+.logoNavbar {
+  height: 25px;
+}
+.wide {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+.narrow {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.narrowRight {
+  margin-right: 10px;
+}
+.narrowTop {
+  padding-top: 0px;
+}
+.cropimgPro {
+       width: 45px; 
+       height: 45px; 
+       background-position: center center;
+       overflow:hidden;
+       -moz-border-radius: 4px;
+       -webkit-border-radius: 4px;
+       -khtml-border-radius: 4px;
+       border-radius: 4px;
+}
+.cropimgProSmall {
+       margin-top: 10px;
+       width: 35px;
+       height: 35px;
+       background-position: center center;
+       overflow:hidden;
+       -moz-border-radius: 4px;
+       -webkit-border-radius: 4px;
+       -khtml-border-radius: 4px;
+       border-radius: 4px;
+}
+.cropimgProTiny {
+       width: 25px;
+       height: 25px;
+       background-position: center center;
+       overflow:hidden;
+       -moz-border-radius: 4px;
+       -webkit-border-radius: 4px;
+       -khtml-border-radius: 4px;
+       border-radius: 4px;
+}
+.cropimgFeed {
+       width: 260px;
+       height: 180px;
+       background-repeat: no-repeat; 
+       background-position: center center;
+       overflow:hidden;
+}
+.cropimgLarge {
+       max-width: 100%;
+}
+.griddleWell {
+       background-color: #E6E1E1;
+       margin-left: 2px;
+       margin-right: 2px;
+       margin-top: 2px;
+       margin-bottom: 2px;
+}
+.griddleRow {
+       margin-top: 10px;
+       margin-bottom: 10px;
+}
+.form-signup {
+        max-width: 400px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signup .form-signup-heading,
+.form-signup .checkbox {
+        margin-bottom: 10px;
+}
+.form-signup input[type="text"],
+.form-signup input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+}
+
+.dropdown-backdrop {
+    position: static;
+}
