@@ -40,7 +40,7 @@ class UploadHandler
 
     function __construct($options = null, $initialize = true, $error_messages = null) {
         $this->options = array(
-            'script_url' => 'http://dev01.griddle.com/uploadindex.php',
+            'script_url' => 'http://www.griddle.com/uploadindex.php',
             'upload_dir' => '/var/www/test_images/',
             'upload_url' => '/test_images/',
             'user_dirs' => false,

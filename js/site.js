@@ -205,7 +205,7 @@ function initPost() {
            var postdone = "/do_postfinish.php?action=finish";
            $.get(postdone, function(data) {
                 // TODO - Fix this
-                window.location.href = "http://dev01.griddle.com";
+                window.location.href = "http://www.griddle.com";
            });
         
            
