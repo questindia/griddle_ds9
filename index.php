@@ -28,7 +28,7 @@ if($user == "") {
     <div class="container">
  
    
-      <form role="form" class="form-signin" method=post action='http://<?php echo $baseSRV; ?>/handle_login.php'>
+      <form role="form" class="form-signin" method=post action='https://<?php echo $baseSRV; ?>/handle_login.php'>
          <input type=hidden name=action value=login>
          <center><img src='/img/logo_5.png'></center>
         <h3 class="form-signin-heading">Please sign in</h3>
@@ -37,7 +37,7 @@ if($user == "") {
         <label class="checkbox">
           <input name="remember_me" type="checkbox" value="1" <?php echo $REMCHECKED; ?>> Remember me
         </label>
-        <button class="btn btn-lg btn-info" type="submit">Sign in</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-lg btn-info doModal" href="http://<?php echo $baseSRV; ?>/handle_signup.php?command=start">Sign Up</a>
+        <button class="btn btn-lg btn-info" type="submit">Sign in</button>&nbsp;&nbsp;&nbsp;<a class="btn btn-lg btn-info " href="https://<?php echo $baseSRV; ?>/handle_signup.php?command=start">Sign Up</a>
       </form>
       </div>
 

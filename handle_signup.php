@@ -14,18 +14,19 @@ if(!$action && $MOBSERV) {
 
 if($action == "start") {
 
-  if($MOBSERV) {
-     include "header.php";
-     print "<div style='background-color: #F0F0F0;'>\n";
-  }
-
-  genSignupForm("Griddle Signup");
-
-  if($MOBSERV) {
-     print "</div>";
-     include "jsinc.php";
-     print "</body></html>\n";
-  }
+   include "header.php";
+   print "<body><style>
+     body {
+	  padding-top: 40px;
+  	  padding-bottom: 40px;
+      background-color: #54b4eb;
+	 }
+     </style>\n";
+   print "<div class='container'>\n";
+   genSignupForm("Griddle Signup");
+   print "</div>\n";
+   include "jsinc.php";
+   print "</body></html>\n";
 
   exit;
 }
@@ -93,18 +94,21 @@ if($action == "signup") {
 
    $ins = mysql_query($sql_line);
 
-   if($MOBSERV) {
-     include "header.php";
-     print "<div style='background-color: #F0F0F0;'>\n";
-   }
+   include "header.php";
+   print "<body><style>
+     body {
+	  padding-top: 40px;
+  	  padding-bottom: 40px;
+      background-color: #54b4eb;
+	 }
+     </style>\n";
+   print "<div class='container'>\n";
 
    genCustomizeForm($uname, $uid);
    
-   if($MOBSERV) {
-     print "</div>";
-     include "jsinc.php";
-     print "</body></html>\n";
-   }
+   print "</div>\n";
+   include "jsinc.php";
+   print "</body></html>\n";
 
 }
 
@@ -128,7 +132,7 @@ if($action == "finish_signup") {
   define('THUMB_DIR', '/var/www/thumb_profiles/');
 
   $filename = $_POST['user'];
-  $image = $_POST['image'];
+  $image = $_FILES['image']['tmp_name'];
 
   if($image) {
     move_uploaded_file($_FILES['image']['tmp_name'], UPLOAD_DIR . $filename);
@@ -158,18 +162,21 @@ if($action == "finish_signup") {
 
 
 function bail_err($err, $rname, $email, $mobile, $username) {
-     if($MOBSERV) {
-         include "header.php";
-         print "<div style='background-color: #F0F0F0;'>\n";
-     }
+     include "header.php";
+     print "<body><style>
+     body {
+	  padding-top: 40px;
+  	  padding-bottom: 40px;
+      background-color: #54b4eb;
+	 }
+     </style>\n";
+     print "<div class='container'>\n";
 
      genSignupForm($err, $rname, $email, $mobile, $username);
 
-     if($MOBSERV) {
-        print "</div>";
-        include "jsinc.php";
-        print "</body></html>\n";
-     }
+     print "</div>\n";
+     include "jsinc.php";
+     print "</body></html>\n";
 
 }
 
@@ -183,8 +190,11 @@ function genSignupForm($err, $rname, $email, $mobile, $username) {
 
  
 
- <div>  <h4><?php echo $err; ?></h4>
+ <div>  
+ 
+     
         <form class="form-signup" id="formStartSignup" method=post action="http://<?php echo $baseSRV; ?>/handle_signup.php">
+        <h4><?php echo $err; ?></h4>
         <input type=hidden name="command" value=signup>      
         <input type="text" class="form-control" placeholder="Email Address" name=email value='<?php echo $email; ?>'>
         <input type="text" class="form-control" placeholder="Username" name=username value='<?php echo $username; ?>'>
@@ -194,31 +204,6 @@ function genSignupForm($err, $rname, $email, $mobile, $username) {
         <button class="btn btn-large btn-primary" type="submit" id="signupStart">Sign Up</button>
       </form>
 </div>
-
-<script>
-// First Signup Screen Form Handler
-$('.form-signup').on('submit', function(e) {
-   console.log("got submit");
-   e.preventDefault();
-   e.stopPropagation();
-   
-   $('.modal-body').addClass('loader');
-   $theForm = $(this);
-   
-
-   $.ajax({
-       type: $theForm.attr('method'),
-       url: $theForm.attr('action'),
-       data: $theForm.serialize(),
-       success: function(data) {
-           $('.modal-body').html('');
-           $('.modal-body').removeClass('loader');
-           $('.modal-body').html(data);
-
-       }
-   });
-
-}); </script>
 
 <?php
 
@@ -230,23 +215,20 @@ GLOBAL $baseSRV;
 
 ?>
 <div>
-  <form class="form-signup" action="http://<?php echo $baseSRV; ?>/handle_signup.php" id="formFinishSignup" method=post enctype="multipart/form-data">
+  <form class="form-signup" action="https://<?php echo $baseSRV; ?>/handle_signup.php" id="formFinishSignup" method=post enctype="multipart/form-data">
    <input type=hidden name="command" value=finish_signup>
    <input type=hidden name=user value="<?php echo $user; ?>">
    <input type=hidden name=uid value="<?php echo $uid; ?>">
-   <h2 class="form-signup-heading">Thanks, just a few more details</h2>
+   <h4 class="form-signup-heading">Thanks, just a few more details</h4>
    <input type="text" class="form-control" placeholder="Your Name" name=rname value='<?php echo $rname; ?>'>
    <input type="text" class="form-control" placeholder="Mobile (Optional)" name=mobile value='<?php echo $mobile; ?>'>
    <label for=image>Profile Picture:</label><input class="form-control" type=file name="image" id="image">
    <br>
-   <button class="btn btn-lg btn-primary" type="submit" id="signupFinish">Continue</button>
+   <button class="btn btn-lg btn-primary" type="submit" id="signupFinish">Finish</button>
   </form>
 </div>
 
 
-<script>
-
-</script>
 
 
 <?php
