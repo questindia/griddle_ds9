@@ -15,7 +15,7 @@ if($user == "") {
 ?>
 
   <body>
-
+     
      <style>
      body {
 	  padding-top: 40px;

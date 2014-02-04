@@ -61,14 +61,14 @@ if($action == "finish") {
 
      
      if($ptotal>=9) {
-       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 1)");
+       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 0, 0, 0, 0, 1)");
        $bbsql = mysql_query("SELECT bbid FROM griddle_bb WHERE gid=$gid AND uid=$uid AND ppid='$PIDLINE' AND din=$fnow LIMIT 1");
        $row = mysql_fetch_array($bbsql);
        $bbid = $row{'bbid'};
        $redis->lpush("bb.process", "$bbid|$IMGLINE");
         $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbid, $uid, 4, $fnow, 0, 0, 0)");
      } else {
-       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 0)");
+       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 0, 0, 0, 0, 0)");
        $bbsql = mysql_query("SELECT bbid FROM griddle_bb WHERE gid=$gid AND uid=$uid AND ppid='$PIDLINE' AND din=$fnow LIMIT 1");
        $row = mysql_fetch_array($bbsql);
        $bbid = $row{'bbid'};
@@ -117,11 +117,11 @@ if($action == "finish") {
        $IMGLINE = rtrim($IMGTMP, ",");
        file_put_contents("/tmp/do_postfinish.log", "Sending $bbcheck-$IMGLINE to redis queue\n", FILE_APPEND);
        $redis->lpush("bb.process", "$bbcheck|$IMGLINE");
-        $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbcheck, $uid, 4, $fnow, 0, 0, 0)");
+        $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbcheck, $uid, 4, $fnow, 0, 0, 0, 0, 0, 0, 0)");
      } else {
        $bbsql = mysql_query("UPDATE griddle_bb SET colabs='$colab', ppid='$FINALPIDS' WHERE bbid=$bbcheck");
        //doMMSInform($colab, $bbcheck);
-       $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbcheck, $uid, 3, $fnow, 0, 0, 0)");
+       $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbcheck, $uid, 3, $fnow, 0, 0, 0, 0, 0, 0, 0)");
      }
      
      $res = mysql_query("UPDATE pending_post SET status=1 WHERE uid=$uid AND gid=$gid AND status=0");

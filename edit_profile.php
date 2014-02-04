@@ -76,6 +76,7 @@ if(!$_POST['action']) { // Show Edit Screen
 
    include "header.php";
    print "<body>\n";
+   include "fbinc.php";
    include "navbar.php";
    
 
@@ -103,14 +104,14 @@ if(!$_POST['action']) { // Show Edit Screen
    </table><br><br>
    <table width=100%>
    <tr><td valign=top>
-   <strong><span style='font-size: x-small;'>Notifications:</span></strong>
+   <h4>Notifications:</h4>
    <label class=checkbox>
       <input type=checkbox name=mobileopt value=yes <?php echo $mCheck; ?>> <span style='font-size: xx-small'>By Mobile Text </span>
    </label>
    <label class=checkbox>
       <input type=checkbox name=emailopt value=yes <?php echo $eCheck; ?>> <span style='font-size: xx-small'>By Email </span>
-   </label></td>
-   <td><strong><span style='font-size: x-small;'>Notify me about new:</span></strong>
+   </label></td></tr><tr>
+   <td><h4>Notify me about:</h4>
    <label class=checkbox>
       <input type=checkbox name='followfriends' value=yes <?php echo $ffCheck; ?>> <span style='font-size: x-small'>Griddles Invitations from Friends</span>
    </label>
@@ -126,6 +127,8 @@ if(!$_POST['action']) { // Show Edit Screen
    <br>
    <img src='<?php echo $imgSRV; ?>/griddle_profiles/<?php echo "$user?$r"; ?>' height='150' width='150'><br><br>
    <label for=image>Update Profile Image:</label><input type=file name="image" id="image"><br><br>
+   <a href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a><br><br>
+   <a href=# class='btn btn-sm btn-primary'><i class='fa fa-twitter-square'></i>&nbsp; Sign In with Twitter</a><br>
    
  </div>
 
@@ -147,34 +150,6 @@ if(!$_POST['action']) { // Show Edit Screen
       
 
     </div><!--/.container-->
-
-
-<script>
-// Second Signup Screen Form Handler
-/* $('#saveProfile').on('submit', function(e) {
-   console.log("got submit");
-   e.preventDefault();
-   e.stopPropagation();
-   
-   $('.modal-body').addClass('loader');
-
-   $theForm = $('#saveProfile');
-   
-   $.ajax({
-       type: $theForm.attr('method'),
-       url: $theForm.attr('action'),
-       enctype: $theForm.attr('enctype'),
-       data: $theForm.serialize(),
-       success: function(data) {
-         
-           $('.modal-body').removeClass('loader');
-           $('#myModal').modal('hide');
-       }
-   });
-
-}); */
-</script>
-
 
 
 <?php
@@ -308,7 +283,7 @@ if($_POST['action'] == 'update_profile') {
 
    $res = mysql_query("UPDATE users SET email='$email', statement='$statement', bio='$bio', mobile='$mobile', status=$search, mobileopt=$opt, emailopt=$eopt WHERE uid=$uid");
 
-   $res = mysql_query("UPDATE fblink SET do_scrape=$dc WHERE uid=$uid");
+   //$res = mysql_query("UPDATE fblink SET do_scrape=$dc WHERE uid=$uid");
    
    if($mobile && !$was_mobile) {
        $res = mysql_query("INSERT INTO mms_inform VALUES(DEFAULT, $uid, 'Welcome to Griddle!  You can post and view pictures by text message.  To see the available commands visit www.griddle.com/help/', 0)"); 

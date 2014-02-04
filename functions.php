@@ -33,11 +33,11 @@ function getTopic($gid) {
    return $row{'topic'};
 }
 function getFriendSel($count, $uid) {
-   $res = mysql_query("SELECT uid FROM relations WHERE friend=2 AND target=$uid LIMIT $count");
+   $res = mysql_query("SELECT relations.uid, users.name FROM relations, users WHERE relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT $count");
    while($row = mysql_fetch_array($res)) {
        $tuid = $row{'uid'};
-       $trow = getName($tuid);
-       $name = $trow{'name'};
+       //$trow = getName($tuid);
+       $name = $row{'name'};
        $return .= "<option value=$tuid>$name</option>\n";
    }
    return $return;
@@ -79,7 +79,10 @@ function getUser($uname) {
   $row = mysql_fetch_array($res);
   return $row{'uid'};
 }
-
+function getFacebookInfo($uid) {
+  $res = mysql_query("SELECT * FROM fblink WHERE uid=$uid");
+  return (mysql_fetch_array($res));
+}
 function getGriddleMembership($pid) {
   $res = mysql_query("SELECT bbid FROM griddle_bb WHERE ppid LIKE '%,$pid,%' LIMIT 1");
   $row = mysql_fetch_array($res);
@@ -111,6 +114,41 @@ function getNotificationSettings($uid) {
     return $row;
 }
 
+function getFriendRows($count, $uid) {
+
+   global $MOBILE;
+
+   $COL = "COL2";
+
+   $res = mysql_query("SELECT relations.uid, users.name FROM relations, users WHERE relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT $count");
+   while($row = mysql_fetch_array($res)) {
+       $tuid = $row{'uid'};
+       $trow = getName($tuid);
+       $user = $trow{'username'};
+       $name = $trow{'name'};
+       $posts = $trow{'posts'};
+       $folls = $trow{'followers'};
+       $imgSRV = shardImg($tuid);
+       
+       if(!$MOBILE) {
+         if($COL=="COL1") {
+            $COL="COL2";
+         } elseif($COL=="COL2") {
+            $COL="COL1";
+         }
+       } else { $COL="COL1"; }
+       
+          
+       $return{$COL} .= "<tr style='border-bottom:1pt solid #cdcecf;'><td align=left width=60px><a class=userButton id=userButton-$tuid href='#'><img class=cropimgProLG src=$imgSRV/thumb_profiles/$user></a></td>
+                       <td align=left><span style='font-size: medium;'><a class=userButton id=userButton-$tuid href='#'>$name</a></span><br><span style='font-size: xx-small;'> +$posts Posts</span></td>
+                       <td align=left><a style='font-size: xx-small;' href=/do_friends.php?action=unfriend&target=$tuid>Remove</a></td></tr>";
+   }
+
+   return $return;
+
+}
+
+
 function shardImg($image) {
    	$last = substr($image, -1);
    	if(($last>-1) && ($last<4)) {
@@ -124,6 +162,29 @@ function shardImg($image) {
    	return $shardSRV;
 }
 
+function getFBShareProfiles($bbid) {
+
+   $res = mysql_query("SELECT uid FROM fb_shares WHERE bbid=$bbid");
+
+
+   while($row = mysql_fetch_array($res)) {
+      $cuid = $row{'uid'};
+      if($cuid) { 
+         $cui = getUserInfo($cuid);
+         $cn  = $cui{'name'};
+         $cu  = $cui{'username'};
+         if($DONE[$cn] != 1) {
+            $byline .= "$cn, ";
+            $proline .= "<img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$cu'>&nbsp;";
+            $procount++;
+            $DONE[$cn] = 1;
+         }
+      }
+   }
+
+   return $proline;
+
+}
 
 function generateGrid($gid, $count, $column) {
 
@@ -280,10 +341,13 @@ function getPostPair($gid) {
       $bi   = getGriddleInfo($bbid);
       $hots = $bi{'hots'};
       $coms = $bi{'comments'};
+      $fbs  = $row{'fbshare'};
+      $tws  = $row{'twshare'};
       
       if(!$hots) { $hots="0"; }
       if(!$coms) { $coms="0"; }
-           
+      if(!$tws)  { $tws="0"; }
+      if(!$fbs)  { $fbs="0"; }     
       if(strlen($mess) > 60) {
         $mess = substr($mess, 0, 55) . "...";
       }
@@ -293,6 +357,9 @@ function getPostPair($gid) {
       $uname    = $ui{'username'};
       $gi = getGridInfo($gid);
       $topic = $gi{'topic'};
+      
+      $encode = urlencode("http://www.griddle.com/view.php?bbid=$bbid");
+      $twurl = "https://twitter.com/intent/tweet?url=$encode";
       
       $realname = wrapName($uid, $realname);
       
@@ -310,8 +377,8 @@ function getPostPair($gid) {
                   <td valign=top><table><tr><td><a href=#>$realname</a></td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
                   <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
-              <a type='button' class='btn btn-primary btn-xs'>12 <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
-              <a type='button' class='btn btn-primary btn-xs'>1 <i class='fa fa-twitter-square'></i></a></td></tr></table>
+              <a id='aFB$bbid' href='/fb_share.php?bbid=$bbid' type='button' class='doModal btn btn-primary btn-xs'>$fbs <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
+              <a id='aTW$bbid' tw_upload='/tw_upload.php?bbid=$bbid' href='$twurl' type='button' class='TWITTER btn btn-primary btn-xs'>$tws <i class='fa fa-twitter-square'></i></a></td></tr></table>
                 </tr>
               </table></div>";
               
@@ -338,6 +405,8 @@ function getGriddleBlock($bbid, $columnsize) {
    $hots = $row{'hots'};
    $coms = $row{'comments'};
    $din  = $row{'din'};
+   $fbs  = $row{'fbshare'};
+   $tws  = $row{'twshare'};
    
    $PLIST = explode(",", $pids);
    $pi = getPostInfo($PLIST[0]);
@@ -357,6 +426,11 @@ function getGriddleBlock($bbid, $columnsize) {
    $uname    = $ui{'username'};
    
    $byline = "<span class='byLine'>by: ";
+  
+   $txcode = urlencode("Check out $topic on Griddle ");
+
+   $encode = urlencode("http://www.griddle.com/view.php?bbid=$bbid");
+   $twurl = "https://twitter.com/intent/tweet?url=$encode&text=$txcode";
 
    $col = ",$uid," . $col;
 
@@ -392,11 +466,11 @@ function getGriddleBlock($bbid, $columnsize) {
               <table class='tablePro' cellpadding=5>
                 <tr>
                   <td valign=top><a href=#><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
-                  <td valign=top><table><tr><td><a href=#>$realname</a></td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
+                  <td valign=top><table><tr><td>$realname</td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
                   <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
-              <a type='button' class='btn btn-primary btn-xs'>12 <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
-              <a type='button' class='btn btn-primary btn-xs'>1 <i class='fa fa-twitter-square'></i></a></td></tr></table>
+              <a id='aFB$bbid' href='/fb_share.php?bbid=$bbid' type='button' class='doModal btn btn-primary btn-xs'>$fbs <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
+              <a id='aTW$bbid' tw_upload='/tw_upload.php?bbid=$bbid' href='$twurl' type='button' class='TWITTER btn btn-primary btn-xs'>$tws <i class='fa fa-twitter-square'></i></a></td></tr></table>
                 </tr>
               </table>
          </div><!--/griddleWell-->     

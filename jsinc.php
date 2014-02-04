@@ -24,5 +24,6 @@
 	<!-- The File Upload user interface plugin -->
 	<script src="/js/jquery.fileupload-ui.js"></script>
 	<script src="/js/fresco/fresco.js"></script>
+	<script src="//platform.twitter.com/widgets.js"></script>
     <script src="/js/site.js"></script>
 

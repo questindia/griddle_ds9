@@ -39,11 +39,8 @@ if($action == "friend")  {
    $rid = $row{'rid'};
 
    if(!$rid) { // No relation existed 
-      $res = mysql_query("SELECT rid FROM relations ORDER BY rid DESC LIMIT 1");
-      $row = mysql_fetch_array($res);
-      $rid = $row{'rid'} + 1;
       
-      $res = mysql_query("INSERT INTO relations VALUES($rid, $uid, 1, 0, $target, 1, $r)");
+      $res = mysql_query("INSERT INTO relations VALUES(DEFAULT, $uid, 1, 0, $target, 1, $r)");
    } else {
       $res = mysql_query("UPDATE relations SET friend=1 WHERE uid=$uid AND target=$target");
    }
@@ -60,11 +57,9 @@ if($action == "follow")  {
    $rid = $row{'rid'};
 
    if(!$rid) { // No relation existed 
-      $res = mysql_query("SELECT rid FROM relations ORDER BY rid DESC LIMIT 1");
-      $row = mysql_fetch_array($res);
-      $rid = $row{'rid'} + 1;
+
       
-      $res = mysql_query("INSERT INTO relations VALUES($rid, $uid, 0, 1, $target, 1, $r)");
+      $res = mysql_query("INSERT INTO relations VALUES(DEFAULT, $uid, 0, 1, $target, 1, $r)");
    } else {
       $res = mysql_query("UPDATE relations SET follower=1 WHERE uid=$uid AND target=$target");
    }

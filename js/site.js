@@ -3,14 +3,14 @@ $(document).ready(function() {
   // This is a general purpose function for displaying a dynamic-content modal
   $("body").on('click', 'a.doModal', function(event) {
     event.preventDefault();
-    console.log("Into Click");
+    
     //event.stopPropagation();
     $('.modal-body').html('');
     //$('.modal-body').addClass('loader');
     $('#myModal').modal('show');
     var url = $(this).attr('href');
     $.get(url, function(data) {
-          console.log("Into Get");
+
           //$('.modal-body').removeClass('loader');
           $('.modal-body').html(data);
 
@@ -57,6 +57,51 @@ $(document).ready(function() {
          $('#noteDiv').html(data); 
                                
       }); 
+  });
+
+  $('body').on('click', 'a.FBSHARE', function (event) {
+   event.preventDefault();
+   event.stopPropagation();
+   
+    $theForm = $('#formFBShare');
+
+    
+    FB.login(function(response) {
+     // handle the response
+     $.get('/do_fbsession.php', function(data) {
+        $.ajax({
+           type: $theForm.attr('method'),
+           url: $theForm.attr('action'),
+           enctype: $theForm.attr('enctype'),
+           data: $theForm.serialize(),
+           success: function(data) {
+              // TODO - update the count
+              HObj = JSON.parse(data);
+              $("a#aFB" + HObj.bbid).html(HObj.fbshare + " <i class='fa fa-facebook-square'></i>");
+              $('#myModal').modal('hide');
+           }
+        });
+     });
+    }, {scope: 'user_about_me,user_photos,user_status,read_stream,publish_actions'});
+  });
+  
+  $("body").on('click', 'a.TWITTER', function(event) {
+
+    var url = $(this).attr('tw_upload');
+    $.get(url, function(data) {
+         HObj = JSON.parse(data);
+          $("a#aTW" + HObj.bbid).html(HObj.twshare + " <i class='fa fa-twitter-square'></i>");
+      });
+  });
+
+  $('body').on('click', 'a.FBLOGIN', function (event)
+  {
+     event.preventDefault();
+     event.stopPropagation();
+     FB.login(function(response) {
+        // handle the response
+        FB_Callback();
+     }, {scope: 'user_about_me,user_photos,user_status,read_stream,publish_actions'});
   });
 
   initPost();
@@ -227,4 +272,35 @@ function initPost() {
                 .call(this, $.Event('done'), {result: result});
         });
     }
+}
+
+function FB_Callback() {
+    console.log("FB Callback");    
+    $.get('/do_fbsession.php', function(data) {
+    });
+}
+
+function checkForNewPost() {
+    var url = "http://www.griddle.com/last_post.php";
+    $.get(url, function(data) {
+       if(data == "reload") { // todo - make sure there isn't a modal open
+           location.reload();
+       } else {
+           t = setTimeout(function() { checkForNewPost() }, 180000);
+       }
+    });
+}
+
+function checkForNewNotes() {
+     var url = "http://www.griddle.com/do_notes.php?action=count";
+     $.get(url, function(data) {
+       if(data < 1) {
+         $('#noteText').text("");
+         document.title = 'Griddle';
+       } else {
+         $('#noteText').text(data);
+         document.title = 'Griddle - ' + data + ' New';
+       }
+       t2 = setTimeout(function() { checkForNewNotes() }, 60000);
+     });
 }

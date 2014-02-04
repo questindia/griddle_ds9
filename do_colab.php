@@ -41,13 +41,13 @@ if(!$action) {
       <div class='col-xs-12 col-sm-9 col-lg-10 pull-right'>";
        
     if($OUT) {
-        print "<h4>You can finish these Griddles</h4><br>";
+        print "<div class='noColabs'><h4>You can finish these Griddles</h4><br>";
         print "<table width=100% class='table-striped $FONTSIZE'><tbody>
         <tr><th align=left>Grid</th><th align=left>Creator</th><th align=left>Complete It!</th></tr>
         $OUT
-        </tbody></table>";
+        </tbody></table></div>";
     } else {
-        print "<h4>You don't have any unfinished Griddles.  Why don't you <a href=/do_post.php>Start One!</a></h4><br><br>";
+        print "<div class='noColabs'><h4>You don't have any unfinished Griddles.  Why don't you <a href=/do_post.php>Start One!</a></h4></div><br><br>";
     }
 
    include "sidebar.php";

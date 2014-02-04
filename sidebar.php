@@ -19,7 +19,7 @@
           <div class="list-group">
             <a href="http://<?php echo $baseSRV;?>" class="list-group-item"><span class="glyphicon glyphicon-list"></span> News Feed</a>
             <a href="/do_notes.php" class="list-group-item"><span class="glyphicon glyphicon-envelope"></span> Notifications <?php echo $NOTELINE; ?></a>
-            <a href="/do_notes.php?type=friend" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Friends <?php echo $FRNDLINE; ?></a>
+            <a href="/do_friends.php" class="list-group-item"><span class="glyphicon glyphicon-user"></span> Friends <?php echo $FRNDLINE; ?></a>
      
             <?php if($MOBILE) { ?>
             <a href="/edit_profile.php" class="list-group-item"><span class="glyphicon glyphicon-cog"></span> Edit Profile</a>

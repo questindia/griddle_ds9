@@ -44,10 +44,8 @@ if($action == "acceptfriend") {
    if($rrid) {
        $res = mysql_query("UPDATE relations SET friend=2 WHERE uid=$uid and target=$treq");
    } else {
-       $res = mysql_query("SELECT rid FROM relations ORDER BY rid DESC LIMIT 1");
-       $rrow = mysql_fetch_array($res);
-       $rrid = $rrow{'rid'} + 1;
-       $res = mysql_query("INSERT INTO relations VALUES($rrid, $uid, 2, 0, $treq, 2, $r)");
+    
+       $res = mysql_query("INSERT INTO relations VALUES(DEFAULT, $uid, 2, 0, $treq, 2, $r)");
    }
    $action = "";
 }
@@ -175,7 +173,10 @@ function getNoteRows($limit, $type) {
    $tfol = $rrow{'followers'};
    $tnam = $rrow{'name'};
 
+   //$tnam = wrapName($req, $tnam);
+
    if($type == 1) {
+      $note = "<a href=#>$tnam</a> has sent you a friend request!";
       if($status == 1) { // This is a friend request
          $actionLine = "<a class=actLink href=/do_notes.php?action=acceptfriend&req=$req&nid=$nid>Accept</a>|";
          $actionLine = $actionLine . "<a class=actLink href=/do_notes.php?action=rejectfriend&req=$req&nid=$nid>Decline</a>";
@@ -208,10 +209,10 @@ function getNoteRows($limit, $type) {
           $message = $ci{'comment'};
           $message = stripslashes($message); 
           if(strlen($message) > 47) { $message = substr($message, 0, 47) . "..."; }
-          $note = "<a style='color: #0088cc;' class=userButton id=userButton-$tuid href='/do_rels.php?target=$req'>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
+          $note = "<a href=#>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
      } else {
          if($type==5) {
-            $note = "<a style='color: #0088cc;' class=userButton id=userButton-$tuid href='/do_rels.php?target=$req'>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
+            $note = "<a href=#>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
             $IMGLINE = "";
          } elseif($type==6) {
              $note = "A Griddle - <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> has been completed! <span style='font-size: xx-small;'>$when</span>"; 
@@ -239,7 +240,7 @@ function getNoteRows($limit, $type) {
    
 
    $content .= "<tr style='border-bottom:1pt solid #cdcecf;'>
-                     <td align=left valign=top width=45><a class=userButton id=userButton-$tuid href='/m/do_rels.php?target=$req'><img class='cropimgPro' src=$imgSRV/thumb_profiles/$tuser?$rd></a></td>
+                     <td align=left valign=top width=45><img class='cropimgPro' src=$imgSRV/thumb_profiles/$tuser?$rd></td>
                      <td align=left $COLSPAN valign=top><p style='max-width:300px; margin-top:3px; line-height:120%; font-size:small;'>$note</p><p style='line-height:110%; font-size:small;'>$actionLine</p></td>
                      $IMGLINE          
                   </tr>";

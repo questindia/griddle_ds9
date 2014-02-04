@@ -15,6 +15,7 @@ if($USER = "") {
    <body>
 
 <?php 
+   include "fbinc.php";
    include "navbar.php";
   
   $NEXT_URL = '/do_scroll.php?type=feed&offset=6';
@@ -41,18 +42,22 @@ if($USER = "") {
 
 
     <?php include "jsinc.php"; ?>
+    <script>
+      var t = setTimeout(function() { checkForNewPost() }, 180000);
+    </script>
   </body>
 </html>
 
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-header">
+<!-- Modals -->
 
-   </div>
-  <div id="myModalBody" class="modal-body">
-
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">Close</button>
+      </div>
+    </div>
   </div>
- <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-
- </div>
 </div>

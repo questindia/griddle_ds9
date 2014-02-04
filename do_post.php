@@ -17,7 +17,7 @@ $gcheck = addslashes($_GET['gid']);
 $purpose = addslashes($_GET['purpose']);
 $bbcheck = addslashes($_GET['bbcheck']);
 $gtopic = getTopic($gcheck);
-$sel_friend = getFriendSel(200, $uid);
+$sel_friend = getFriendSel(9999, $uid);
 
 if(!$purpose) { $purpose = "griddle"; }
 

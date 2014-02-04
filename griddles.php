@@ -7,6 +7,7 @@
   <body>
 
 <?php 
+  include "fbinc.php";
   include "navbar.php";
   
   $gid = $_GET['gid'];
