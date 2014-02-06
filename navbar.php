@@ -1,6 +1,9 @@
 <?php
 
     $USER = $_SESSION['user'];
+    
+    if(!$MOBSERV) {
+    
 ?>
 
     <div class="navbar navbar-fixed-top navbar-default" role="navigation">
@@ -32,3 +35,5 @@
       </div><!-- /.container -->
     </div><!-- /.navbar -->
 
+<?php 
+}

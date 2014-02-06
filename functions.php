@@ -382,8 +382,10 @@ function getPostPair($gid) {
       
       $imgSRV = shardImg($img);
       
+      $CROPCLASS='cropimgFeed'; 
+      
       if($MOBILE) { $thumb_dir = "griddle_images"; } else { $thumb_dir = "mid_images"; }      
-      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; $CROPCLASS='cropimgFeed'; } else { $HSIZE = "h2"; }
+      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow";  } else { $HSIZE = "h2"; }
       if($TABLET) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; $CROPCLASS='cropimgFeedTablet'; }
       
       $OUT .= "<div class='well well-sm narrowTop'>
