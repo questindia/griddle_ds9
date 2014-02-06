@@ -25,7 +25,7 @@ if($action == 'done') {
   <div class='container'>
     <div class='row row-offcanvas row-offcanvas-right'>
 
-      <div class='col-xs-12 col-sm-9 col-lg-10 pull-right'>";
+      <div class='col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right'>";
        
     print "<div class='noColabs'><h4>$message</h4></div><br><br></div>";
     

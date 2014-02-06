@@ -100,6 +100,13 @@
        background-position: center center;
        overflow:hidden;
 }
+.cropimgFeedTablet {
+       width: 420px;
+       height: 220px;
+       background-repeat: no-repeat; 
+       background-position: center center;
+       overflow:hidden;
+}
 .cropimgLarge {
        max-width: 100%;
 }

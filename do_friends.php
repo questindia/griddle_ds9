@@ -109,7 +109,7 @@ if(!$action) {
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <div class="col-xs-12 col-sm-9 col-lg-10 pull-right">
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right">
          <div class='row'>
          <div class='col-lg-5'>
           <div id='noteDiv'>
@@ -139,8 +139,8 @@ if(!$action) {
     if(!$MOBILE) {
        $C1 = $FRIENDS{'COL1'};
        $C2 = $FRIENDS{'COL2'};
-       print "<div class='col-lg-5'><h4>Friends:</h4><table width=90% cellpadding=5 border=0>$C1</table></div>
-              <div class='col-lg-5'><h4>&nbsp;</h4><table width=90% cellpadding=5 border=0>$C2</table></div>";
+       print "<div class='col-lg-5 col-md-5'><h4>Friends:</h4><table width=90% cellpadding=5 border=0>$C1</table></div>
+              <div class='col-lg-5 col-md-5'><h4>&nbsp;</h4><table width=90% cellpadding=5 border=0>$C2</table></div>";
               
     } else {
        $C1 = $FRIENDS{'COL1'};

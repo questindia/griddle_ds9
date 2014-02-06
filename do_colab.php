@@ -38,7 +38,7 @@ if(!$action) {
   <div class='container'>
     <div class='row row-offcanvas row-offcanvas-right'>
 
-      <div class='col-xs-12 col-sm-9 col-lg-10 pull-right'>";
+      <div class='col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right'>";
        
     if($OUT) {
         print "<div class='noColabs'><h4>You can finish these Griddles</h4><br>";
@@ -49,7 +49,7 @@ if(!$action) {
     } else {
         print "<div class='noColabs'><h4>You don't have any unfinished Griddles.  Why don't you <a href=/do_post.php>Start One!</a></h4></div><br><br>";
     }
-
+   print "</div>";
    include "sidebar.php";
    print "</div>
      </div><!--/span-->

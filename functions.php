@@ -331,7 +331,8 @@ function getGriddlePosts($bbid) {
 function getPostPair($gid) {
  
    GLOBAL $MOBILE;
- 
+   GLOBAL $TABLET;
+   
    $OUT = "<div class='col-6 col-sm-6 col-lg-4'>\n";
    
    $res = mysql_query("SELECT * FROM posts WHERE gid=$gid AND status=1 ORDER BY RAND() LIMIT 4");
@@ -382,11 +383,12 @@ function getPostPair($gid) {
       $imgSRV = shardImg($img);
       
       if($MOBILE) { $thumb_dir = "griddle_images"; } else { $thumb_dir = "mid_images"; }      
-      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; } else { $HSIZE = "h2"; }
+      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; $CROPCLASS='cropimgFeed'; } else { $HSIZE = "h2"; }
+      if($TABLET) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; $CROPCLASS='cropimgFeedTablet'; }
       
       $OUT .= "<div class='well well-sm narrowTop'>
       <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a></$HSIZE>
-              <a href='/view.php?bbid=$bbid$POSTDIV'><div class='cropimgFeed' style='background-image: url(\"$imgSRV/$thumb_dir/$img\");'></div></a>
+              <a href='/view.php?bbid=$bbid$POSTDIV'><div class='$CROPCLASS' style='background-image: url(\"$imgSRV/$thumb_dir/$img\");'></div></a>
               <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href='/person.php?target=$uid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
@@ -478,7 +480,7 @@ function getGriddleBlock($bbid, $columnsize) {
    <div class='$columnsize'>
         <div class='well well-sm narrowTop'>
               <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a><span>&nbsp;$proline</span></$HSIZE>
-              <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a>$byline
+              <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
               <table class='tablePro' cellpadding=5>
                 <tr>
                   <td valign=top><a href='/person.php?target=$uid'><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>

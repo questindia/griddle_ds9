@@ -24,7 +24,7 @@
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <div class="col-xs-12 col-sm-12 col-lg-10 pull-right">
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right">
           
             <?php echo getGriddleBlock($bbid, 'col-lg-6 col-12 col-xs-12 col-sm-12'); ?>
             
@@ -39,7 +39,7 @@
       
       <div class='row pull-right'>
         <div class='col-lg-3'></div>
-        <div class='col-xs-12 col-sm-12 col-lg-6'>
+        <div class='col-xs-12 col-md-12 col-sm-12 col-lg-6'>
          <div id='postRow'><br><br><br><br>
          <?php echo getGriddlePosts($bbid); ?>
          </div>

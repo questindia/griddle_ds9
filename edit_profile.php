@@ -88,7 +88,7 @@ if(!$_POST['action']) { // Show Edit Screen
 
       <div class="row row-offcanvas row-offcanvas-right">
 
-        <div class="col-xs-12 col-sm-9 col-lg-10 pull-right">
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right">
 
 <form id="saveProfile" action="/edit_profile.php" method="post" enctype="multipart/form-data">
   

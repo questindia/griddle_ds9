@@ -124,7 +124,7 @@ if(!$gcheck) {
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
 
-      <div class="col-xs-12 col-sm-9 col-lg-10 pull-right">
+      <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right">
         <!-- The file upload form used as target for the file upload widget -->
     	
         <!-- Redirect browsers with JavaScript disabled to the origin page -->
