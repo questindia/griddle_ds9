@@ -1,5 +1,8 @@
  <?php
  
+    include "dbinc.php";
+    include "functions.php";
+ 
     $uid = getUser($_SESSION['user']);
  
     $NOTES  = gotNotes($uid);
@@ -15,6 +18,7 @@
     if($FRIEND) { $FRNDLINE = "<span class='$narrowRight badge pull-right'>$FRIEND</span>"; }
     
     if($MOBSERV) {
+
        include "header.php";
        print "<body>\n";
     }
