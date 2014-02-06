@@ -14,6 +14,10 @@
     if($COLAB)  { $COLBLINE = "<span class='$narrowRight badge pull-right'>$COLAB</span>"; }
     if($FRIEND) { $FRNDLINE = "<span class='$narrowRight badge pull-right'>$FRIEND</span>"; }
     
+    if($MOBSERV) {
+       include "header.php";
+       print "<body>\n";
+    }
      
  ?>  
    
@@ -33,3 +37,11 @@
         </div><!--/span-->
         </div>
       
+<?php
+
+   if($MOBSERV) {
+
+   include "jsinc.php";
+   print "</body></html>\n";
+   
+   }
