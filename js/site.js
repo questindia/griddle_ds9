@@ -110,10 +110,32 @@ $(document).ready(function() {
   initPost();
   initComm();
   initMore();
+  initIOSBugHack();
   
 });
 
+function initIOSBugHack() {
+    // hack for iPhone 7.0.3 multiselects bug
+    if(navigator.userAgent.match(/iPhone/i)) {
+        $('select[multiple]').each(function(){
+            var select = $(this).on({
+                "focusout": function(){
+                    var values = select.val() || [];
+                    setTimeout(function(){
+                        select.val(values.length ? values : ['']).change();
+                    }, 1000);
+                }
+            });
+            /* var firstOption = '<option value="" disabled="disabled"';
+            firstOption += (select.val() || []).length > 0 ? '' : ' selected="selected"';
+            firstOption += '>Choose some Friends to Help!';
+            firstOption += '</option>';
+            select.prepend(firstOption); */
+        });
+    }
 
+
+}
 
 function initMore() {
 
