@@ -1,9 +1,18 @@
  <?php
  
-    include "dbinc.php";
-    include "functions.php";
+ 
+    if(!$baseSRV) {
+       include "dbinc.php";
+       include "functions.php";
+       include "header.php";
+       print "<body>\n";
+       $DOFOOTER = 1;
+    }
+ 
  
     $uid = getUser($_SESSION['user']);
+ 
+ 
  
     $NOTES  = gotNotes($uid);
     $COLAB  = gotColabs($uid);
@@ -17,11 +26,7 @@
     if($COLAB)  { $COLBLINE = "<span class='$narrowRight badge pull-right'>$COLAB</span>"; }
     if($FRIEND) { $FRNDLINE = "<span class='$narrowRight badge pull-right'>$FRIEND</span>"; }
     
-    if($MOBSERV) {
-
-       include "header.php";
-       print "<body>\n";
-    }
+    
      
  ?>  
    
@@ -43,7 +48,7 @@
       
 <?php
 
-   if($MOBSERV) {
+   if($DOFOOTER) {
 
    include "jsinc.php";
    print "</body></html>\n";
