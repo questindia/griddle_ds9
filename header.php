@@ -29,3 +29,15 @@
     <![endif]-->
   </head>
 
+<?php
+
+if($MOBSERV) {
+
+?><style>
+body {
+  padding-top: 5px;
+}
+</style>
+<?php
+
+}
