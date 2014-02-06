@@ -10,7 +10,10 @@ if($user=="") {
 }
 $uid = getUser($user);
 
-
+if(!$MOBILE && !$TABLET) {
+   header( "Location: http://$baseSRV/do_posterr.php?action=mobile" );
+   exit;
+}
 
 
 $gcheck = addslashes($_GET['gid']);
@@ -18,6 +21,17 @@ $purpose = addslashes($_GET['purpose']);
 $bbcheck = addslashes($_GET['bbcheck']);
 $gtopic = getTopic($gcheck);
 $sel_friend = getFriendSel(9999, $uid);
+
+$bbi = getGriddleInfo($bbcheck);
+
+$tstat = $bbi{'status'};
+if($tstat==1) {
+   header( "Location: http://$baseSRV/do_posterr.php?action=done" );
+   exit;
+}
+
+
+
 
 if(!$purpose) { $purpose = "griddle"; }
 
@@ -38,7 +52,7 @@ if(!$gcheck) {
    	  	  </div>
    	  	  <div id='chooseFriend' class='span4'>
    	  	  <br>
-   	  	    <select class='form-control' name='colabs[]' multiple placeholder='Choose some Friends to Help!'>
+   	  	    <select class='form-control' name='colabs[]' multiple>
    	  	       <option value='' disabled selected>Choose some Friends to Help!</option>
    	  	       $sel_friend
    	  	       </select>
@@ -46,6 +60,8 @@ if(!$gcheck) {
    	  	   </div>
    	    </div>
       ";
+      
+      $TEXTBOX = "<textarea class='form-control' placeholder=\"What's Happening?\" rows=3 cols=25 name='message'></textarea>";
 
    } elseif($gcheck) {
    	   $CHOOSE = "<input type=hidden name=type_grid value='$gtopic'>";
@@ -55,15 +71,38 @@ if(!$gcheck) {
    if(!$bbcheck) {
    	   $MESSAGE = "Make a Griddle!";
    } else {
-       $SOFAR = getSoFar($bbcheck);
-       $CHOOSE .= "
-   	   <div id='chooseFriend' class='span4'><br>
-   	  	    <select class='form-control' name='colabs[]' multiple placeholder='Choose some Friends to Help!'>
+       $PROGRESS = "<h3>Griddle Progress:</h3>";
+   
+       $SOFAR  = "<h5>Pictures: " . getSoFar($bbcheck) . "</h5>";
+       
+       $PEOPLE = "<h5>People: " . getSoFarPeople($bbcheck) . "</h5>";
+       
+       $MESSAGE = "Add to this Griddle!";
+       $bi = getGriddleInfo($bbcheck);
+       $buid = $bi{'uid'};
+       if($uid==$buid) { // Owner
+          $OWNER = "<form action=/do_addcolabs.php method=post>
+                     <input type=hidden name=action value='add'>
+                     <input type=hidden name=bbid value='$bbcheck'>
+                     <select class='form-control' name='colabs[]' multiple>
+   	  	                <option value='' disabled selected>Choose More Friends to Help!</option>
+   	  	                $sel_friend
+   	  	                </select><br>
+   	  	                <button type=submit class='btn btn-md btn-success'><span class='glyphicon glyphicon-plus'></span> Add Friends</button>
+   	  	            </form><br>";
+   	  	  $MESSAGE = "Include more Friends!";          
+       
+       } else {
+          $CHOOSE .= "
+   	       <div id='chooseFriend' class='span4'><br>
+   	  	    <select class='form-control' name='colabs[]' multiple>
    	  	       <option value='' disabled selected>Choose some Friends to Help!</option>
    	  	       $sel_friend
    	  	       </select><br>
    	  	   </div>";
-       $MESSAGE = "Add to this Griddle!";
+   	  	}  
+       
+       
    }
      
 
@@ -87,18 +126,22 @@ if(!$gcheck) {
 
       <div class="col-xs-12 col-sm-9 col-lg-10 pull-right">
         <!-- The file upload form used as target for the file upload widget -->
-    	<form id="fileupload" action="/uploadindex.php" method="POST" enctype="multipart/form-data">
+    	
+        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+        <?php echo $PROGRESS; ?>
+        <?php echo $SOFAR; ?>
+        <?php echo $PEOPLE; ?>
+        <h3><?php echo $MESSAGE; ?></h3>
+        <?php echo $OWNER; ?>
+        <form id="fileupload" action="/uploadindex.php" method="POST" enctype="multipart/form-data">
     	<input type=hidden name=geo id=geo>
     	<input type=hidden name=purpose id=purpose value='<?php echo $purpose; ?>'>
     	<input type=hidden name=bbcheck value='<?php echo $bbcheck; ?>'>
-        <!-- Redirect browsers with JavaScript disabled to the origin page -->
-        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-        <?php echo $SOFAR; ?>
-        <h3><?php echo $MESSAGE; ?></h3>
         <?php echo $CHOOSE; ?>
-   	  	
+   	  	<?php echo $TEXTBOX; ?>
    	  	<input type='hidden' name='qid' value='<?php echo $qid; ?>'>
-   	  	<textarea class="form-control" placeholder="What's Happening?" rows=3 cols=25 name="message"></textarea></td></tr></table>
+   	  	
    	        <div class="fileupload-buttonbar">
              <!-- The fileinput-button span is used to style the file input field as button -->
                 <h3>Add Pictures!</h3>
@@ -235,6 +278,7 @@ if(!$gcheck) {
 <script>
 </script>
    <script>
+   GEO_Callback();
    document.getElementById("geo").value = geo;
    </script>
   
@@ -253,9 +297,42 @@ function getSoFar($bbid) {
        $pi = getPostInfo($pid);
        $img = $pi{'images'};
        $OUT .= "<img class='soFarImg' src='$imgSRV/thumb_images/$img'>&nbsp;&nbsp;";
+       $count++;
+    }
+    
+    if($count<9) {
+        $left = (9 - $count);
+        for($i=0; $i<$left; $i++) {
+            $OUT .= "<img class='soFarImg' src='$baseSRV/img/profile.jpg'>&nbsp;&nbsp;";
+        }
     }
     
     return $OUT;   
    
    
 }   
+
+function getSoFarPeople($bbid) {
+   
+   $bi = getGriddleInfo($bbid);
+   $col = $bi{'colabs'};
+   $inv = $bi{'uid'};
+
+   $ULIST = explode(",", "$inv,$col");
+   foreach ($ULIST as $cuid) {
+      if($cuid) { 
+         $cui = getUserInfo($cuid);
+         $cn  = $cui{'name'};
+         $cu  = $cui{'username'};
+         if($DONE[$cn] != 1) {
+            $byline .= "$cn, ";
+            $proline .= "<a href='/person.php?target=$cuid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$cu'></a>&nbsp;";
+            $procount++;
+            $DONE[$cn] = 1;
+         }
+      }
+   }
+
+   return $proline;
+
+}

@@ -113,7 +113,7 @@ if(!$_POST['action']) { // Show Edit Screen
    </label></td></tr><tr>
    <td><h4>Notify me about:</h4>
    <label class=checkbox>
-      <input type=checkbox name='followfriends' value=yes <?php echo $ffCheck; ?>> <span style='font-size: x-small'>Griddles Invitations from Friends</span>
+      <input type=checkbox name='followfriends' value=yes <?php echo $ffCheck; ?>> <span style='font-size: x-small'>Griddle Invitations from Friends</span>
    </label>
    <label class=checkbox>
       <input type=checkbox name='followPComms' value=yes <?php echo $fpcCheck; ?>><span style='font-size: x-small'>Comments made on my Griddles</span>
@@ -171,7 +171,7 @@ if($_POST['action'] == 'update_profile') {
    $udrow = mysql_fetch_array($ud);
    $uid = $udrow{'uid'};
 
-   $was_moble = $udrow{'mobile'};
+   $was_mobile = $udrow{'mobile'};
  
    
 
@@ -285,7 +285,9 @@ if($_POST['action'] == 'update_profile') {
 
    //$res = mysql_query("UPDATE fblink SET do_scrape=$dc WHERE uid=$uid");
    
-   if($mobile && !$was_mobile) {
+   $mob_change = strcmp($mobile, $was_mobile);
+   
+   if($mob_change != 0) {
        $res = mysql_query("INSERT INTO mms_inform VALUES(DEFAULT, $uid, 'Welcome to Griddle!  You can post and view pictures by text message.  To see the available commands visit www.griddle.com/help/', 0)"); 
    }
 

@@ -84,7 +84,7 @@ function getFacebookInfo($uid) {
   return (mysql_fetch_array($res));
 }
 function getGriddleMembership($pid) {
-  $res = mysql_query("SELECT bbid FROM griddle_bb WHERE ppid LIKE '%,$pid,%' LIMIT 1");
+  $res = mysql_query("SELECT bbid FROM griddle_bb WHERE ppid LIKE '%,$pid,%' OR ppid LIKE '$pid,%' OR ppid LIKE '%,$pid' LIMIT 1");
   $row = mysql_fetch_array($res);
   return $row{'bbid'};
 }
@@ -96,7 +96,7 @@ function checkMobile($mobile) {
 }
 
 function gotNotes($uid) {
-    $res = mysql_query("SELECT nid, req, type, note FROM notes_bb WHERE uid=$uid AND status=1 ORDER BY nid DESC LIMIT 100");
+    $res = mysql_query("SELECT nid, req, type, note FROM notes_bb WHERE uid=$uid AND status=1 AND type>2 ORDER BY nid DESC LIMIT 100");
     $count = mysql_num_rows($res);
     return $count;
 }
@@ -105,7 +105,7 @@ function gotColabs($uid) {
     return mysql_num_rows($res);
 }
 function gotFriends($uid) {
-    $res = mysql_query("SELECT nid FROM notes_bb WHERE uid=$uid AND type=1 AND status=1");
+    $res = mysql_query("SELECT nid FROM notes_bb WHERE uid=$uid AND type<3 AND status=1");
     return mysql_num_rows($res);
 }
 function getNotificationSettings($uid) {
@@ -130,6 +130,7 @@ function getFriendRows($count, $uid) {
        $folls = $trow{'followers'};
        $imgSRV = shardImg($tuid);
        
+       
        if(!$MOBILE) {
          if($COL=="COL1") {
             $COL="COL2";
@@ -140,7 +141,7 @@ function getFriendRows($count, $uid) {
        
           
        $return{$COL} .= "<tr style='border-bottom:1pt solid #cdcecf;'><td align=left width=60px><a class=userButton id=userButton-$tuid href='#'><img class=cropimgProLG src=$imgSRV/thumb_profiles/$user></a></td>
-                       <td align=left><span style='font-size: medium;'><a class=userButton id=userButton-$tuid href='#'>$name</a></span><br><span style='font-size: xx-small;'> +$posts Posts</span></td>
+                       <td align=left><span style='font-size: medium;'><a href='/person.php?target=$tuid'>$name</a></span><br><span style='font-size: xx-small;'> +$posts Posts</span></td>
                        <td align=left><a style='font-size: xx-small;' href=/do_friends.php?action=unfriend&target=$tuid>Remove</a></td></tr>";
    }
 
@@ -222,7 +223,7 @@ function wrapName($target, $name) {
     if($friend == 0) {
       $fLine = "<li id=relLink$target role='presentation'><a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=friend&target=$target><span class='glyphicon glyphicon-plus'></span> Add Friend</a></li>";
     } elseif ($friend == 1) {
-      $fLine = "<li id=relLink$target role='presentation'><a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=unfriend&target=$target><span class='glyphicon glyphicon-remove'></span> Friends Pending</a></li>";
+      $fLine = "<li id=relLink$target role='presentation'><a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=unrequest&target=$target><span class='glyphicon glyphicon-remove'></span> Friends Pending</a></li>";
     } elseif ($friend == 2) {
       $fLine = "<li id=relLink$target role='presentation'><a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=unfriend&target=$target><span class='glyphicon glyphicon-remove'></span> Remove Friend</a></li>";
     } else {
@@ -241,9 +242,13 @@ function wrapName($target, $name) {
 
 }
 
-function generateFeed($count) {
+function generateFeed($count, $uid) {
 
-   $res = mysql_query("SELECT * FROM griddle_bb WHERE status=1 ORDER BY din DESC LIMIT $count");
+   if($uid) {
+      $WHERE = "AND (uid=$uid OR colabs LIKE '%,$uid,%')";
+   }
+
+   $res = mysql_query("SELECT * FROM griddle_bb WHERE status=1 $WHERE ORDER BY din DESC LIMIT $count");
 
    while($row = mysql_fetch_array($res)) {
       $bbid = $row{'bbid'};
@@ -329,7 +334,7 @@ function getPostPair($gid) {
  
    $OUT = "<div class='col-6 col-sm-6 col-lg-4'>\n";
    
-   $res = mysql_query("SELECT * FROM posts WHERE gid=$gid AND status=1 ORDER BY RAND() LIMIT 2");
+   $res = mysql_query("SELECT * FROM posts WHERE gid=$gid AND status=1 ORDER BY RAND() LIMIT 4");
    while($row = mysql_fetch_array($res)) {
       $uid  = $row{'uid'};
       $img  = $row{'images'};
@@ -343,6 +348,17 @@ function getPostPair($gid) {
       $coms = $bi{'comments'};
       $fbs  = $row{'fbshare'};
       $tws  = $row{'twshare'};
+      
+      
+      if($bi{'status'} == 0) {
+         continue;
+      } else {
+         $COUNT++;
+      }
+      
+      if($COUNT > 2) {
+         continue;
+      }
       
       if(!$hots) { $hots="0"; }
       if(!$coms) { $coms="0"; }
@@ -366,14 +382,14 @@ function getPostPair($gid) {
       $imgSRV = shardImg($img);
       
       if($MOBILE) { $thumb_dir = "griddle_images"; } else { $thumb_dir = "mid_images"; }      
-      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; } else { $HSIZE = "h2"; }
+      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; } else { $HSIZE = "h2"; }
       
       $OUT .= "<div class='well well-sm narrowTop'>
       <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a></$HSIZE>
-              <div class='cropimgFeed' style='background-image: url(\"$imgSRV/$thumb_dir/$img\");'></div>
+              <a href='/view.php?bbid=$bbid$POSTDIV'><div class='cropimgFeed' style='background-image: url(\"$imgSRV/$thumb_dir/$img\");'></div></a>
               <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
-                  <td valign=top class='cropimgProTiny'><a href='/view.php?bbid=$bbid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
+                  <td valign=top class='cropimgProTiny'><a href='/person.php?target=$uid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
                   <td valign=top><table><tr><td><a href=#>$realname</a></td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
                   <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
@@ -443,7 +459,7 @@ function getGriddleBlock($bbid, $columnsize) {
          $cu  = $cui{'username'};
          if($DONE[$cn] != 1) {
             $byline .= "$cn, ";
-            $proline .= "<img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$cu'>&nbsp;";
+            $proline .= "<a href='/person.php?target=$cuid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$cu'></a>&nbsp;";
             $procount++;
             $DONE[$cn] = 1;
          }
@@ -456,16 +472,16 @@ function getGriddleBlock($bbid, $columnsize) {
    
    $realname = wrapName($uid, $realname);
    
-   if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader";} else { $HSIZE = "h2"; }
+   if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; } else { $HSIZE = "h2"; }
       
    $OUT .="
    <div class='$columnsize'>
         <div class='well well-sm narrowTop'>
               <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a><span>&nbsp;$proline</span></$HSIZE>
-              <a href=/view.php?bbid=$bbid><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a>$byline
+              <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a>$byline
               <table class='tablePro' cellpadding=5>
                 <tr>
-                  <td valign=top><a href=#><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
+                  <td valign=top><a href='/person.php?target=$uid'><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
                   <td valign=top><table><tr><td>$realname</td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
                   <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;

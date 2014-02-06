@@ -8,7 +8,7 @@ $rd = substr($r, 0, 8);
 $action = $_GET['action'];
 $kind = $_GET['type'];
 
-if($kind=='friend') { $type = "AND type=1"; } else { $type = "AND type!=1"; } 
+if($kind=='friend') { $type = "AND type<3"; } else { $type = "AND type>2"; } 
 
 $user = $_SESSION['user'];
 
@@ -190,6 +190,8 @@ function getNoteRows($limit, $type) {
            $actionLine = "You are now Friends.";
         }  
       }
+   } elseif($type == 2) {
+      $note = "<a href='/person.php?target=$req'>$tnam</a> has accepted your friend request!";
    } else { $actionLine = ""; }
 
    if($bbid > 0) {
@@ -209,10 +211,10 @@ function getNoteRows($limit, $type) {
           $message = $ci{'comment'};
           $message = stripslashes($message); 
           if(strlen($message) > 47) { $message = substr($message, 0, 47) . "..."; }
-          $note = "<a href=#>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
+          $note = "<a href='/person.php?target=$req'>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
      } else {
          if($type==5) {
-            $note = "<a href=#>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
+            $note = "<a href='/person.php?target=$req'>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
             $IMGLINE = "";
          } elseif($type==6) {
              $note = "A Griddle - <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> has been completed! <span style='font-size: xx-small;'>$when</span>"; 

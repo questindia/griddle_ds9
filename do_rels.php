@@ -3,8 +3,9 @@ include "dbinc.php";
 
 $r = time();
 $r2 = substr($r, 0, 8); 
-$targetSEP = $_GET['target'];
-$action = $_GET['action'];
+$targetSEP = addslashes($_GET['target']);
+$action = addslashes($_GET['action']);
+$ttype   = addslashes($_GET['type']);
 
 $tline = explode("-", $targetSEP);
 
@@ -79,6 +80,19 @@ if($action == "unfriend") {
   $res = mysql_query("UPDATE relations SET friend=0 WHERE uid=$target AND target=$uid");
 }
 
+if($action == "unrequest") {
+  $res = mysql_query("DELETE FROM relations WHERE uid=$uid AND target=$target");
+  $res = mysql_query("DELETE FROM relations WHERE uid=$target AND target=$uid");
+  $res = mysql_query("DELETE FROM notes_bb WHERE uid=$target AND req=$uid AND type=1");
+  $res = mysql_query("DELETE FROM notes_bb WHERE uid=$uid AND target=$target AND type=2");
+}
+
+
+if($ttype=='button') {
+   $class = 'btn btn-sm btn-primary relLink';
+} else {
+   $class = 'relLink';
+}
 
 
 $res = mysql_query("SELECT rid, friend FROM relations WHERE uid=$uid AND target=$target");
@@ -87,13 +101,13 @@ $rid = $row{'rid'};
 $friend = $row{'friend'};
    
 if($friend == 0) {
-  $fLine = "<a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=friend&target=$target><span class='glyphicon glyphicon-plus'></span> Add Friend</a>";
+  $fLine = "<a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=friend&target=$target&type=$ttype><span class='glyphicon glyphicon-plus'></span> Add Friend</a>";
 } elseif ($friend == 1) {
-  $fLine = "<a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=unfriend&target=$target><span class='glyphicon glyphicon-remove'></span> Friends Pending</a>";
+  $fLine = "<a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=unrequest&target=$target&type=$ttype><span class='glyphicon glyphicon-remove'></span> Friends Pending</a>";
 } elseif ($friend == 2) {
-  $fLine = "<a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=unfriend&target=$target><span class='glyphicon glyphicon-remove'></span> Remove Friend</a>";
+  $fLine = "<a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=unfriend&target=$target&type=$ttype><span class='glyphicon glyphicon-remove'></span> Remove Friend</a>";
 } else {
-  $fLine = "<a role='menuitem' tabindex='-1' class=relLink href=/do_rels.php?action=friend&target=$target><span class='glyphicon glyphicon-plus'></span> Add Friend</a>";
+  $fLine = "<a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=friend&target=$target&type=$ttype><span class='glyphicon glyphicon-plus'></span> Add Friend</a>";
 }
 
 if($target == $uid) {

@@ -1,3 +1,6 @@
+var geo;
+
+
 $(document).ready(function() {
 
   // This is a general purpose function for displaying a dynamic-content modal
@@ -35,7 +38,7 @@ $(document).ready(function() {
   });
   
   // This will initialize the auto scroll on the main feed
-  $('.scroll').jscroll({autoTrigger: true, padding: 0});
+  $('.scroll').jscroll({autoTrigger: true, padding: 200});
 
   // This function handles the Relationship Requests.
   $('body').on('click', 'a.relLink', function(event) { 
@@ -303,4 +306,19 @@ function checkForNewNotes() {
        }
        t2 = setTimeout(function() { checkForNewNotes() }, 60000);
      });
+}
+
+function GEO_Callback() {
+   
+   if(navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      mypos = new google.maps.LatLng(position.coords.latitude,
+                                       position.coords.longitude);
+      console.log("Geo lat  - " + position.coords.latitude);
+      console.log("Geo long - " + position.coords.longitude);
+      geo = position.coords.latitude + "|" + position.coords.longitude;
+      $.post( "/do_geoloc.php", { geo_lat: position.coords.latitude, geo_long: position.coords.longitude } );
+     });
+   }
+
 }

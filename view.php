@@ -40,7 +40,9 @@
       <div class='row pull-right'>
         <div class='col-lg-3'></div>
         <div class='col-xs-12 col-sm-12 col-lg-6'>
+         <div id='postRow'><br><br><br><br>
          <?php echo getGriddlePosts($bbid); ?>
+         </div>
         </div>
         <div class='col-lg-3'></div>
       </div>

@@ -9,7 +9,7 @@ $action = $_GET['action'];
 $target = $_GET['target'];
 $kind = "friend";
 
-if($kind=='friend') { $type = "AND type=1"; } else { $type = "AND type!=1"; } 
+if($kind=='friend') { $type = "AND type<3"; } else { $type = "AND type>2"; } 
 
 $user = $_SESSION['user'];
 
@@ -117,12 +117,17 @@ if(!$action) {
    
    $content = "<h4>Recent Requests:</h4><table id='noterows' $TWIDTH cellpadding=5 border=0>\n";
 
-   $content .= getNoteRows("0, 10", $type);
+   $contentRows .= getNoteRows("0, 10", $type);
+   if($contentRows == "") { 
+      $content .= "<h3>No Recent Activity</h3>"; 
+   } else {
+      $content .= $contentRows;
+   }
 
    $content .= "</table>";
   
 
-   if($content == "") { $content = "<h3>No Recent Activity</h3>"; }
+   
 
     print "$content";
     
@@ -134,8 +139,8 @@ if(!$action) {
     if(!$MOBILE) {
        $C1 = $FRIENDS{'COL1'};
        $C2 = $FRIENDS{'COL2'};
-       print "<div class='col-lg-5'><h4>Friends:</h4><table cellpadding=5 border=0>$C1</table></div>
-              <div class='col-lg-5'><h4>&nbsp;</h4><table cellpadding=5 border=0>$C2</table></div>";
+       print "<div class='col-lg-5'><h4>Friends:</h4><table width=90% cellpadding=5 border=0>$C1</table></div>
+              <div class='col-lg-5'><h4>&nbsp;</h4><table width=90% cellpadding=5 border=0>$C2</table></div>";
               
     } else {
        $C1 = $FRIENDS{'COL1'};
@@ -198,10 +203,10 @@ function getNoteRows($limit, $type) {
    //$tnam = wrapName($req, $tnam);
 
    if($type == 1) {
-      $note = "<a href=#>$tnam</a> has sent you a friend request!";
+      $note = "<a href='/person.php?target=$req'>$tnam</a> has sent you a friend request!";
       if($status == 1) { // This is a friend request
-         $actionLine = "<a class=actLink href=/do_notes.php?action=acceptfriend&req=$req&nid=$nid>Accept</a>|";
-         $actionLine = $actionLine . "<a class=actLink href=/do_notes.php?action=rejectfriend&req=$req&nid=$nid>Decline</a>";
+         $actionLine = "<a href=/do_friends.php?action=acceptfriend&req=$req&nid=$nid>Accept</a>|";
+         $actionLine = $actionLine . "<a href=/do_friends.php?action=rejectfriend&req=$req&nid=$nid>Decline</a>";
       } else {
          //$actionLine = "<a class=actLink href=/do_notes.php?action=dismiss&nid=$nid>Dismiss (x)</a>";
         $res2 = mysql_query("SELECT friend FROM relations WHERE uid=$req AND target=$uid");
@@ -212,6 +217,8 @@ function getNoteRows($limit, $type) {
            $actionLine = "You are now Friends.";
         }  
       }
+   } elseif($type == 2) {
+      $note = "<a href='/person.php?target=$req'>$tnam</a> has accepted your friend request!";
    } else { $actionLine = ""; }
 
    if($bbid > 0) {
@@ -231,10 +238,10 @@ function getNoteRows($limit, $type) {
           $message = $ci{'comment'};
           $message = stripslashes($message); 
           if(strlen($message) > 47) { $message = substr($message, 0, 47) . "..."; }
-          $note = "<a href=#>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
+          $note = "<a href='/person.php?target=$req'>$tnam</a> commented <a style='color:#0088cc;' href=/griddles.php?gid=$pgid>$ptop</a> - $message <span style='font-size: xx-small;'>$when</span>";
      } else {
          if($type==5) {
-            $note = "<a href=#>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
+            $note = "<a href='/person.php?target=$req'>$tnam</a> wants your help to create a Griddle! <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> <span style='font-size: xx-small;'>$when</span>";
             $IMGLINE = "";
          } elseif($type==6) {
              $note = "A Griddle - <a style='color:#0088cc;' href='$COL_LINK'>$ptop</a> has been completed! <span style='font-size: xx-small;'>$when</span>"; 
@@ -269,8 +276,7 @@ function getNoteRows($limit, $type) {
    
   
   }
-
-  $count .= "</table>";
+  
   return $content;
 
 }
