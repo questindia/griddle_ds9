@@ -113,6 +113,23 @@ function getNotificationSettings($uid) {
     $row = mysql_fetch_array($res);
     return $row;
 }
+function getTrending($count, $mob) {
+
+     $res = mysql_query("SELECT gid, topic FROM griddles WHERE posts>=1 AND type=3 ORDER BY last_post DESC LIMIT $count");
+     while($row = mysql_fetch_array($res)) {
+         $topic = $row{'topic'};
+         $gid = $row{'gid'};
+         $return .= "<li><a style='color: #055366;' href=\"/m/grid_m.php?gid=$gid\">$topic</a></li>\n";
+         $mobreturn .= "$topic,";
+     }
+
+     if($mob == "yes") {
+        return $mobreturn;
+     } else {
+        return $return;
+     }
+
+}
 
 function getFriendRows($count, $uid) {
 
