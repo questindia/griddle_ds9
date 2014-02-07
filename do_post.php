@@ -289,6 +289,9 @@ if(!$gcheck) {
 
 function getSoFar($bbid) {
    
+    global $imgSRV;
+    global $baseSRV;
+   
     $bi = getGriddleInfo($bbid);
     
     $plist = explode(",", $bi{'ppid'});
@@ -313,6 +316,8 @@ function getSoFar($bbid) {
 }   
 
 function getSoFarPeople($bbid) {
+   
+   global $imgSRV;
    
    $bi = getGriddleInfo($bbid);
    $col = $bi{'colabs'};
