@@ -289,8 +289,8 @@ if(!$gcheck) {
 
 function getSoFar($bbid) {
    
-    global $imgSRV;
-    global $baseSRV;
+    GLOBAL $imgSRV;
+    GLOBAL $baseSRV;
    
     $bi = getGriddleInfo($bbid);
     
