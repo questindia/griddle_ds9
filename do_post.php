@@ -289,8 +289,7 @@ if(!$gcheck) {
 
 function getSoFar($bbid) {
    
-    GLOBAL $imgSRV;
-    GLOBAL $baseSRV;
+    
    
     $bi = getGriddleInfo($bbid);
     
@@ -299,6 +298,7 @@ function getSoFar($bbid) {
     foreach ($plist as $pid) {
        $pi = getPostInfo($pid);
        $img = $pi{'images'};
+       $imgSRV = shardImg($img);
        $OUT .= "<img class='soFarImg' src='$imgSRV/thumb_images/$img'>&nbsp;&nbsp;";
        $count++;
     }
@@ -306,7 +306,7 @@ function getSoFar($bbid) {
     if($count<9) {
         $left = (9 - $count);
         for($i=0; $i<$left; $i++) {
-            $OUT .= "<img class='soFarImg' src='$baseSRV/img/profile.jpg'>&nbsp;&nbsp;";
+            $OUT .= "<img class='soFarImg' src='/img/profile.jpg'>&nbsp;&nbsp;";
         }
     }
     
