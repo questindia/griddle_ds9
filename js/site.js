@@ -120,6 +120,11 @@ $(document).ready(function() {
   initMore();
   initIOSBugHack();
   
+  if(fshow==1) {
+     console.log("into frescoshow");
+     fresco_show();
+  }
+  
 });
 
 function initIOSBugHack() {

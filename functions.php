@@ -295,10 +295,11 @@ function generateFeed($count, $uid) {
 function getGriddlePosts($bbid) {
 
     GLOBAL $MOBILE;
-    
+    GLOBAL $JAVA;
    
    $bi = getGriddleInfo($bbid);
    $PLIST = explode(",", $bi{'ppid'});
+   $JAVA = "";
    
    foreach ($PLIST as $pid) {
       $row = getPostInfo($pid);
@@ -319,6 +320,12 @@ function getGriddlePosts($bbid) {
       $realname = wrapName($uid, $realname);
       
       $imgSRV = shardImg($img);
+      if(!$JAVA) {
+         $JID = "img$bbid";
+         $JAVA = "$( '#img$bbid' ).trigger( 'click' );";
+      } else {
+         $JID = "";
+      }
       
       if($MOBILE) { $thumb_dir = "mid_images"; $full_dir = "mid_images"; } else { $thumb_dir = "mid_images"; $full_dir = "full_images"; }      
       if($MOBILE) { $HSIZE = "h4"; } else { $HSIZE = "h2"; }
@@ -327,7 +334,7 @@ function getGriddlePosts($bbid) {
       
       $OUT .= "<div class='well well-sm narrowTop'>
  
-              <br><a href='$imgSRV/$full_dir/$img' class='fresco' data-fresco-group='griddle'><img class='cropimgLarge' src='$imgSRV/$thumb_dir/$img'></a>
+              <br><a id='$JID' href='$imgSRV/$full_dir/$img' class='fresco' data-fresco-group='griddle'><img class='cropimgLarge' src='$imgSRV/$thumb_dir/$img'></a>
                 <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href=#><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
@@ -337,8 +344,8 @@ function getGriddlePosts($bbid) {
       $OUT .="</div><!--/span-->\n";
               
   }           
+  
     
-
   return $OUT;
 
 
@@ -364,8 +371,8 @@ function getPostPair($gid) {
       $bi   = getGriddleInfo($bbid);
       $hots = $bi{'hots'};
       $coms = $bi{'comments'};
-      $fbs  = $row{'fbshare'};
-      $tws  = $row{'twshare'};
+      $fbs  = $bi{'fbshare'};
+      $tws  = $bi{'twshare'};
       
       
       if($bi{'status'} == 0) {
@@ -402,8 +409,8 @@ function getPostPair($gid) {
       $CROPCLASS='cropimgFeed'; 
       
       if($MOBILE) { $thumb_dir = "griddle_images"; } else { $thumb_dir = "mid_images"; }      
-      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow";  } else { $HSIZE = "h2"; }
-      if($TABLET) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; $CROPCLASS='cropimgFeedTablet'; }
+      if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes";  } else { $HSIZE = "h2"; }
+      if($TABLET) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; $CROPCLASS='cropimgFeedTablet'; }
       
       $OUT .= "<div class='well well-sm narrowTop'>
       <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a></$HSIZE>
@@ -493,7 +500,8 @@ function getGriddleBlock($bbid, $columnsize) {
    
    $realname = wrapName($uid, $realname);
    
-   if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "#postRow"; } else { $HSIZE = "h2"; }
+   if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
+   if($TABLET) { $POSTDIV="&lightbox=yes"; }
       
    $OUT .="
    <div class='$columnsize'>

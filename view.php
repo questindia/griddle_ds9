@@ -10,14 +10,14 @@
   include "fbinc.php"; 
   include "navbar.php";
   
-  $bbid = $_GET['bbid'];
+  $bbid   = addslashes($_GET['bbid']);
+  $GCLICK = addslashes($_GET['lightbox']);
   
   if(!$bbid) { // It happens sometimes
      header( "Location: http://$baseSRV/feed.php" );
   }
   
-  $NEXT_URL = "/do_scroll.php?type=grid&gid=$gid&offset=6";
-  
+  $JAVA = "";
 ?>
 
     <div class="container wide">
@@ -53,6 +53,13 @@
 
     <?php include "jsinc.php"; ?>
   </body>
+  <script><?php if(($GCLICK) && ($MOBILE || $TABLET)) { ?>
+          var fshow = 1;
+          function fresco_show() { 
+             <?php echo $JAVA; ?> }
+         </script><?php } ?>
+  <script>
+  </script>
 </html>
 
 <!-- Modals -->
