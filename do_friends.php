@@ -113,7 +113,7 @@ if(!$action) {
          <div class='row'>
          <div class='col-lg-5'>
           <div id='noteDiv'>
-      <?
+      <?php
    
    $content = "<h4>Recent Requests:</h4><table id='noterows' $TWIDTH cellpadding=5 border=0>\n";
 
