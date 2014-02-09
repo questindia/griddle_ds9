@@ -93,11 +93,15 @@ $(document).ready(function() {
  
   
   $("body").on('click', 'a.TWITTER', function(event) {
-
+    event.stopPropagation();
+    
+    var destination = $(this).attr('url');
+    
     var url = $(this).attr('tw_upload');
     $.get(url, function(data) {
          HObj = JSON.parse(data);
           $("a#aTW" + HObj.bbid).html(HObj.twshare + " <i class='fa fa-twitter-square'></i>");
+          window.location.href = destination;
       });
   });
 
