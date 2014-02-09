@@ -68,9 +68,14 @@ $(document).ready(function() {
    
     $theForm = $('#formFBShare');
 
-    FB.Event.subscribe('auth.authResponseChange', function(response) {
+    console.log("Into FBSHARE");
 
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
+    
+    console.log("Into Subscribe");
+    
     if (response.status === 'connected') {
+     console.log("Into Connected");
      // handle the response
      $.get('/do_fbsession.php', function(data) {
         $.ajax({
