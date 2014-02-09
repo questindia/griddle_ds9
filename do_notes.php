@@ -110,7 +110,7 @@ if(!$action) {
 
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 pull-right">
           <div id='noteDiv'>
-      <?
+      <?php
    
    $content = "<table id='noterows' $TWIDTH cellpadding=5 border=0>\n";
 
