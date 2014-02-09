@@ -438,6 +438,7 @@ function getGriddleBlock($bbid, $columnsize) {
 
    GLOBAL $imgSRV;
    GLOBAL $MOBILE;
+   GLOBAL $TABLET;
    
    $row = getGriddleInfo($bbid);
    
