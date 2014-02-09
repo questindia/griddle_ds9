@@ -24,7 +24,7 @@
           
           
             
-            <?php echo generateGrid($gid, 6, 'col-lg-4 col-md-4'); ?>
+            <?php echo generateGrid($gid, 6, 'col-lg-4 col-md-6'); ?>
             
             <a href='<?php echo $NEXT_URL; ?>'>Loading...</a>
         </div><!--/span-->
