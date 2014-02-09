@@ -68,8 +68,9 @@ $(document).ready(function() {
    
     $theForm = $('#formFBShare');
 
-    
-    FB.login(function(response) {
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
+
+    if (response.status === 'connected') {
      // handle the response
      $.get('/do_fbsession.php', function(data) {
         $.ajax({
@@ -85,8 +86,9 @@ $(document).ready(function() {
            }
         });
      });
-    }, {scope: 'user_about_me,user_photos,user_status,read_stream,publish_actions'});
+    }
   });
+ });
   
   $("body").on('click', 'a.TWITTER', function(event) {
 
