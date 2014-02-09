@@ -63,19 +63,16 @@ $(document).ready(function() {
   });
 
   $('body').on('click', 'a.FBSHARE', function (event) {
-   event.preventDefault();
-   event.stopPropagation();
+    event.preventDefault();
+    event.stopPropagation();
    
     $theForm = $('#formFBShare');
 
     console.log("Into FBSHARE");
 
-    FB.Event.subscribe('auth.authResponseChange', function(response) {
-    
     console.log("Into Subscribe");
-    
-    if (response.status === 'connected') {
-     console.log("Into Connected");
+
+    console.log("Into Connected");
      // handle the response
      $.get('/do_fbsession.php', function(data) {
         $.ajax({
@@ -91,9 +88,9 @@ $(document).ready(function() {
            }
         });
      });
-    }
+    
   });
- });
+ 
   
   $("body").on('click', 'a.TWITTER', function(event) {
 
