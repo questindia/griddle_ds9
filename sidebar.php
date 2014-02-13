@@ -35,6 +35,7 @@
             <a href="http://<?php echo $baseSRV;?>" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-list"></span> News Feed</a>
             <a href="/do_notes.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-envelope"></span> Notifications <?php echo $NOTELINE; ?></a>
             <a href="/do_friends.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-user"></span> Friends <?php echo $FRNDLINE; ?></a>
+            <a href="/do_feedback.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-bullhorn"></span> Feedback</a>
      
             <?php if($MOBILE || $TABLET) { ?>
             <a href="/edit_profile.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-cog"></span> Edit Profile</a>
