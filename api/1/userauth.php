@@ -29,7 +29,18 @@ if($attempt == $pw_crypt) {
 
 if($attempt == $pw_crypt) {
      $uid = getUser($user);
-     $res = mysql_query("REPLACE INTO mobile_device VALUES($uid, '$apple_id', '$android_id')");
+     $res = mysql_query("SELECT uid FROM mobile_device");
+     $there = mysql_num_rows($res);
+     if($there) {
+         if($apple_id) {
+             $res = mysql_query("UPDATE mobile_device SET apple_id='$apple_id' WHERE uid=$uid");
+         }
+         if($android_id) {
+             $res = mysql_query("UPDATE mobile_device SET android_id='$android_id' WHERE uid=$uid");
+         }
+     } else {
+        $res = mysql_query("REPLACE INTO mobile_device VALUES($uid, '$apple_id', '$android_id')");
+     }
 }
 
 $req_dump = print_r($_REQUEST, TRUE);
