@@ -13,6 +13,8 @@ var FBConstring;
   
 
   FB.Event.subscribe('auth.authResponseChange', function(response) {
+ 
+    FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a>";
 
     if (response.status === 'connected') {
         
