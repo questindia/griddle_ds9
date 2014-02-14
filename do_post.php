@@ -73,9 +73,11 @@ if(!$gcheck) {
    } else {
        $PROGRESS = "<h3>Griddle Progress:</h3>";
    
-       $SOFAR  = "<h5>Pictures: " . getSoFar($bbcheck) . "</h5>";
+       $SOFAR   = "<h5>Pictures: " . getSoFar($bbcheck) . "</h5>";
        
-       $PEOPLE = "<h5>People: " . getSoFarPeople($bbcheck) . "</h5>";
+       $PEOPLE  = "<h5>People: " . getSoFarPeople($bbcheck) . "</h5>";
+       
+       $TOPIC   = "<h5>Topic: </h5>" . getSoFarTopic($bbcheck);
        
        $MESSAGE = "Add to this Griddle!";
        $bi = getGriddleInfo($bbcheck);
@@ -131,6 +133,7 @@ if(!$gcheck) {
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <?php echo $PROGRESS; ?>
         <?php echo $SOFAR; ?>
+        <?php echo $TOPIC; ?>
         <?php echo $PEOPLE; ?>
         <h3><?php echo $MESSAGE; ?></h3>
         <?php echo $OWNER; ?>
@@ -314,6 +317,21 @@ function getSoFar($bbid) {
    
    
 }   
+
+function getSoFarTopic($bbid) {
+
+   $bi    = getGriddleInfo($bbid);
+   $ppid  = $bi{'ppid'};
+   $gid   = $bi{'gid'};
+   $topic = getTopic($gid);
+   $pids  = explode(",", $ppid);
+   $pi    = getPostInfo($pids[0]);
+   $mess  = $pi{'message'};
+
+   return "<div class='well well-sm'>$topic - $mess</div>";
+
+
+}
 
 function getSoFarPeople($bbid) {
    

@@ -5,6 +5,9 @@
        margin-top: 10px;
 }
 .soFarImg {
+  max-width: 35px;
+}
+.soFarPro {
   max-width: 30px;
 }
 .byLine {

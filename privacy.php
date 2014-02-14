@@ -12,9 +12,9 @@
     <link href="/css/site.css" rel="stylesheet">
     <style type="text/css">
       body {
-        padding-top: 40px;
+        padding-top: 10px;
         padding-bottom: 40px;
-        background-color: #0688C9;
+        background-color: #6093bc;
       }
 
       
