@@ -54,7 +54,7 @@
     <?php include "jsinc.php"; ?>
   </body>
   <script><?php if(($GCLICK) && ($MOBILE || $TABLET)) { ?>
-          var fshow = 1;
+          fshow = 1;
           function fresco_show() { 
              <?php echo $JAVA; ?> }
          </script><?php } ?>

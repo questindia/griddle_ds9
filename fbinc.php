@@ -1,6 +1,8 @@
 <div id="fb-root"></div>
 <script>
 var FBConstring;
+var FBAttempt = 0;
+
   // Additional JS functions here
   window.fbAsyncInit = function() {
     FB.init({
@@ -14,8 +16,9 @@ var FBConstring;
 
   FB.Event.subscribe('auth.authResponseChange', function(response) {
  
-    FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a>";
-
+    console.log("Into FB.EVENT");
+    FBAttempt = 1;
+    
     if (response.status === 'connected') {
         
          FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Facebook is Connected</a>";

@@ -1,5 +1,5 @@
 var geo;
-
+var fshow;
 
 $(document).ready(function() {
 
@@ -123,7 +123,12 @@ $(document).ready(function() {
      fresco_show();
   }
   
-  
+  console.log("blah");
+  console.log(FBAttempt);
+  if(FBAttempt==0) {
+     console.log("FBAttempt equal 0");
+     $('#FBCon').html("<i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a>");
+  }
   
 });
 
