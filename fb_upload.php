@@ -27,9 +27,12 @@
 
   //$facebook->setAccessToken($token);
 
+  $bi    = getGriddleInfo($bbid);
+  $topic = getTopic($bi{'gid'});
+
   $message = addslashes($_POST['fbmess']);
 
-  $message .= "\nPhoto shared from http://www.griddle.com";
+  $message .= "\n$topic on  http://www.griddle.com";
 
   //include "header.php";
   //print "<body>\n";

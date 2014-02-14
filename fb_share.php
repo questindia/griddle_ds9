@@ -19,7 +19,7 @@ if(!$PICS) {
 }
 
 ?>
- <div class='FBShareDiv'>
+ <div id='FBShareDiv'>
   <h4>Shared By:</h4>
   <?php echo $PICS; ?>
   <hr>

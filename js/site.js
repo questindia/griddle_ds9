@@ -74,7 +74,7 @@ $(document).ready(function() {
 
     console.log("Into Connected");
     
-    $('.FBShareDiv').addclass('bigLoader');
+    $('#FBShareDiv').addClass('bigLoader');
     
      // handle the response
      $.get('/do_fbsession.php', function(data) {
@@ -87,7 +87,7 @@ $(document).ready(function() {
               // TODO - update the count
               HObj = JSON.parse(data);
               $("a#aFB" + HObj.bbid).html(HObj.fbshare + " <i class='fa fa-facebook-square'></i>");
-              $('.FBShareDiv').removeclass('bigloader');
+              $('#FBShareDiv').removeClass('bigloader');
               $('#myModal').modal('hide');
            }
         });
