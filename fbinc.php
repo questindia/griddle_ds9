@@ -1,5 +1,6 @@
 <div id="fb-root"></div>
 <script>
+var FBConstring;
   // Additional JS functions here
   window.fbAsyncInit = function() {
     FB.init({
@@ -14,12 +15,20 @@
   FB.Event.subscribe('auth.authResponseChange', function(response) {
 
     if (response.status === 'connected') {
-      FB_Callback();
+        
+         FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Facebook is Connected</a>";
+         FB_Callback();   
     } else if (response.status === 'not_authorized') {
+        
+         FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a>";
       //FB.login();
     } else {
+
+      FBConstring = "<i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a>";
       //FB.login();
     }
+    
+    $('#FBCon').html(FBConstring);
   });
 };
 

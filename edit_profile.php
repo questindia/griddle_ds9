@@ -127,8 +127,8 @@ if(!$_POST['action']) { // Show Edit Screen
    <br>
    <img src='<?php echo $imgSRV; ?>/griddle_profiles/<?php echo "$user?$r"; ?>' height='150' width='150'><br><br>
    <label for=image>Update Profile Image:</label><input type=file name="image" id="image"><br><br>
-   <a href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i>&nbsp; Connect with Facebook</a><br><br>
-   <a href=# class='btn btn-sm btn-primary'><i class='fa fa-twitter-square'></i>&nbsp; Sign In with Twitter</a><br>
+   <a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
+   
    
  </div>
 

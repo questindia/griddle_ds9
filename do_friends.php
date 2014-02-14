@@ -100,6 +100,7 @@ if(!$action) {
 
    include "header.php";
    print "<body>\n";
+   include "fbinc.php";
    include "navbar.php";
    
    $FRIENDS = getFriendRows("9999", $uid);
@@ -133,6 +134,11 @@ if(!$action) {
     
     print "</div><br><a href='/do_friends.php?action=more' elmAppend='#noterows' class='doMore btn btn-sm btn-primary'>More</a><br><br>";
     print "</div></div>";
+    
+    print "<div class='row'> <div class='col-lg-5'>
+           <h4>Find Friends:</h4>
+           <a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
+           </div></div>";
     
     print "<div class='row'>";
     

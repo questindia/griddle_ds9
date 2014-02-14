@@ -123,6 +123,8 @@ $(document).ready(function() {
      fresco_show();
   }
   
+  
+  
 });
 
 function initIOSBugHack() {
