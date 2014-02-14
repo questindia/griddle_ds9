@@ -19,7 +19,7 @@ if(!$PICS) {
 }
 
 ?>
-
+ <div class='FBShareDiv'>
   <h4>Shared By:</h4>
   <?php echo $PICS; ?>
   <hr>
@@ -28,4 +28,4 @@ if(!$PICS) {
         <textarea cols=4 class='form-control' name='fbmess' placeholder='Write Something...'></textarea><br>
         <a class="FBSHARE btn btn-sm btn-primary"><i class='fa fa-facebook-square'></i>&nbsp; Share on Facebook</a>
   </form>     
-
+ </div>

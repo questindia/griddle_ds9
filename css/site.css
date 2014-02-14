@@ -152,3 +152,9 @@
 .dropdown-backdrop {
     position: static;
 }
+.bigLoader {
+   background-image: url('/img/bigLoader.gif');
+   background-repeat: no-repeat;
+   background-position: center center;
+}
+
