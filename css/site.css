@@ -153,8 +153,10 @@
     position: static;
 }
 .bigLoader {
-   background-image: url('/img/bigLoader.gif');
-   background-repeat: no-repeat;
-   background-position: center center;
+   display: none;
+   z-index: 100;
+}
+.dropMenu {
+   margin-top: 9px;
 }
 

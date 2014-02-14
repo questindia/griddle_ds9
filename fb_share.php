@@ -26,6 +26,6 @@ if(!$PICS) {
   <form id='formFBShare' role="form" class="" method='post' action='/fb_upload.php'>
      <input type=hidden name=bbid value='<?php echo $bbid; ?>'>
         <textarea cols=4 class='form-control' name='fbmess' placeholder='Write Something...'></textarea><br>
-        <a class="FBSHARE btn btn-sm btn-primary"><i class='fa fa-facebook-square'></i>&nbsp; Share on Facebook</a>
+        <a class="FBSHARE btn btn-sm btn-primary"><i class='fa fa-facebook-square'></i>&nbsp; Share on Facebook</a> &nbsp;<img id='FBLoader' class='bigLoader' src='/img/bigLoader.gif'>
   </form>     
  </div>

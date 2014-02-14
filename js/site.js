@@ -67,14 +67,8 @@ $(document).ready(function() {
     event.stopPropagation();
    
     $theForm = $('#formFBShare');
-
-    console.log("Into FBSHARE");
-
-    console.log("Into Subscribe");
-
-    console.log("Into Connected");
     
-    $('#FBShareDiv').addClass('bigLoader');
+    $('#FBLoader').show();
     
      // handle the response
      $.get('/do_fbsession.php', function(data) {
@@ -87,7 +81,7 @@ $(document).ready(function() {
               // TODO - update the count
               HObj = JSON.parse(data);
               $("a#aFB" + HObj.bbid).html(HObj.fbshare + " <i class='fa fa-facebook-square'></i>");
-              $('#FBShareDiv').removeClass('bigloader');
+              $('#FBLoader').hide();
               $('#myModal').modal('hide');
            }
         });

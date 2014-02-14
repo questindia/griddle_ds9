@@ -30,7 +30,7 @@
      
  ?>  
    
-        <div class="col-xs-6 col-md-2 col-sm-3 col-lg-2 sidebar-offcanvas <?php echo $narrowRight; ?>" id="sidebar" role="navigation">
+        <div class="col-xs-6 col-md-2 col-sm-3 col-lg-2 sidebar-offcanvas <?php echo $narrowRight; ?> dropMenu" id="sidebar" role="navigation">
           <div class="list-group">
             <a href="http://<?php echo $baseSRV;?>" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-list"></span> News Feed</a>
             <a href="/do_notes.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-envelope"></span> Notifications <?php echo $NOTELINE; ?></a>
