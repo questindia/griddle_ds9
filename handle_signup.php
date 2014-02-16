@@ -160,7 +160,28 @@ if($action == "finish_signup") {
      //system("/usr/bin/wget 'https://api.mogreet.com/moms/transaction.send?client_id=2417&token=228b0d99be4d97d6dd9f3954475583ab&campaign_id=36877&to=$mobile&message=Thanks%20for%20joining%20Griddle!%20%20The%20attached%20image%20should%20get%20you%20started.&content_url=http://www.griddle.com/images/example_cell.jpg&format=json' -q");
   }
 
-  header( "Location: http://$baseSRV/handle_signup.php?command=facebook" );
+
+  include "header.php";
+   print "<body><style>
+     body {
+	  padding-top: 40px;
+  	  padding-bottom: 40px;
+      background-color: $color;
+	 }
+     </style>\n";
+   include "fbinc.php";
+   print "<div class='container'>
+   <form class='form-signup id='formStartSignup'>";
+   print "<h4>Would you like to Connect With Facebook to share your Griddles and connect with Friends?</h4>";
+   
+   print "<br><a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
+          <a id='noThanks' href='/feed.php' class='btn btn-sm btn-primary'>Continue to Griddle</a><br><br>";
+   print "</form>";
+   print "</div>\n";
+   include "jsinc.php";
+   print "</body></html>\n";
+
+  //header( "Location: http://$baseSRV/handle_signup.php?command=facebook" );
 
 }
 
