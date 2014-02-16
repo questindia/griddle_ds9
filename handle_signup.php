@@ -175,7 +175,7 @@ if($action == "finish_signup") {
    print "<h4>Would you like to Connect With Facebook to share your Griddles and connect with Friends?</h4>";
    
    print "<br><a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
-          <a id='noThanks' href='/feed.php' class='btn btn-sm btn-primary'>Continue to Griddle</a><br><br>";
+          <a id='noThanks' href='http://$baseSRV/feed.php' class='btn btn-sm btn-primary'>Continue to Griddle</a><br><br>";
    print "</form>";
    print "</div>\n";
    include "jsinc.php";
