@@ -10,6 +10,11 @@ if(!$action && $MOBSERV) {
   $action = "start";
 }
 
+if($MOBSERV) {
+   $color = "#6093bc";
+} else {
+   $color = "#54b4eb";
+}
 
 
 if($action == "start") {
@@ -19,7 +24,7 @@ if($action == "start") {
      body {
 	  padding-top: 40px;
   	  padding-bottom: 40px;
-      background-color: #54b4eb;
+      background-color: $color;
 	 }
      </style>\n";
    print "<div class='container'>\n";
@@ -99,7 +104,7 @@ if($action == "signup") {
      body {
 	  padding-top: 40px;
   	  padding-bottom: 40px;
-      background-color: #54b4eb;
+      background-color: $color;
 	 }
      </style>\n";
    print "<div class='container'>\n";
@@ -155,7 +160,34 @@ if($action == "finish_signup") {
      //system("/usr/bin/wget 'https://api.mogreet.com/moms/transaction.send?client_id=2417&token=228b0d99be4d97d6dd9f3954475583ab&campaign_id=36877&to=$mobile&message=Thanks%20for%20joining%20Griddle!%20%20The%20attached%20image%20should%20get%20you%20started.&content_url=http://www.griddle.com/images/example_cell.jpg&format=json' -q");
   }
 
-  header( "Location: http://$baseSRV/feed.php" );
+  header( "Location: http://$baseSRV/handle_signup.php?command=facebook" );
+
+}
+
+
+if($action=="facebook") {
+
+   include "header.php";
+   print "<body><style>
+     body {
+	  padding-top: 40px;
+  	  padding-bottom: 40px;
+      background-color: $color;
+	 }
+     </style>\n";
+   include "fbinc.php";
+   print "<div class='container'>
+   <form class='form-signup id='formStartSignup'>";
+   print "<h4>Would you like to Connect With Facebook to share your Griddles and connect with Friends?</h4>";
+   
+   print "<br><a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
+          <a id='noThanks' href='/feed.php' class='btn btn-sm btn-primary'>Continue to Griddle</a><br><br>";
+   print "</form>";
+   print "</div>\n";
+   include "jsinc.php";
+   print "</body></html>\n";
+
+
 
 }
 
@@ -167,7 +199,7 @@ function bail_err($err, $rname, $email, $mobile, $username) {
      body {
 	  padding-top: 40px;
   	  padding-bottom: 40px;
-      background-color: #54b4eb;
+      background-color: $color;
 	 }
      </style>\n";
      print "<div class='container'>\n";
@@ -193,7 +225,7 @@ function genSignupForm($err, $rname, $email, $mobile, $username) {
  <div>  
  
      
-        <form class="form-signup" id="formStartSignup" method=post action="http://<?php echo $baseSRV; ?>/handle_signup.php">
+        <form class="form-signup" id="formStartSignup" method=post action="https://<?php echo $baseSRV; ?>/handle_signup.php">
         <h4><?php echo $err; ?></h4>
         <input type=hidden name="command" value=signup>      
         <input type="text" class="form-control" placeholder="Email Address" name=email value='<?php echo $email; ?>'>
@@ -227,19 +259,9 @@ GLOBAL $baseSRV;
    <button class="btn btn-lg btn-primary" type="submit" id="signupFinish">Finish</button>
   </form>
 </div>
-
-
-
-
 <?php
 
-
-
-
 }
-
-
-
 
 
 ?>

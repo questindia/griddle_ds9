@@ -34,6 +34,7 @@ var FBAttempt = 0;
     }
     
     $('#FBCon').html(FBConstring);
+    
   });
 };
 
