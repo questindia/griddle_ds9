@@ -63,13 +63,15 @@ if(!$gcheck) {
       
       $TEXTBOX = "<textarea class='form-control' placeholder=\"What's Happening?\" rows=3 cols=25 name='message'></textarea>";
 
+
    } elseif($gcheck) {
    	   $CHOOSE = "<input type=hidden name=type_grid value='$gtopic'>";
    }
    
    
    if(!$bbcheck) {
-   	   $MESSAGE = "Make a Griddle!";
+   	   $MESSAGE = "<h3>Make a Griddle!</h3>
+   	               <h5>It takes 9 images to make a Griddle.  You can invite your friends to help!  Once the Griddle reaches 9 images, it gets sent to everyone!</h5>";
    } else {
        $PROGRESS = "<h3>Griddle Progress:</h3>";
    
@@ -79,7 +81,7 @@ if(!$gcheck) {
        
        $TOPIC   = "<h5>Topic: </h5>" . getSoFarTopic($bbcheck);
        
-       $MESSAGE = "Add to this Griddle!";
+       $MESSAGE = "<h3>Add to this Griddle!</h3>";
        $bi = getGriddleInfo($bbcheck);
        $buid = $bi{'uid'};
        if($uid==$buid) { // Owner
@@ -92,7 +94,7 @@ if(!$gcheck) {
    	  	                </select><br>
    	  	                <button type=submit class='btn btn-md btn-success'><span class='glyphicon glyphicon-plus'></span> Add Friends</button>
    	  	            </form><br>";
-   	  	  $MESSAGE = "Include more Friends!";          
+   	  	  $MESSAGE = "<h3>Include more Friends!</h3>";          
        
        } else {
           $CHOOSE .= "
@@ -135,7 +137,7 @@ if(!$gcheck) {
         <?php echo $SOFAR; ?>
         <?php echo $TOPIC; ?>
         <?php echo $PEOPLE; ?>
-        <h3><?php echo $MESSAGE; ?></h3>
+        <?php echo $MESSAGE; ?>
         <?php echo $OWNER; ?>
         <form id="fileupload" action="/uploadindex.php" method="POST" enctype="multipart/form-data">
     	<input type=hidden name=geo id=geo>
