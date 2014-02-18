@@ -62,6 +62,17 @@ $(document).ready(function() {
       }); 
   });
 
+  $("body").on('click', 'a.gRemove', function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    var url = $(this).attr('href');
+    $.get(url, function(data) {
+      location.reload();
+    });
+  });
+
+
   $('body').on('click', 'a.FBSHARE', function (event) {
     event.preventDefault();
     event.stopPropagation();

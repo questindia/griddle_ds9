@@ -17,6 +17,14 @@
      header( "Location: http://$baseSRV/feed.php" );
   }
   
+  $bi = getGriddleInfo($bbid);
+  $st = $bi{'status'};
+  if($st!=1) {
+     header( "Location: http://$baseSRV/feed.php" );
+  }
+  
+  
+  
   $JAVA = "";
 ?>
 

@@ -259,6 +259,26 @@ function wrapName($target, $name) {
 
 }
 
+function wrapGriddleSettings($bbid) {
+
+      $uid = getUser($_SESSION['user']);
+
+      $bi = getGriddleInfo($bbid);
+      if($bi{'uid'}!=$uid) {
+          return "";
+      }
+      $OUT = "<div class='dropdown'>
+              <a class='griddleSettings btn btn-xs' style='font-size: 7px;' id='bbset-$bbid' data-toggle='dropdown' href='#'><span class='glyphicon glyphicon-lock'></span></a>
+               <ul class='dropdown-menu' role='menu' aria-labelledby='bbset-$bbid'>
+                 <li role='presentation'><a class='gRemove' id='gr-$bbid' href='/do_remove.php?bbid=$bbid'><span class='glyphicon glyphicon-remove'></span> Remove</a></li>
+               </ul>
+            </div>";
+      return $OUT;
+
+
+}
+
+
 function generateFeed($count, $uid) {
 
    if($uid) {
@@ -500,6 +520,7 @@ function getGriddleBlock($bbid, $columnsize) {
    if($procount < 2) { $proline = ""; }
    
    $realname = wrapName($uid, $realname);
+   $gcontrol = wrapGriddleSettings($bbid);
    
    if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
@@ -512,7 +533,7 @@ function getGriddleBlock($bbid, $columnsize) {
               <table class='tablePro' cellpadding=5>
                 <tr>
                   <td valign=top><a href='/person.php?target=$uid'><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
-                  <td valign=top><table><tr><td>$realname</td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
+                  <td valign=top><table><tr><td>$realname</td><td align=left>$gcontrol</td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
                   <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
               <a id='aFB$bbid' href='/fb_share.php?bbid=$bbid' type='button' class='doModal btn btn-primary btn-xs'>$fbs <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
