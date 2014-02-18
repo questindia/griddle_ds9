@@ -1,27 +1,30 @@
 <?php 
    include "dbinc.php";
-   include "header.php"; 
    include "functions.php";
+
+  $bbid   = addslashes($_GET['bbid']);
+  $GCLICK = addslashes($_GET['lightbox']);
+  
+  if($bbid=="") { // It happens sometimes
+     header( "Location: http://$baseSRV/feed.php" );
+  }
+  
+  $bi = getGriddleInfo($bbid);
+  $st = $bi{'status'} * 1;
+  if($st==9999) {
+     header( "Location: http://$baseSRV/feed.php" );
+  }
+
 
 ?>
   <body>
 
 <?php
+  include "header.php";
   include "fbinc.php"; 
   include "navbar.php";
   
-  $bbid   = addslashes($_GET['bbid']);
-  $GCLICK = addslashes($_GET['lightbox']);
-  
-  if(!$bbid) { // It happens sometimes
-     header( "Location: http://$baseSRV/feed.php" );
-  }
-  
-  $bi = getGriddleInfo($bbid);
-  $st = $bi{'status'};
-  if($st!=1) {
-     header( "Location: http://$baseSRV/feed.php" );
-  }
+ 
   
   
   
@@ -65,8 +68,8 @@
           fshow = 1;
           function fresco_show() { 
              <?php echo $JAVA; ?> }
-         </script><?php } ?>
-  <script>
+    <?php } ?>
+
   </script>
 </html>
 

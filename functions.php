@@ -515,7 +515,7 @@ function getGriddleBlock($bbid, $columnsize) {
       }
    }
    $bytmp  = rtrim($byline, ", ");
-   $byline = $bytmp . "</span><span class='byLine pull-right narrowRight'>$when</span>";
+   $byline = $bytmp . "</span><span class='byLine pull-right narrowRight slightDrop'>$when</span>";
    
    if($procount < 2) { $proline = ""; }
    
