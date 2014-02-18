@@ -67,9 +67,9 @@
   <script><?php if(($GCLICK) && ($MOBILE || $TABLET)) { ?>
           fshow = 1;
           function fresco_show() { 
-             <?php echo $JAVA; ?> }
-    <?php } ?>
-
+        <?php echo $JAVA; ?> }
+    </script><?php } ?>
+  <script>
   </script>
 </html>
 
