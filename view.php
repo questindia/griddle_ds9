@@ -16,11 +16,8 @@
   }
 
 
-?>
-  <body>
-
-<?php
   include "header.php";
+  print "<body>\n";
   include "fbinc.php"; 
   include "navbar.php";
   
