@@ -131,6 +131,36 @@ function getTrending($count, $mob) {
 
 }
 
+
+function isFriend($uid, $target) {
+    $res = mysql_query("SELECT rid, friend FROM relations WHERE uid=$uid AND target=$target");
+    $row = mysql_fetch_array($res);
+    $rid = $row{'rid'};
+    $friend = $row{'friend'};
+   
+    $class = 'relLink';
+   
+   if($friend == 0) {
+     $fLine = "<p id='relLink$target'><a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=friend&target=$target&type=$ttype><span class='glyphicon glyphicon-plus'></span> Add Friend</a></p>";
+   } elseif ($friend == 1) {
+     $fLine = "<p id='relLink$target'><a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=unrequest&target=$target&type=$ttype><span class='glyphicon glyphicon-remove'></span> Friends Pending</a></p>";
+   } elseif ($friend == 2) {
+     $fLine = "<p id='relLink$target'><a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=unfriend&target=$target&type=$ttype><span class='glyphicon glyphicon-remove'></span> Remove Friend</a></p>";
+   } else {
+     $fLine = "<p id='relLink$target'><a role='menuitem' tabindex='-1' class='$class' href=/do_rels.php?action=friend&target=$target&type=$ttype><span class='glyphicon glyphicon-plus'></span> Add Friend</a></p>";
+   }
+
+   if($target == $uid) {
+        $fLine = "";
+        $foLine = "";
+   }
+
+  return $fLine;
+
+}
+
+
+
 function getFriendRows($count, $uid) {
 
    global $MOBILE;
@@ -160,6 +190,44 @@ function getFriendRows($count, $uid) {
        $return{$COL} .= "<tr style='border-bottom:1pt solid #cdcecf;'><td align=left width=60px><a class=userButton id=userButton-$tuid href='#'><img class=cropimgProLG src=$imgSRV/thumb_profiles/$user></a></td>
                        <td align=left><span style='font-size: medium;'><a href='/person.php?target=$tuid'>$name</a></span><br><span style='font-size: xx-small;'> +$posts Posts</span></td>
                        <td align=left><a style='font-size: xx-small;' href=/do_friends.php?action=unfriend&target=$tuid>Remove</a></td></tr>";
+   }
+
+   return $return;
+
+}
+
+function getSearchFriendRows($count, $search) {
+
+   global $MOBILE;
+   $muid = getUser($_SESSION['user']);
+   
+   $COL = "COL2";
+
+   //$res = mysql_query("SELECT relations.uid, users.name FROM relations, users WHERE relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT $count");
+   $res = mysql_query("SELECT uid, name, username, posts, followers FROM users WHERE username LIKE '%$search%' OR name LIKE '%$search%' ORDER BY name LIMIT $count");
+   
+   while($row = mysql_fetch_array($res)) {
+       $tuid = $row{'uid'};
+       $user = $row{'username'};
+       $name = $row{'name'};
+       $posts = $row{'posts'};
+       $folls = $row{'followers'};
+       $imgSRV = shardImg($tuid);
+   
+       $fLine = isFriend($muid, $tuid);    
+       
+       if(!$MOBILE) {
+         if($COL=="COL1") {
+            $COL="COL2";
+         } elseif($COL=="COL2") {
+            $COL="COL1";
+         }
+       } else { $COL="COL1"; }
+       
+          
+       $return{$COL} .= "<tr style='border-bottom:1pt solid #cdcecf;'><td align=left width=60px><a class=userButton id=userButton-$tuid href='#'><img class=cropimgProLG src=$imgSRV/thumb_profiles/$user></a></td>
+                       <td align=left><span style='font-size: medium;'><a href='/person.php?target=$tuid'>$name</a></span><br><span style='font-size: xx-small;'> +$posts Posts</span></td>
+                       <td align=left>$fLine</td></tr>";
    }
 
    return $return;

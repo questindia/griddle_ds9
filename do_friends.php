@@ -5,7 +5,11 @@ include "functions.php";
 $r = time(); 
 $rd = substr($r, 0, 8);
 
-$action = $_GET['action'];
+$action = addslashes($_GET['action']);
+if(!$action) { $action = addslashes($_POST['action']); }
+
+$search = addslashes($_POST['search']);
+
 $target = $_GET['target'];
 $kind = "friend";
 
@@ -81,6 +85,24 @@ if($action == "more") {
 
 }
 
+if($action == "search") {
+
+    $FSEARCH = getSearchFriendRows(10, $search);
+    if(!$MOBILE) {
+       $C1 = $FSEARCH{'COL1'};
+       $C2 = $FSEARCH{'COL2'};
+       print "<div class='col-lg-5 col-md-5'><h4>Search Results:</h4><table width=90% cellpadding=5 border=0>$C1</table></div>
+              <div class='col-lg-5 col-md-5'><h4>&nbsp;</h4><table width=90% cellpadding=5 border=0>$C2</table><br><br></div>";
+              
+    } else {
+       $C1 = $FSEARCH{'COL1'};
+       print "<div class='col-lg-5'><h4>Search Results:</h4><table cellpadding=5 border=0>$C1</table><br><br></div>";
+    }
+    exit;
+}
+
+
+
 if($action == "unfriend") {
 
 
@@ -138,7 +160,16 @@ if(!$action) {
     print "<div class='row'> <div class='col-lg-5'>
            <h4>Find Friends:</h4>
            <a id='FBCon' href=# class='FBLOGIN btn btn-sm btn-primary'><i class='fa fa-facebook-square'></i></a><br><br>
-           </div></div>";
+           <h6>Search: </h6> 
+           <span><form id='searchFriends' action='/do_friends.php' method=post>
+                 <input type=hidden name=action value='search'>
+                 <input id='searchBox' class='form-control' type=text name='search' placeholder='Name or Username...'></form></span>
+           
+           <br><br>
+           </div></div>
+           <div id='searchDiv' class='row'>
+           </div>
+           ";
     
     print "<div class='row'>";
     

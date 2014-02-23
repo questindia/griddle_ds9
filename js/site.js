@@ -127,6 +127,7 @@ $(document).ready(function() {
   initPost();
   initComm();
   initMore();
+  initSearch();
   initIOSBugHack();
   
   if(fshow==1) {
@@ -245,7 +246,50 @@ $('#commFormSubmit').on('click', function(e){
 
 }
 
+function initSearch() {
 
+$('#searchBox').on('keyup', function(e){
+  if(e.which == 13 && !e.shiftKey) {
+     console.log('Saw Enter');
+     e.preventDefault();
+     e.stopPropagation();
+     // send xhr request
+
+     $theForm = $('#searchFriends');
+     $.ajax({
+       type: $theForm.attr('method'),
+       url: $theForm.attr('action'),
+       data: $theForm.serialize(),
+       success: function(data) {	
+           $('#searchBox').val('');
+           $('#searchDiv').html(data);
+       }
+     });
+  }
+});
+
+$('#searchFriends').on('submit', function(e) {
+   e.preventDefault();
+     e.stopPropagation();
+     // send xhr request
+
+     $theForm = $('#searchFriends');
+     $.ajax({
+       type: $theForm.attr('method'),
+       url: $theForm.attr('action'),
+       data: $theForm.serialize(),
+       success: function(data) {	
+           $('#searchBox').val('');
+           $('#searchDiv').html(data);
+       }
+     });
+});
+
+
+
+
+
+}
 
 function initPost() {
 
