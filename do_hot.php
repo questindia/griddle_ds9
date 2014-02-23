@@ -88,8 +88,10 @@ if(!$action) {
    $row = mysql_fetch_array($res);
    $there = $row{'uid'};
    if($there) {
-       exit;
-   }
+       $vote = "down";
+       $res = mysql_query("DELETE FROM hots_bb WHERE uid=$uid AND bbid=$bbid");
+       $new = "no";
+   } 
 
 
    $res = mysql_query("SELECT hots, uid FROM griddle_bb WHERE bbid=$bbid");
@@ -105,11 +107,12 @@ if(!$action) {
 
    
    $res = mysql_query("UPDATE griddle_bb SET hots=$hots WHERE bbid=$bbid");
-
+   
    $din = time();
 
-   $res = mysql_query("INSERT INTO hots_bb VALUES($uid, $bbid, $din)");
-
+   if($new!="no") {
+      $res = mysql_query("INSERT INTO hots_bb VALUES($uid, $bbid, $din)");
+   }
    print "{ \"hots\":$hots, \"bbid\":$bbid }";
 
 
