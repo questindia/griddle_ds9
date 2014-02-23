@@ -95,6 +95,8 @@ if($action == "signup") {
 
    // Set status to 0 because the signup is incomplete.
 
+   if(!$rname) { $rname=$uname; }
+
    $sql_line = "INSERT INTO users VALUES($uid, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
 
    $ins = mysql_query($sql_line);
