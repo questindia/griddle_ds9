@@ -25,7 +25,7 @@ $attempt = md5($pass);
 if($attempt == $pw_crypt) {
      $uid = getUser($user);
      
-     $res = mysql_query("SELECT uid FROM mobile_device");
+     $res = mysql_query("SELECT uid FROM mobile_device WHERE uid=$uid");
      $there = mysql_num_rows($res);
      if($there) {
          if($apple_id) {
@@ -35,7 +35,7 @@ if($attempt == $pw_crypt) {
              $res = mysql_query("UPDATE mobile_device SET android_id='$android_id' WHERE uid=$uid");
          }
      } else {
-        $res = mysql_query("REPLACE INTO mobile_device VALUES($uid, '$apple_id', '$android_id')");
+        $res = mysql_query("INSERT INTO mobile_device VALUES($uid, '$apple_id', '$android_id')");
      }
      print "{ \"return\": \"SUCCESS\" }";   
    } else {
