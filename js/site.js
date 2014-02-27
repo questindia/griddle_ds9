@@ -31,6 +31,18 @@ $(document).ready(function() {
        $("a#aHot" + HObj.bbid).html(HObj.hots + HObj.content);
     });
   });
+  
+   // This function handles the up and down voting of a griddle (only up for now)
+  $('body').on('click', 'a.upHotp, a.downHotp', function (event)
+  {
+    event.preventDefault();
+    event.stopPropagation();
+    var url = $(this).attr('href');
+    $.get(url, function(data) {
+       HObj = JSON.parse(data);
+       $("a#aHotp" + HObj.pid).html(HObj.hots + HObj.content);
+    });
+  });
 
   $('[data-toggle=offcanvas]').click(function() {
     window.scrollTo(0, 1);

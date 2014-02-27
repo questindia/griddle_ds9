@@ -118,6 +118,11 @@ function didHot($uid, $bbid) {
     $row = mysql_fetch_array($res);
     return $row{'uid'};
 }
+function didHotp($uid, $pid) {
+    $res = mysql_querY("SELECT uid FROM hots WHERE uid=$uid AND pid=$pid");
+    $row = mysql_fetch_array($res);
+    return $row{'uid'};
+}
 function getTrending($count, $mob) {
 
      $res = mysql_query("SELECT gid, topic FROM griddles WHERE posts>=1 AND type=3 ORDER BY last_post DESC LIMIT $count");
@@ -398,6 +403,7 @@ function getGriddlePosts($bbid) {
       $row = getPostInfo($pid);
       $uid  = $row{'uid'};
       $img  = $row{'images'};
+      $hots = $row{'hots'};
 
       //$mess = $row{'message'};
 
@@ -420,6 +426,13 @@ function getGriddlePosts($bbid) {
          $JID = "";
       }
       
+      if(didHotp(getUser($_SESSION['user']), $pid)) {
+          $hots_img = " <span class='glyphicon glyphicon-heart'></span>";
+      } else {
+          $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
+      }
+      
+      
       if($MOBILE) { $thumb_dir = "mid_images"; $full_dir = "mid_images"; } else { $thumb_dir = "mid_images"; $full_dir = "full_images"; }      
       if($MOBILE) { $HSIZE = "h4"; } else { $HSIZE = "h2"; }
       
@@ -431,7 +444,7 @@ function getGriddlePosts($bbid) {
                 <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href=#><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
-                  <td valign=top><table><tr><td><a href=#>$realname</a></td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr></table>
+                  <td valign=top><table width=100%><tr><td><a href=#>$realname</a></td><td align=right><a href='/do_hotp.php?pid=$pid&vote=up' type='button' id='aHotp$pid' class='btn btn-primary btn-xs upHotp'>$hots $hots_img</a></td></tr></table>
                 </table>
               </div>";
       $OUT .="</div><!--/span-->\n";
