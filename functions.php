@@ -357,17 +357,17 @@ function generateFeed($count, $uid) {
 
    while($row = mysql_fetch_array($res)) {
       $bbid = $row{'bbid'};
-      $next = mysql_fetch_array($res);
-      $gid  = $next{'gid'};
+      //$next = mysql_fetch_array($res);
+      //$gid  = $next{'gid'};
       
       $OUT .= "<div class='row griddleRow'>\n";
       
       $format = rand(1,2);
       if($format==1) {
          $OUT .= getGriddleBlock($bbid, 'col-6 col-sm-6 col-lg-6');
-         $OUT .= getPostPair($gid);
+         //$OUT .= getPostPair($gid);
       } else {
-         $OUT .= getPostPair($gid);
+         //$OUT .= getPostPair($gid);
          $OUT .= getGriddleBlock($bbid, 'col-6 col-sm-6 col-lg-6');
       }
      
