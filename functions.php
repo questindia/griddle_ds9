@@ -113,6 +113,11 @@ function getNotificationSettings($uid) {
     $row = mysql_fetch_array($res);
     return $row;
 }
+function didHot($uid, $bbid) {
+    $res = mysql_querY("SELECT uid FROM hots_bb WHERE uid=$uid AND bbid=$bbid");
+    $row = mysql_fetch_array($res);
+    return $row{'uid'};
+}
 function getTrending($count, $mob) {
 
      $res = mysql_query("SELECT gid, topic FROM griddles WHERE posts>=1 AND type=3 ORDER BY last_post DESC LIMIT $count");
@@ -487,6 +492,12 @@ function getPostPair($gid) {
       $gi = getGridInfo($gid);
       $topic = $gi{'topic'};
       
+      if(didHot(getUser($_SESSION['user']), $bbid)) {
+          $hots_img = " <span class='glyphicon glyphicon-heart'></span>";
+      } else {
+          $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
+      }
+      
       $encode = urlencode("http://www.griddle.com/view.php?bbid=$bbid");
       $twurl = "https://twitter.com/intent/tweet?url=$encode";
       
@@ -507,7 +518,7 @@ function getPostPair($gid) {
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href='/person.php?target=$uid'><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
                   <td valign=top><table><tr><td><a href=#>$realname</a></td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
-                  <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
+                  <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots $hots_img</span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
               <a id='aFB$bbid' href='/fb_share.php?bbid=$bbid' type='button' class='doModal btn btn-primary btn-xs'>$fbs <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
               <a id='aTW$bbid' tw_upload='/tw_upload.php?bbid=$bbid' href='$twurl' type='button' class='TWITTER btn btn-primary btn-xs'>$tws <i class='fa fa-twitter-square'></i></a></td></tr></table>
@@ -590,6 +601,14 @@ function getGriddleBlock($bbid, $columnsize) {
    $realname = wrapName($uid, $realname);
    $gcontrol = wrapGriddleSettings($bbid);
    
+   if(didHot(getUser($_SESSION['user']), $bbid)) {
+          $hots_img = " <span class='glyphicon glyphicon-heart'></span>";
+   } else {
+          $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
+   }
+   
+   
+   
    if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
       
@@ -602,7 +621,7 @@ function getGriddleBlock($bbid, $columnsize) {
                 <tr>
                   <td valign=top><a href='/person.php?target=$uid'><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
                   <td valign=top><table><tr><td>$realname</td><td align=left>$gcontrol</td></tr><tr><td colspan=2><span class='commLine'>$mess</span></td></tr>
-                  <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots <span class='glyphicon glyphicon-thumbs-up'></span></a>&nbsp; &nbsp;
+                  <td colspan=2><a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots $hots_img</span></a>&nbsp; &nbsp;
                       <a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>&nbsp; &nbsp;
               <a id='aFB$bbid' href='/fb_share.php?bbid=$bbid' type='button' class='doModal btn btn-primary btn-xs'>$fbs <i class='fa fa-facebook-square'></i></a>&nbsp; &nbsp;
               <a id='aTW$bbid' tw_upload='/tw_upload.php?bbid=$bbid' href='$twurl' type='button' class='TWITTER btn btn-primary btn-xs'>$tws <i class='fa fa-twitter-square'></i></a></td></tr></table>

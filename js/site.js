@@ -28,7 +28,7 @@ $(document).ready(function() {
     var url = $(this).attr('href');
     $.get(url, function(data) {
        HObj = JSON.parse(data);
-       $("a#aHot" + HObj.bbid).html(HObj.hots + " <span class='glyphicon glyphicon-thumbs-up'></span>");
+       $("a#aHot" + HObj.bbid).html(HObj.hots + HObj.content);
     });
   });
 

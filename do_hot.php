@@ -101,8 +101,10 @@ if(!$action) {
    if($vote == "up") {
       $hots = $hots + 1;
       $res = mysql_query("UPDATE users SET pounds = pounds + 1 WHERE uid=$puid");
+      $content = " <span class='glyphicon glyphicon-heart'></span>";
    } elseif ($vote == "down") {
       $hots = $hots - 1;
+      $content = " <span class='glyphicon glyphicon-hand-up'></span>";
    }
 
    
@@ -113,7 +115,7 @@ if(!$action) {
    if($new!="no") {
       $res = mysql_query("INSERT INTO hots_bb VALUES($uid, $bbid, $din)");
    }
-   print "{ \"hots\":$hots, \"bbid\":$bbid }";
+   print "{ \"hots\":$hots, \"bbid\":$bbid, \"content\":\"$content\" }";
 
 
 
