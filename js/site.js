@@ -40,6 +40,9 @@ $(document).ready(function() {
     var url = $(this).attr('href');
     $.get(url, function(data) {
        HObj = JSON.parse(data);
+       if(HObj.clear==1) {
+           $("a.upHotp").html("<span class='glyphicon glyphicon-lock'></span>");
+       }
        $("a#aHotp" + HObj.pid).html(HObj.hots + HObj.content);
     });
   });

@@ -80,17 +80,26 @@ if(!$action) {
    }
 
    $pid = $_GET['pid'];
+   $bbid = $_GET['bbid'];
+   
    $user = $_SESSION['user'];
 
    $uid = getUser($user);
 
-   $res = mysql_query("SELECT uid, pid FROM hots WHERE uid=$uid AND pid=$pid");
+   $res = mysql_query("SELECT uid, pid, bbid FROM hots WHERE uid=$uid AND bbid=$bbid");
    $row = mysql_fetch_array($res);
    $there = $row{'uid'};
    if($there) {
-       $vote = "down";
-       $res = mysql_query("DELETE FROM hots WHERE uid=$uid AND pid=$pid");
-       $new = "no";
+       //$vote = "down";
+       //$res = mysql_query("DELETE FROM hots WHERE uid=$uid AND pid=$pid AND bbid=$bbid");
+       //$new = "no";
+       // Ignore this vote
+       $content = " <span class='glyphicon glyphicon-lock'></span>";
+       $res = mysql_query("SELECT hots, uid FROM posts WHERE pid=$pid");
+       $row = mysql_fetch_array($res);
+       $hots = $row{'hots'};
+       print "{ \"hots\":$hots, \"pid\":$pid, \"content\":\"$content\" }";
+       exit;
    } 
 
 
@@ -113,9 +122,9 @@ if(!$action) {
    $din = time();
 
    if($new!="no") {
-      $res = mysql_query("INSERT INTO hots VALUES($uid, $pid, $din)");
+      $res = mysql_query("INSERT INTO hots VALUES($uid, $pid, $bbid, $din)");
    }
-   print "{ \"hots\":$hots, \"pid\":$pid, \"content\":\"$content\" }";
+   print "{ \"hots\":$hots, \"pid\":$pid, \"content\":\"$content\", \"clear\":1 }";
 
 
 

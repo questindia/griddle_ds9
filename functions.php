@@ -118,8 +118,13 @@ function didHot($uid, $bbid) {
     $row = mysql_fetch_array($res);
     return $row{'uid'};
 }
-function didHotp($uid, $pid) {
-    $res = mysql_querY("SELECT uid FROM hots WHERE uid=$uid AND pid=$pid");
+function didHotp($uid, $pid, $bbid) {
+    $res = mysql_querY("SELECT uid FROM hots WHERE uid=$uid AND pid=$pid AND bbid=$bbid");
+    $row = mysql_fetch_array($res);
+    return $row{'uid'};
+}
+function didHotG($uid, $bbid) {
+    $res = mysql_query("SELECT uid FROM hots WHERE uid=$uid AND bbid=$bbid");
     $row = mysql_fetch_array($res);
     return $row{'uid'};
 }
@@ -399,6 +404,14 @@ function getGriddlePosts($bbid) {
    $PLIST = explode(",", $bi{'ppid'});
    $JAVA = "";
    
+   $UID = getUser($_SESSION['user']);
+   
+   if(didHotG($UID, $bbid)) {
+      $DEFAULT = " <span class='glyphicon glyphicon-lock'></span>";
+   } else {
+      $DEFAULT = " <span class='glyphicon glyphicon-hand-up'></span>";
+   }
+   
    foreach ($PLIST as $pid) {
       $row = getPostInfo($pid);
       $uid  = $row{'uid'};
@@ -426,10 +439,10 @@ function getGriddlePosts($bbid) {
          $JID = "";
       }
       
-      if(didHotp(getUser($_SESSION['user']), $pid)) {
+      if(didHotp(getUser($_SESSION['user']), $pid, $bbid)) {
           $hots_img = " <span class='glyphicon glyphicon-heart'></span>";
       } else {
-          $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
+          $hots_img = $DEFAULT;         
       }
       
       
@@ -444,7 +457,7 @@ function getGriddlePosts($bbid) {
                 <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href=#><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
-                  <td valign=top><table width=100%><tr><td><a href=#>$realname</a></td><td align=right><a href='/do_hotp.php?pid=$pid&vote=up' type='button' id='aHotp$pid' class='btn btn-primary btn-xs upHotp'>$hots $hots_img</a></td></tr></table>
+                  <td valign=top><table width=100%><tr><td><a href=#>$realname</a></td><td align=right><a href='/do_hotp.php?pid=$pid&bbid=$bbid&vote=up' type='button' id='aHotp$pid' class='btn btn-primary btn-xs upHotp'>$hots $hots_img</a></td></tr></table>
                 </table>
               </div>";
       $OUT .="</div><!--/span-->\n";
