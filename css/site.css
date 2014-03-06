@@ -33,6 +33,12 @@
 .narrowTop {
   padding-top: 0px;
 }
+widePicture {
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
 .noColabs {
   min-height: 500px;
 }
@@ -161,4 +167,7 @@
 }
 .slightDrop {
    margin-top: 3px;
+}
+.hideForm {
+   display: none;
 }

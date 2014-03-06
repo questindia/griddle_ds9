@@ -129,6 +129,19 @@ $(document).ready(function() {
       });
   });
 
+  $("body").on('click', 'a.choose', function(event) {
+    event.stopPropagation();
+    
+    var pgoal = $(this).attr('pgoal');
+    document.getElementById("pgoal").value = pgoal; 
+    
+    $("#chooseType").html("<h5>It will take " + pgoal + " images to make this Griddle.  You can invite your friends to help!  Once the Griddle reaches " + pgoal + " images, it gets sent to everyone!</h5>");
+    $("#hideForm").show();
+    
+   
+  });
+
+
   $('body').on('click', 'a.FBLOGIN', function (event)
   {
      event.preventDefault();

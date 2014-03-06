@@ -639,8 +639,8 @@ function getGriddleBlock($bbid, $columnsize) {
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
       
    $OUT .="
-   <div class='$columnsize'>
-        <div class='well well-sm narrowTop'>
+   <div class='$columnsize widePicture'>
+        <div class='well well-sm narrowTop widePicture'>
               <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a><span>&nbsp;$proline</span></$HSIZE>
               <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
               <table class='tablePro' cellpadding=5>

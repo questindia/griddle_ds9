@@ -72,7 +72,7 @@ function do_griddle($ftopic, $fuid, $ftype) {
    return $gid;
 }
 
-function handle_post($fuid, $fgid, $fpost_text, $imageline, $status, $geo, $purpose, $colabs, $bbcheck) {
+function handle_post($fuid, $fgid, $fpost_text, $imageline, $status, $geo, $purpose, $colabs, $bbcheck, $pgoal) {
 
    GLOBAL $IMAGES_TO_PROC;
 
@@ -94,7 +94,7 @@ function handle_post($fuid, $fgid, $fpost_text, $imageline, $status, $geo, $purp
       
       $filename = $fuid . "-" . $pid . "-" . $fgid . "-" . $fnow;
       $sql = mysql_query("INSERT INTO posts VALUES($pid, $fgid, 0, $fuid, '$fpost_text', '$filename', 0, '$geo', $fnow, $status, 0)");
-      $sql = mysql_query("INSERT INTO pending_post VALUES(DEFAULT, $fuid, $fgid, $pid, '$images[$i]', '$purpose', '$colabs', $bbcheck, '$geo', 0)");
+      $sql = mysql_query("INSERT INTO pending_post VALUES(DEFAULT, $fuid, $fgid, $pid, '$images[$i]', '$purpose', '$colabs', $bbcheck, $pgoal, '$geo', 0)");
       $IMAGES_TO_PROC .= ":$pid";
  
       $pid++;

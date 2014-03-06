@@ -9,10 +9,10 @@
     <div class="navbar navbar-fixed-top navbar-default" role="navigation">
       <div class="container">
         <div class="col-lg-2"></div>
-        <div class="navbar-header col-lg-8">
+        <div class="navbar-header col-lg-5">
           
           <a class="navbar-brand" href="/"><img class='logoNavbar' src='/img/logo_5.png'></a>
-          
+        
           <div class="dropdown pull-right visible-lg">
              <a class="dropdown-toggle" id="dropdownMenu1" data-toggle="dropdown"><img class='cropimgProSmall' src='<?php echo $imgSRV; ?>/thumb_profiles/<?php echo $USER; ?>'><span class="caret"></span></a>
              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">

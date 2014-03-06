@@ -462,6 +462,7 @@ class UploadHandler
         $purpose = addslashes($_POST['purpose']);
         //$colabs  = addslashes($_POST['colabs']);
         $bbcheck = addslashes($_POST['bbcheck']);
+        $pgoal   = addslashes($_POST['pgoal']);
         file_put_contents("/tmp/do_post.log", "handle_form_data($purpose, $sel, $typed, $message)\n", FILE_APPEND);
         
         
@@ -515,8 +516,8 @@ class UploadHandler
         }
 
         if(($gi{'public'} == 1) || ($gi{'uid'} == $uid)) {
-          file_put_contents("/tmp/do_post.log", "handle_post($uid, $gid, $message, $fname, $status, $geo, $purpose, $colabs, $bbcheck)\n", FILE_APPEND);
-          handle_post($uid, $gid, $message, $fname, $status, $geo, $purpose, $colabs, $bbcheck);
+          file_put_contents("/tmp/do_post.log", "handle_post($uid, $gid, $message, $fname, $status, $geo, $purpose, $colabs, $bbcheck, $pgoal)\n", FILE_APPEND);
+          handle_post($uid, $gid, $message, $fname, $status, $geo, $purpose, $colabs, $bbcheck, $pgoal);
           
           if($status == 1) {
             updateLastPost($gid);

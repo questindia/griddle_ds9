@@ -24,9 +24,14 @@ if($action == "finish") {
    $col = $row{'colabs'};
    $geo = $row{'geo'};
    $bbcheck = $row{'bbid'};
+   $pgoal   = $row{'pgoal'};
    $pi = getPostInfo($pid);
    $gid = $pi{'gid'};
    $fnow = time();
+   
+   if($pgoal==9) { $rqueue = "bb.process"; }
+   if($pgoal==4) { $rqueue = "bb4.process"; }
+   
    
    if($pur == "grid") {
       // This is just a regular posting of pictures to a grid
@@ -60,15 +65,15 @@ if($action == "finish") {
      
 
      
-     if($ptotal>=9) {
-       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 0, 0, 0, 0, 1)");
+     if($ptotal>=$pgoal) {
+       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $pgoal, $fnow, '$geo', 0, 0, 0, 0, 0, 0, 1)");
        $bbsql = mysql_query("SELECT bbid FROM griddle_bb WHERE gid=$gid AND uid=$uid AND ppid='$PIDLINE' AND din=$fnow LIMIT 1");
        $row = mysql_fetch_array($bbsql);
        $bbid = $row{'bbid'};
-       $redis->lpush("bb.process", "$bbid|$IMGLINE");
+       $redis->lpush("$rqueue", "$bbid|$IMGLINE");
        $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbid, $uid, 4, $fnow, 0, 0, 0)");
      } else {
-       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $fnow, '$geo', 0, 0, 0, 0, 0, 0, 0)");
+       $bbsql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $gid, $uid, ',$col,', '$PIDLINE', $pgoal, $fnow, '$geo', 0, 0, 0, 0, 0, 0, 0)");
        $bbsql = mysql_query("SELECT bbid FROM griddle_bb WHERE gid=$gid AND uid=$uid AND ppid='$PIDLINE' AND din=$fnow LIMIT 1");
        $row = mysql_fetch_array($bbsql);
        $bbid = $row{'bbid'};
@@ -106,7 +111,7 @@ if($action == "finish") {
      
      $ptotal = sizeof($PLIST);
      
-     if($ptotal>=9) {
+     if($ptotal>=$pgoal) {
        $bbsql = mysql_query("UPDATE griddle_bb SET colabs='$colab', ppid='$FINALPIDS', status=1 WHERE bbid=$bbcheck");
        foreach($PLIST as $pid) {     
           $pi = getPostInfo($pid);
@@ -116,7 +121,7 @@ if($action == "finish") {
        }
        $IMGLINE = rtrim($IMGTMP, ",");
        file_put_contents("/tmp/do_postfinish.log", "Sending $bbcheck-$IMGLINE to redis queue\n", FILE_APPEND);
-       $redis->lpush("bb.process", "$bbcheck|$IMGLINE");
+       $redis->lpush("$rqueue", "$bbcheck|$IMGLINE");
         $sql = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbcheck, $uid, 4, $fnow, 0, 0, 0)");
      } else {
        $bbsql = mysql_query("UPDATE griddle_bb SET colabs='$colab', ppid='$FINALPIDS' WHERE bbid=$bbcheck");

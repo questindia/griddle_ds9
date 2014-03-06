@@ -20,12 +20,13 @@ if(!$action) {
        $tgid = $row{'gid'};
        $tuid = $row{'uid'};
        $bbid = $row{'bbid'};
+       $pgoal = $row{'pgoal'};
        
        $gi = getGridInfo($tgid);
        $topic = $gi{'topic'};
        
        $ppids = explode(",", $row{'ppid'});
-       $left = 9 - sizeof($ppids);
+       $left = $pgoal - sizeof($ppids);
        $uinfo = getName($tuid);
        $tname = $uinfo{'name'};
        

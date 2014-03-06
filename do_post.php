@@ -70,8 +70,16 @@ if(!$gcheck) {
    
    
    if(!$bbcheck) {
-   	   $MESSAGE = "<h3>Make a Griddle!</h3>
-   	               <h5>It takes 9 images to make a Griddle.  You can invite your friends to help!  Once the Griddle reaches 9 images, it gets sent to everyone!</h5>";
+   	   $MESSAGE   = "<h3>Make a Griddle!</h3>";
+   	                 //<h5>It takes 9 images to make a Griddle.  You can invite your friends to help!  Once the Griddle reaches 9 images, it gets sent to everyone!</h5>";
+       $MESSAGE  .= "<div id='chooseType' class='chooseType'>
+                        <h5>Pick a Layout:</h5>
+                        <a href=# class='choose' pgoal=4><img width=125 src=/img/griddle2x2.png></a>&nbsp;&nbsp;<a href=# class='choose' pgoal=9><img width=125 src=/img/griddle3x3.png></a>
+                     </div>";
+       
+       $STARTHIDE = "<div id='hideForm' class='hideForm'>";
+       $ENDHIDE   = "</div>";
+   
    } else {
        $PROGRESS = "<h3>Griddle Progress:</h3>";
    
@@ -138,11 +146,13 @@ if(!$gcheck) {
         <?php echo $TOPIC; ?>
         <?php echo $PEOPLE; ?>
         <?php echo $MESSAGE; ?>
+        <?php echo $STARTHIDE; ?>
         <?php echo $OWNER; ?>
         <form id="fileupload" action="/uploadindex.php" method="POST" enctype="multipart/form-data">
-    	<input type=hidden name=geo id=geo>
-    	<input type=hidden name=purpose id=purpose value='<?php echo $purpose; ?>'>
-    	<input type=hidden name=bbcheck value='<?php echo $bbcheck; ?>'>
+    	<input type='hidden' name='geo' id='geo'>
+    	<input type='hidden' name='purpose' id='purpose' value='<?php echo $purpose; ?>'>
+    	<input type='hidden' name='bbcheck' value='<?php echo $bbcheck; ?>'>
+    	<input type='hidden' id='pgoal' name='pgoal' value=9>
         <?php echo $CHOOSE; ?>
    	  	<?php echo $TEXTBOX; ?>
    	  	<input type='hidden' name='qid' value='<?php echo $qid; ?>'>
@@ -189,7 +199,7 @@ if(!$gcheck) {
     
     <br>
  
-   </form>
+   </form><?php echo $ENDHIDE; ?>
    
      <?php include "sidebar.php"; ?>
      </div>
@@ -283,8 +293,7 @@ if(!$gcheck) {
 <script>
 </script>
    <script>
-   GEO_Callback();
-   document.getElementById("geo").value = geo;
+   
    </script>
   
 
