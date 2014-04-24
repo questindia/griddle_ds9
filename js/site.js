@@ -146,7 +146,7 @@ $(document).ready(function() {
      event.preventDefault();
      var bbid = $(this).attr('bbid');
      
-     $("#hide" + bbid).show();
+     $("#hide" + bbid).slideDown();
   });
 
   $("body").on('click', 'a.showRelated', function(event) {
@@ -154,8 +154,12 @@ $(document).ready(function() {
      event.preventDefault();
      var bbid = $(this).attr('bbid');
      
-     $(".hiddenFor" + bbid).show();
-     $("#hide" + bbid).hide();
+     $("#hide" + bbid).slideUp();
+     setTimeout(function() {
+         $(".hiddenFor" + bbid).slideDown();
+      }, (1 * 1000));
+     
+     
   });
 
 
