@@ -17,7 +17,8 @@
     $NOTES  = gotNotes($uid);
     $COLAB  = gotColabs($uid);
     $FRIEND = gotFriends($uid);
-    
+
+   
     if($MOBILE) { $narrowRight = "narrowRight"; }
     
     if($TABLET) { $tabClass = "commLine"; }
@@ -26,7 +27,7 @@
     if($COLAB)  { $COLBLINE = "<span class='$narrowRight badge pull-right'>$COLAB</span>"; }
     if($FRIEND) { $FRNDLINE = "<span class='$narrowRight badge pull-right'>$FRIEND</span>"; }
     
-    
+    $MOBILE = 1;
      
  ?>  
    
@@ -39,8 +40,8 @@
      
             <?php if($MOBILE || $TABLET) { ?>
             <a href="/edit_profile.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-cog"></span> Edit Profile</a>
-            <a href="/do_post.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-camera"></span> Make Griddle </a>
-            <a href="/do_colab.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-th"></span> Finish Griddle <?php echo $COLBLINE; ?></a>
+            <a href="/do_post.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-camera"></span> Post </a>
+            <a href="/do_colab.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-th"></span> Finish <?php echo $COLBLINE; ?></a>
             <a href="/handle_logout.php" class="<?php echo $tabClass; ?> list-group-item"><span class="glyphicon glyphicon-lock"></span> Logout</a>
             <?php } ?>
           </div>

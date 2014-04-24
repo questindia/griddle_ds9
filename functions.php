@@ -362,20 +362,31 @@ function wrapGriddleSettings($bbid) {
 }
 
 
-function generateFeed($count, $uid) {
+function generateFeed($count, $uid, $type) {
+
+   
 
    if($uid) {
       $WHERE = "AND (uid=$uid OR colabs LIKE '%,$uid,%')";
+      
    }
+   
+   $SQL   = "SELECT * FROM griddle_bb WHERE status=1 $WHERE ORDER BY din DESC LIMIT $count";
+   
+   if($type == "friends") {
+      $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY griddle_bb.din DESC LIMIT $count";
+   }
+   
 
-   $res = mysql_query("SELECT * FROM griddle_bb WHERE status=1 $WHERE ORDER BY din DESC LIMIT $count");
+   $res = mysql_query("$SQL");
 
    while($row = mysql_fetch_array($res)) {
       $bbid = $row{'bbid'};
       //$next = mysql_fetch_array($res);
       //$gid  = $next{'gid'};
       
-      $OUT .= "<div class='row griddleRow'>\n";
+      // TODO - Hell no, don't use style tags
+      $OUT .= "<div class='row griddleRow' style='margin-top: 0px; margin-bottom: 0px;'>\n";
       
       $format = rand(1,2);
       if($format==1) {
@@ -581,6 +592,7 @@ function getGriddleBlock($bbid, $columnsize) {
    $PLIST = explode(",", $pids);
    $pi = getPostInfo($PLIST[0]);
    $mess = $pi{'message'};
+   $pimg = $pi{'images'};
    
    if(strlen($mess) > 60) {
       $mess = substr($mess, 0, 55) . "...";
@@ -624,6 +636,8 @@ function getGriddleBlock($bbid, $columnsize) {
    
    if($procount < 2) { $proline = ""; }
    
+   $NCOLS = explode(" ", $realname);
+   $rname = $NCOLS[0];
    $realname = wrapName($uid, $realname);
    $gcontrol = wrapGriddleSettings($bbid);
    
@@ -633,15 +647,19 @@ function getGriddleBlock($bbid, $columnsize) {
           $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
    }
    
+   $imgsample = "<a class='showGriddle' bbid='$bbid'><img class='cropimgProTiny' src='$imgSRV/thumb_images/$pimg'></a>&nbsp;$when";
    
    
    if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
-      
+   
+   // &nbsp;&nbsp;<span class='byLine'>by: $rname</span><span class='byLine pull-right'>&nbsp;$imgsample</span></$HSIZE>
+   // Add  class 'hideThis' to id='hide$bbid' in order to backout 2014-04-21   
    $OUT .="
    <div class='$columnsize widePicture'>
         <div class='well well-sm narrowTop widePicture'>
-              <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a><span>&nbsp;$proline</span></$HSIZE>
+            <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a>
+            <div class='' id='hide$bbid'>
               <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
               <table class='tablePro' cellpadding=5>
                 <tr>
@@ -653,6 +671,7 @@ function getGriddleBlock($bbid, $columnsize) {
               <a id='aTW$bbid' tw_upload='/tw_upload.php?bbid=$bbid' href='$twurl' type='button' class='TWITTER btn btn-primary btn-xs'>$tws <i class='fa fa-twitter-square'></i></a></td></tr></table>
                 </tr>
               </table>
+            </div><!--hideThis-->
          </div><!--/griddleWell-->     
     </div><!--/span-->
     ";        

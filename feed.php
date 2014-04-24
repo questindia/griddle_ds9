@@ -27,8 +27,15 @@ if($USER = "") {
       <div class="row row-offcanvas row-offcanvas-right">
 
         <div class="col-xs-12 col-md-12 col-sm-12 col-lg-10 scroll pull-right">
-                     
-            <?php echo generateFeed(6);  ?>
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#friends" data-toggle="tab"><strong>Friends</strong></a></li>
+              <li><a href="#world" data-toggle="tab"><strong>World</strong></a></li>
+            </ul>
+            <div class="tab-content">
+            <div class="tab-pane active" id="friends"><?php echo generateFeed(6, getUser($USER), "friends"); ?></div>
+            <div class="tab-pane" id="world"><?php echo generateFeed(6);  ?></div>
+          </div>         
+            
             
             <a href='<?php echo $NEXT_URL; ?>'>Loading...</a>
         </div><!--/span-->

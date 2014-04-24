@@ -10,10 +10,10 @@ if($user=="") {
 }
 $uid = getUser($user);
 
-if(!$MOBILE && !$TABLET) {
-   header( "Location: http://$baseSRV/do_posterr.php?action=mobile" );
-   exit;
-}
+//if(!$MOBILE && !$TABLET) {
+//   header( "Location: http://$baseSRV/do_posterr.php?action=mobile" );
+//   exit;
+//}
 
 
 $gcheck = addslashes($_GET['gid']);
@@ -48,20 +48,20 @@ if(!$gcheck) {
    	  	  	</select><br> -->
    	  	  </div>
    	  	  <div class='span2'>
-   	  	  	<input type=text class='form-control' name='type_grid' placeholder='Add a #hashtag (Required)' data-provide='typeahead' data-items='4' data-source='$search'>
+   	  	  	<input type=text class='form-control' name='type_grid' placeholder='#hashtag (Required)' data-provide='typeahead' data-items='4' data-source='$search'>
    	  	  </div>
-   	  	  <div id='chooseFriend' class='span4'>
+   	  	  <!-- <div id='chooseFriend' class='span4'>
    	  	  <br>
    	  	    <select class='form-control' name='colabs[]' multiple>
    	  	       <option value='' disabled selected>Choose some Friends to Help!</option>
    	  	       $sel_friend
    	  	       </select>
    	  	   <br>
-   	  	   </div>
+   	  	   </div> -->
    	    </div>
       ";
       
-      $TEXTBOX = "<textarea class='form-control' placeholder=\"What's Happening?\" rows=3 cols=25 name='message'></textarea>";
+      //$TEXTBOX = "<textarea class='form-control' placeholder=\"What's Happening?\" rows=3 cols=25 name='message'></textarea>";
 
 
    } elseif($gcheck) {
@@ -72,12 +72,13 @@ if(!$gcheck) {
    if(!$bbcheck) {
    	   $MESSAGE   = "<h3>Make a Griddle!</h3>";
    	                 //<h5>It takes 9 images to make a Griddle.  You can invite your friends to help!  Once the Griddle reaches 9 images, it gets sent to everyone!</h5>";
-       $MESSAGE  .= "<div id='chooseType' class='chooseType'>
-                        <h5>Pick a Layout:</h5>
-                        <a href=# class='choose' pgoal=4><img width=125 src=/img/griddle2x2.png></a>&nbsp;&nbsp;<a href=# class='choose' pgoal=9><img width=125 src=/img/griddle3x3.png></a>
-                     </div>";
+       //$MESSAGE  .= "<div id='chooseType' class='chooseType'>
+       //                 <h5>Pick a Layout:</h5>
+       //                <a href=# class='choose' pgoal=4><img width=125 src=/img/griddle2x2.png></a>&nbsp;&nbsp;<a href=# class='choose' pgoal=9><img width=125 src=/img/griddle3x3.png></a>
+       //              </div>";
        
-       $STARTHIDE = "<div id='hideForm' class='hideForm'>";
+       $STARTHIDE = "<div id='' class=''>";
+       //$STARTHIDE = "<div id='hideForm' class='hideForm'>";
        $ENDHIDE   = "</div>";
    
    } else {
@@ -96,22 +97,22 @@ if(!$gcheck) {
           $OWNER = "<form action=/do_addcolabs.php method=post>
                      <input type=hidden name=action value='add'>
                      <input type=hidden name=bbid value='$bbcheck'>
-                     <select class='form-control' name='colabs[]' multiple>
+                     <!-- <select class='form-control' name='colabs[]' multiple>
    	  	                <option value='' disabled selected>Choose More Friends to Help!</option>
    	  	                $sel_friend
    	  	                </select><br>
    	  	                <button type=submit class='btn btn-md btn-success'><span class='glyphicon glyphicon-plus'></span> Add Friends</button>
-   	  	            </form><br>";
-   	  	  $MESSAGE = "<h3>Include more Friends!</h3>";          
+   	  	            </form><br> -->";
+   	  	  //$MESSAGE = "<h3>Include more Friends!</h3>";          
        
        } else {
           $CHOOSE .= "
-   	       <div id='chooseFriend' class='span4'><br>
+   	       <!-- <div id='chooseFriend' class='span4'><br>
    	  	    <select class='form-control' name='colabs[]' multiple>
    	  	       <option value='' disabled selected>Choose some Friends to Help!</option>
    	  	       $sel_friend
    	  	       </select><br>
-   	  	   </div>";
+   	  	   </div> -->";
    	  	}  
        
        
@@ -152,7 +153,7 @@ if(!$gcheck) {
     	<input type='hidden' name='geo' id='geo'>
     	<input type='hidden' name='purpose' id='purpose' value='<?php echo $purpose; ?>'>
     	<input type='hidden' name='bbcheck' value='<?php echo $bbcheck; ?>'>
-    	<input type='hidden' id='pgoal' name='pgoal' value=9>
+    	<input type='hidden' id='pgoal' name='pgoal' value=4>
         <?php echo $CHOOSE; ?>
    	  	<?php echo $TEXTBOX; ?>
    	  	<input type='hidden' name='qid' value='<?php echo $qid; ?>'>
@@ -308,6 +309,7 @@ function getSoFar($bbid) {
     $bi = getGriddleInfo($bbid);
     
     $plist = explode(",", $bi{'ppid'});
+    $pgoal = $bi{'pgoal'};
 
     foreach ($plist as $pid) {
        $pi = getPostInfo($pid);
@@ -317,8 +319,8 @@ function getSoFar($bbid) {
        $count++;
     }
     
-    if($count<9) {
-        $left = (9 - $count);
+    if($count<$pgoal) {
+        $left = ($pgoal - $count);
         for($i=0; $i<$left; $i++) {
             $OUT .= "<img class='soFarImg' src='/img/profile.jpg'>&nbsp;&nbsp;";
         }

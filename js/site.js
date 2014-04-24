@@ -141,6 +141,15 @@ $(document).ready(function() {
    
   });
 
+  $("body").on('click', 'a.showGriddle', function(event) {
+     event.stopPropagation();
+     
+     var bbid = $(this).attr('bbid');
+     
+     $("#hide" + bbid).show();
+  });
+
+
 
   $('body').on('click', 'a.FBLOGIN', function (event)
   {
