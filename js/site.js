@@ -143,12 +143,19 @@ $(document).ready(function() {
 
   $("body").on('click', 'a.showGriddle', function(event) {
      event.stopPropagation();
-     
+     event.preventDefault();
      var bbid = $(this).attr('bbid');
      
      $("#hide" + bbid).show();
   });
 
+  $("body").on('click', 'a.showRelated', function(event) {
+     event.stopPropagation();
+     event.preventDefault();
+     var bbid = $(this).attr('bbid');
+     
+     $(".hiddenFor" + bbid).show();
+  });
 
 
   $('body').on('click', 'a.FBLOGIN', function (event)

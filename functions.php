@@ -364,11 +364,8 @@ function wrapGriddleSettings($bbid) {
 
 function generateFeed($count, $uid, $type) {
 
-   
-
    if($uid) {
-      $WHERE = "AND (uid=$uid OR colabs LIKE '%,$uid,%')";
-      
+      $WHERE = "AND (uid=$uid OR colabs LIKE '%,$uid,%')";      
    }
    
    $SQL   = "SELECT * FROM griddle_bb WHERE status=1 $WHERE ORDER BY din DESC LIMIT $count";
@@ -377,7 +374,6 @@ function generateFeed($count, $uid, $type) {
       $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY griddle_bb.din DESC LIMIT $count";
    }
    
-
    $res = mysql_query("$SQL");
 
    while($row = mysql_fetch_array($res)) {
@@ -395,6 +391,42 @@ function generateFeed($count, $uid, $type) {
       } else {
          //$OUT .= getPostPair($gid);
          $OUT .= getGriddleBlock($bbid, 'col-6 col-sm-6 col-lg-6');
+      }
+     
+ 
+      $OUT .= "</div><!-- /griddleRow -->";
+
+      $OUT .= generateHiddenFeed(10, $bbid);
+
+   }
+   
+   
+   
+   return $OUT;
+
+}
+
+function generateHiddenFeed($count, $target, $type) {
+
+   $SQL = "SELECT bbid FROM griddle_bb WHERE status=1 ORDER BY RAND() LIMIT $count";
+   
+   $res = mysql_query("$SQL");
+
+   while($row = mysql_fetch_array($res)) {
+      $bbid = $row{'bbid'};
+      //$next = mysql_fetch_array($res);
+      //$gid  = $next{'gid'};
+      
+      // TODO - Hell no, don't use style tags
+      $OUT .= "<div class='row griddleRow hideThis hiddenFor$target' style='margin-top: 0px; margin-bottom: 0px;'>\n";
+      
+      $format = rand(1,2);
+      if($format==1) {
+         $OUT .= getGriddleBlock($bbid, 'col-6 col-sm-6 col-lg-6', 'hideit');
+         //$OUT .= getPostPair($gid);
+      } else {
+         //$OUT .= getPostPair($gid);
+         $OUT .= getGriddleBlock($bbid, 'col-6 col-sm-6 col-lg-6', 'hideit');
       }
      
  
@@ -570,7 +602,7 @@ function getPostPair($gid) {
 
 }
 
-function getGriddleBlock($bbid, $columnsize) {
+function getGriddleBlock($bbid, $columnsize, $hideit) {
 
    GLOBAL $imgSRV;
    GLOBAL $MOBILE;
@@ -653,13 +685,17 @@ function getGriddleBlock($bbid, $columnsize) {
    if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
    
-   // &nbsp;&nbsp;<span class='byLine'>by: $rname</span><span class='byLine pull-right'>&nbsp;$imgsample</span></$HSIZE>
+   if($hideit) { 
+         $extra ="&nbsp;&nbsp;<span class='byLine'>by: $rname</span><span class='byLine pull-right'>&nbsp;$imgsample</span>";
+         $hidethis = "hideThis";
+         
+    } else { $showRelated = "showRelated"; }
    // Add  class 'hideThis' to id='hide$bbid' in order to backout 2014-04-21   
    $OUT .="
    <div class='$columnsize widePicture'>
         <div class='well well-sm narrowTop widePicture'>
-            <$HSIZE><a href=/griddles.php?gid=$gid>$topic</a>
-            <div class='' id='hide$bbid'>
+            <$HSIZE><a bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra</$HSIZE>
+            <div class='$hidethis' id='hide$bbid'>
               <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
               <table class='tablePro' cellpadding=5>
                 <tr>
@@ -674,8 +710,8 @@ function getGriddleBlock($bbid, $columnsize) {
             </div><!--hideThis-->
          </div><!--/griddleWell-->     
     </div><!--/span-->
-    ";        
-
+    ";       
+    
    return $OUT;
 
 }
