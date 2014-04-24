@@ -155,6 +155,7 @@ $(document).ready(function() {
      var bbid = $(this).attr('bbid');
      
      $(".hiddenFor" + bbid).show();
+     $("#hide" + bbid).hide();
   });
 
 

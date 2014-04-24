@@ -679,14 +679,14 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
           $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
    }
    
-   $imgsample = "<a class='showGriddle' bbid='$bbid'><img class='cropimgProTiny' src='$imgSRV/thumb_images/$pimg'></a>&nbsp;$when";
+   $imgsample = "<span class='byLine pull-right'>&nbsp;<a class='showGriddle' bbid='$bbid'><img class='cropimgProTiny' src='$imgSRV/thumb_images/$pimg'></a>&nbsp;$when</span>";
    
    
    if($MOBILE) { $HSIZE = "h4"; $COMMDIV = "#commHeader"; $POSTDIV = "&lightbox=yes"; } else { $HSIZE = "h2"; }
    if($TABLET) { $POSTDIV="&lightbox=yes"; }
    
    if($hideit) { 
-         $extra ="&nbsp;&nbsp;<span class='byLine'>by: $rname</span><span class='byLine pull-right'>&nbsp;$imgsample</span>";
+         $extra ="&nbsp;&nbsp;<span class='byLine'>by: $rname</span>";
          $hidethis = "hideThis";
          
     } else { $showRelated = "showRelated"; }
@@ -694,7 +694,7 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
    $OUT .="
    <div class='$columnsize widePicture'>
         <div class='well well-sm narrowTop widePicture'>
-            <$HSIZE><a bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra</$HSIZE>
+            <$HSIZE><a id='related$bbid' bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra $imgsample</$HSIZE>
             <div class='$hidethis' id='hide$bbid'>
               <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
               <table class='tablePro' cellpadding=5>
