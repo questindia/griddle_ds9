@@ -396,7 +396,7 @@ function generateFeed($count, $uid, $type) {
  
       $OUT .= "</div><!-- /griddleRow -->";
 
-      $OUT .= generateHiddenFeed(10, $bbid);
+      // $OUT .= generateHiddenFeed(10, $bbid);
 
    }
    
@@ -475,6 +475,7 @@ function getGriddlePosts($bbid) {
       $realname = wrapName($uid, $realname);
       
       $imgSRV = shardImg($img);
+      # Trigger the slide show 
       if(!$JAVA) {
          $JID = "img$bbid";
          $JAVA = "$( '#img$bbid' ).trigger( 'click' );";
@@ -494,9 +495,10 @@ function getGriddlePosts($bbid) {
       
       $OUT .= "<div class='col-6 col-sm-6 col-lg-3'>\n";
       
-      $OUT .= "<div class='well well-sm narrowTop'>
- 
-              <br><a id='$JID' href='$imgSRV/$full_dir/$img' class='fresco' data-fresco-group='griddle'><img class='cropimgLarge' src='$imgSRV/$thumb_dir/$img'></a>
+      
+      $OUT .= "<!-- <div class='well well-sm narrowTop'> -->
+                <div style='
+              <!-- <br><a id='$JID' href='$imgSRV/$full_dir/$img' class='fresco' data-fresco-group='griddle'><img class='cropimgLarge' src='$imgSRV/$thumb_dir/$img'></a>
                 <table class='tablePro' cellpadding=3 width=100%>
                 <tr>
                   <td valign=top class='cropimgProTiny'><a href=#><img class='cropimgProTiny' src='$imgSRV/thumb_profiles/$uname'></a></td>
@@ -622,7 +624,7 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
    $tws  = $row{'twshare'};
    
    $PLIST = explode(",", $pids);
-   $pi = getPostInfo($PLIST[0]);
+   $pi = getPostInfo($PLIST[2]);
    $mess = $pi{'message'};
    $pimg = $pi{'images'};
    
@@ -691,7 +693,7 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
          
     } else { $showRelated = "showRelated"; }
    // Add  class 'hideThis' to id='hide$bbid' in order to backout 2014-04-21   
-   $OUT .="
+  $OUT .="
    <div class='$columnsize widePicture'>
         <div class='well well-sm narrowTop widePicture'>
             <$HSIZE><a id='related$bbid' bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra $imgsample</$HSIZE>
@@ -711,6 +713,16 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
          </div><!--/griddleWell-->     
     </div><!--/span-->
     ";       
+    
+    $OUT2 .="
+   <div class='$columnsize widePicture'>
+        <a href=/><div style='background-image: url(\'$imgSRV/mid_images/$pimg\') center no-repeat;'>Blah!</div></a>
+        <!-- <div class='well well-sm narrowTop widePicture'> -->
+     
+       <!--  </div>/griddleWell -->     
+    </div><!--/span-->
+    ";      
+    
     
    return $OUT;
 
@@ -903,4 +915,19 @@ function validateICode($icode, $uid) {
    return 1;
 
 }
+
+
+function apiAuth($user, $pass) {
+
+   $res = mysql_query("SELECT password FROM users WHERE username='$user'");
+   $pw_row = mysql_fetch_array($res);
+   $pw_crypt = $pw_row{'password'};
+
+   $attempt = md5($pass);
+
+   if($attempt == $pw_crypt) { return 1; } else { return 0; }
+
+}
+
+
 ?>

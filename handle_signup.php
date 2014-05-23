@@ -67,10 +67,7 @@ if($action == "signup") {
 
    // Do the signup
 
-   $uid_q = mysql_query("SELECT uid FROM users ORDER BY uid DESC LIMIT 1");
-   $uidrow = mysql_fetch_array($uid_q);
-   $uid = $uidrow{'uid'};
-   $uid = $uid + 1;
+
 
    // validate the invite code
 
@@ -97,9 +94,12 @@ if($action == "signup") {
 
    if(!$rname) { $rname=$uname; }
 
-   $sql_line = "INSERT INTO users VALUES($uid, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
+   $sql_line = "INSERT INTO users VALUES(DEFAULT, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
 
    $ins = mysql_query($sql_line);
+
+   $uid = getUser($uname);
+
 
    include "header.php";
    print "<body><style>
