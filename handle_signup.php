@@ -94,7 +94,7 @@ if($action == "signup") {
 
    if(!$rname) { $rname=$uname; }
 
-   $sql_line = "INSERT INTO users VALUES(DEFAULT, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
+   $sql_line = "INSERT INTO users VALUES(DEFAULT, 0, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
 
    $ins = mysql_query($sql_line);
 
