@@ -41,7 +41,7 @@ if($image) {
    system("/bin/cp /var/www/img/profile.jpg " . THUMB_DIR . "/$filename");
 }
 
-$crypt = md5($password);
+$crypt = md5($pass);
 $now   = time();
 
 $res = mysql_query("INSERT INTO users VALUES(DEFAULT, $fbuid, '$name', '$email', '$mobile', '$user', '$crypt', '', '', '', $now, '', 1, 0, 0, 1, 1, 50)");
