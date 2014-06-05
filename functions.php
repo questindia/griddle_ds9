@@ -128,6 +128,11 @@ function didHotG($uid, $bbid) {
     $row = mysql_fetch_array($res);
     return $row{'uid'};
 }
+function didCommG($uid, $bbid) {
+    $res = mysql_query("SELECT uid FROM comments_bb WHERE uid=$uid and bbid=$bbid");
+    $row = mysql_fetch_array($res);
+    return $row{'uid'};
+}   
 function getTrending($count, $mob) {
 
      $res = mysql_query("SELECT gid, topic FROM griddles WHERE posts>=1 AND type=3 ORDER BY last_post DESC LIMIT $count");
