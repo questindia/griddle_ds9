@@ -10,12 +10,12 @@ $redis = new Predis\Client('tcp://grd-mysql-01.griddle.com:6379');
 
 
 
-$user = addslashes($_POST['username']);
-$pass = addslashes($_POST['password']);
-$sel = addslashes($_POST['sel_grid']);
-$typed = addslashes($_POST['typed_grid']);
+$user    = addslashes($_POST['username']);
+$pass    = addslashes($_POST['password']);
+$sel     = addslashes($_POST['sel_grid']);
+$typed   = addslashes($_POST['typed_grid']);
 $message = addslashes($_POST['message']);
-$MASTER = addslashes($_POST['master']);
+$MASTER  = addslashes($_POST['master']);
 	
 $pic1 = $_FILES["pic1"]["size"];
 $pic2 = $_FILES["pic2"]["size"];
@@ -111,8 +111,8 @@ if (strpos($sel, '#') !== false) {
 
 if($topic == "#") {
    // This is blank, bail
-   print "{ \"return\": \"ERROR\" }";
-   exit;
+   //print "{ \"return\": \"ERROR\" }";
+   $topic = "#random";
 }
 
 
@@ -224,10 +224,12 @@ function handle_post($fuid, $fgid, $fpost_text, $imageline, $status) {
       //system("/usr/bin/convert -auto-orient -strip -resize 290x290 -quality 60 " . FULL_DIR . $filename . " " . UPLOAD_DIR . $filename, $blah);
       //system("/usr/bin/convert -auto-orient -strip -resize 640x640 -quality 60 " . FULL_DIR . $filename . " " . MIDSIZE_DIR . $filename, $blah);
       //system("/usr/bin/convert -auto-orient -strip -resize 75x75 -quality 60 " . FULL_DIR . $filename . " " . THUMB_DIR . $filename, $blah);
+      $pids .= "$pid,"
       $pid++;
       $coms++;
    }
 
+   $sql = mysql_query("INSERT INTO griddle_bb VALUES(DEFAULT, $fgid, $fuid, '', '$pids', 4, $fnow, '', 0, 0, 0, 0, 0, 0, 1)");
 
 }
 

@@ -20,16 +20,35 @@ $pw_row = mysql_fetch_array($res);
 $pw_crypt = $pw_row{'password'};
 
 $attempt = md5($pass);
-   
+
 if($attempt == $pw_crypt) {
-     print "{ \"return\": \"SUCCESS\" }";  
-   } else {
-     print "{ \"return\": \"ERROR\" }"; 
+
+     $ui   = getUserInfo(getUser($user));
+     $un   = $user;
+     $n    = $ui{'name'};
+     $pimg = "http://www.griddle.com/griddle_profiles/$user";
+     $m    = $ui{'mobile'};
+     $em   = $ui{'email'};
+     $mopt = $ui{'mobileopt'};
+     $eopt = $ui{'emailopt'};
+     
+     $JSON = "{     \"return\": \"SUCCESS\",
+               \"n\": \"$n\",
+               \"un\": \"$un\",
+               \"pimg\": \"$pimg\",
+               \"m\": \"$m\",
+               \"em\": \"$em\", 
+               \"mn\": \"$mopt\",
+               \"en\": \"$eopt\" }\n";
+     print $JSON;
+} else {
+     print "{ \"return\": \"ERROR\", \"details\": \"The username or password was incorrect\" }"; 
 }
+
 
 if($attempt == $pw_crypt) {
      $uid = getUser($user);
-     $res = mysql_query("SELECT uid FROM mobile_device");
+     $res = mysql_query("SELECT uid FROM mobile_device WHERE uid=$uid");
      $there = mysql_num_rows($res);
      if($there) {
          if($apple_id) {
