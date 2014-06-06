@@ -6,8 +6,8 @@ include "/var/www/functions.php";
 define('UPLOAD_DIR', '/var/www/griddle_profiles/');
 define('THUMB_DIR', '/var/www/thumb_profiles/');
 
-$user   = addslashes($_POST['user']);
-$pass   = addslashes($_POST['pass']);
+$user   = addslashes($_POST['username']);
+$pass   = addslashes($_POST['password']);
 $count  = addslashes($_POST['count']);
 $bbid   = addslashes($_POST['bbid']);
 $pid    = addslashes($_POST['pid']);
@@ -28,8 +28,10 @@ $uid = getUser($user);
 //$ORDER_BY = "griddle_bb.din";
 $ORDER_BY = "RAND()";
 
+if(!$bbid) {
+   $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY $ORDER_BY DESC LIMIT $count";
+}
 
-$SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY $ORDER_BY DESC LIMIT $count";
 $res = mysql_query("$SQL");
 
 $JSON = "{ \"return\": \"SUCCESS\", \"posts\": [ ";

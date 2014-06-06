@@ -6,8 +6,8 @@ include "/var/www/functions.php";
 define('UPLOAD_DIR', '/var/www/griddle_profiles/');
 define('THUMB_DIR', '/var/www/thumb_profiles/');
 
-$user   = addslashes($_POST['user']);
-$pass   = addslashes($_POST['pass']);
+$user   = addslashes($_POST['username']);
+$pass   = addslashes($_POST['password']);
 $name   = addslashes($_POST['name']);
 $mobile = addslashes($_POST['mobile']);
 $email  = addslashes($_POST['email']);
