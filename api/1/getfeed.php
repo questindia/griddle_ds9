@@ -48,7 +48,7 @@ while($row = mysql_fetch_array($res)) {
    $pi    = getPostInfo($pid);
    $puid  = $pi{'uid'};
    $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
-   $ting  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
+   $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
    
    $comms = $pi{'comments'};
    $hots  = $pi{'hots'};
