@@ -41,12 +41,14 @@ while($row = mysql_fetch_array($res)) {
    $bbid  = $row{'bbid'};
    $bbi   = getGriddleInfo($bbid);
    $PLIST = explode(",", $bbi{'ppid'});
+   
    $pid   = $PLIST[2];
    $gid   = $row{'gid'};
 
    $pi    = getPostInfo($pid);
    $puid  = $pi{'uid'};
-   $img  = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
+   $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
+   $ting  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
    
    $comms = $pi{'comments'};
    $hots  = $pi{'hots'};
@@ -64,6 +66,7 @@ while($row = mysql_fetch_array($res)) {
    $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
                \"img\": \"$img\",
+               \"timg\": \"$timg\",
                \"pimg\": \"$pimg\",
                \"comms\": \"$comms\",
                \"hots\": \"$hots\",
