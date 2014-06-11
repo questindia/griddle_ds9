@@ -224,7 +224,7 @@ function handle_post($fuid, $fgid, $fpost_text, $imageline, $status) {
       //system("/usr/bin/convert -auto-orient -strip -resize 290x290 -quality 60 " . FULL_DIR . $filename . " " . UPLOAD_DIR . $filename, $blah);
       //system("/usr/bin/convert -auto-orient -strip -resize 640x640 -quality 60 " . FULL_DIR . $filename . " " . MIDSIZE_DIR . $filename, $blah);
       //system("/usr/bin/convert -auto-orient -strip -resize 75x75 -quality 60 " . FULL_DIR . $filename . " " . THUMB_DIR . $filename, $blah);
-      $pids .= "$pid,"
+      $pids .= "$pid,";
       $pid++;
       $coms++;
    }
