@@ -159,7 +159,7 @@ function getRandomFeed($uid, $count) {
      $PPIDS = rtrim($PPIDS, ","); 
      $PLIST = explode(",", $PPIDS);
    
-     $maxr  = count($PLIST);
+     $maxr  = count($PLIST) -1;
      $picr  = rand(0, $maxr);
      $pid   = $PLIST[$picr];
      $gid   = $row{'gid'};
