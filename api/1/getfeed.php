@@ -28,23 +28,23 @@ $uid = getUser($user);
 $JSON = "{ \"return\": \"SUCCESS\", \"posts\": [ ";
 
 if($bbid) { 
-   $JSON .= getBBIDFeed($bbid, $uid);
+   $JSON .= getBBIDFeed($bbid, $uid, $count);
 }
 
 if($gid) {
-   $JSON .= getGIDFeed($gid, $uid);
+   $JSON .= getGIDFeed($gid, $uid, $count);
 }
 
-if(!$bbid && !$gid) {
-   $JSON .= getRandomFeed($uid);
+if(($bbid=="") && ($gid=="")) {
+   $JSON .= getRandomFeed($uid, $count);
 } 
 
 $JSON .= " ] }";
 print "$JSON";
 
 
-function getGIDFeed($gid, $uid) {
-    $SQL = "SELECT bbid FROM griddle_bb WHERE gid=$gid AND status=1";
+function getGIDFeed($gid, $uid, $count) {
+    $SQL = "SELECT bbid FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
     $res = mysql_query($SQL);
     while($row = mysql_fetch_array($res)) {	
     $bbid  = $row{'bbid'};
@@ -99,7 +99,7 @@ function getGIDFeed($gid, $uid) {
 
 
 
-function getBBIDFeed($bbid, $uid) {
+function getBBIDFeed($bbid, $uid, $count) {
      
      $bbi   = getGriddleInfo($bbid);
      $PLIST = explode(",", $bbi{'ppid'});
@@ -143,9 +143,7 @@ function getBBIDFeed($bbid, $uid) {
 
 }
 
-
-
-function getRandomFeed($uid) {
+function getRandomFeed($uid, $count) {
 
    $ORDER_BY = "RAND()";
    $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY $ORDER_BY DESC LIMIT $count";
