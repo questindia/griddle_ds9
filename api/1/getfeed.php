@@ -102,7 +102,9 @@ function getGIDFeed($gid, $uid, $count) {
 function getBBIDFeed($bbid, $uid, $count) {
      
      $bbi   = getGriddleInfo($bbid);
-     $PLIST = explode(",", $bbi{'ppid'});
+     $PPIDS = $bbi{'ppid'};
+     $PPIDS = rtrim($PPIDS, ","); 
+     $PLIST = explode(",", $PPIDS);
      foreach ($PLIST as $pid) {
         $pi    = getPostInfo($pid);
         $puid  = $pi{'uid'};
@@ -153,7 +155,9 @@ function getRandomFeed($uid, $count) {
 
      $bbid  = $row{'bbid'};
      $bbi   = getGriddleInfo($bbid);
-     $PLIST = explode(",", $bbi{'ppid'});
+     $PPIDS = $bbi{'ppid'};
+     $PPIDS = rtrim($PPIDS, ","); 
+     $PLIST = explode(",", $PPIDS);
    
      $maxr  = count($PLIST);
      $picr  = rand(0, $maxr);
