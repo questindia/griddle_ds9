@@ -3,51 +3,75 @@
 include "/var/www/dbinc.php";
 include "/var/www/functions.php";
 
-$user = $_POST['username'];
-if(!$user) { $user = $_GET['username']; }
-
-$pass = $_POST['password'];
-if(!$pass) { $pass = $_GET['password']; }
-
-
-$pass = addslashes($pass);
-$user = addslashes($user);
-
+$user = addslashes($_POST['username']);
+$pass = addslashes($_POST['password']);
+$bbid = addslashes($_POST['bbid']);
+$pid  = addslashes($_POST['pid']);
 
 if(apiAuth($user, $pass) < 1) { 
-     print "{ \"return\": \"ERROR\" }";
+     print "{ \"return\": \"ERROR\", \"details\": \"Invalid Username or Password.\" }";
      exit;
 }
 
 $uid = getUser($user);
 
-$res = mysql_query("SELECT relations.uid, users.name, users.username, users.mobile, users.email FROM relations, users WHERE relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT 2000");
+$res = mysql_query("SELECT uid, bbid FROM hots_bb WHERE uid=$uid AND bbid=$bbid");
+$row = mysql_fetch_array($res);
+$there = $row{'uid'};
+if($there) {
+    $vote = "down";
+    $res = mysql_query("DELETE FROM hots_bb WHERE uid=$uid AND bbid=$bbid");
+    $new = "no";
+} 
 
-$JSON = "{ \"return\": \"SUCCESS\", \"friends\": [ ";
-
-while($row = mysql_fetch_array($res)) {
-   $u  = $row{'uid'};
-   $n  = $row{'name'};
-   $un = $row{'username'};
-   $m  = md5($row{'mobile'});
-   $em = md5($row{'email'});
-   
-   $fi = getFacebookInfo($u);
-   $fu = $fi{'fbuid'};
-
-
-   $JSON .= "{ \"n\": \"$n\",
-               \"un\": \"$un\",
-               \"m\": \"$m\",
-               \"em\": \"$em\",
-               \"fu\": \"$fu\" },\n";
+$res = mysql_query("SELECT hots, uid FROM griddle_bb WHERE bbid=$bbid");
+$row = mysql_fetch_array($res);
+$hots = $row{'hots'};
+$puid = $row{'uid'};
+if($vote == "up") {
+   $hots = $hots + 1;
+   $res = mysql_query("UPDATE users SET pounds = pounds + 1 WHERE uid=$puid");
+} elseif ($vote == "down") {
+   $hots = $hots - 1;
 }
 
-$JSON = rtrim($JSON, ",\n");
+   
+$res = mysql_query("UPDATE griddle_bb SET hots=$hots WHERE bbid=$bbid");
+   
+$din = time();
 
-$JSON .= " ] }";
+if($new!="no") {
+    $res = mysql_query("INSERT INTO hots_bb VALUES($uid, $bbid, $din)");
+}
+
+print "{ \"return\": \"SUCCESS\", \"hots\":$hots }";
 
 
 
-print "$JSON";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>
