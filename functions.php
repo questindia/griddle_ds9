@@ -814,9 +814,7 @@ function addCommentToGriddle($user, $bbid, $comm) {
    $comm = addslashes($comm);
    $r = time();
 
-   $res = mysql_query("SELECT uid FROM users WHERE username='$user'");
-   $row = mysql_fetch_array($res);
-   $uid = $row{'uid'};
+   $uid = getUser($user);
 
    $res = mysql_query("SELECT gid, comments FROM griddle_bb WHERE bbid=$bbid");
    $row = mysql_fetch_array($res);
@@ -827,6 +825,28 @@ function addCommentToGriddle($user, $bbid, $comm) {
    $res = mysql_query("UPDATE griddle_bb SET comments=$cCount WHERE bbid=$bbid");
 
    $res = mysql_query("INSERT INTO triggers_bb VALUES(DEFAULT, $gid, $bbid, $uid, 2, $r, 0, 0, 0)");
+
+   return $cCount;
+
+}
+
+
+function addCommentToPost($user, $pid, $comm) {
+
+   $comm = addslashes($comm);
+   $r = time();
+
+   $uid = getUser($user);
+
+   $res = mysql_query("SELECT gid, comments FROM posts WHERE pid=$pid");
+   $row = mysql_fetch_array($res);
+   $cCount = $row{'comments'} + 1;
+   $gid = $row{'gid'};
+
+   $res = mysql_query("INSERT INTO comments VALUES(DEFAULT, $uid, $gid, $bbid, $r, '$comm')");
+   $res = mysql_query("UPDATE posts SET comments=$cCount WHERE pid=$pid");
+
+   $res = mysql_query("INSERT INTO triggers VALUES(DEFAULT, $gid, $pid, $uid, 2, $r, 0, 0, 0)");
 
    return $cCount;
 
