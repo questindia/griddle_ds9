@@ -12,6 +12,7 @@ $name   = addslashes($_POST['name']);
 $mobile = addslashes($_POST['mobile']);
 $email  = addslashes($_POST['email']);
 $fbuid  = addslashes($_POST['fbuid']);
+$ftoken = addslashes($_POST['fbtoken']);
 
 if(!$user || !$pass || !$email) {
    print "{ \"return\": \"ERROR\", \"details\": \"Must provide at least a username, password and email\" }";
@@ -49,6 +50,7 @@ $res = mysql_query("INSERT INTO users VALUES(DEFAULT, $fbuid, '$name', '$email',
 $test = getUser($user);
 
 if($test) {
+   $res = mysql_query("REPLACE INTO fblink VALUES($test, $fbuid, '$ftoken', '$ftoken', 1, 0)");
    print "{ \"return\": \"SUCCESS\" }";
    exit;
 } else {
