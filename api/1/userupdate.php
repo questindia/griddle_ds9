@@ -50,6 +50,11 @@ if(!$newpass) {
    $NEWPASS = ", password='$crypt'";
 }
 
+$mhash = md5($mobile);
+$ehash = md5($email);
+
+$res = mysql_query("REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')");
+
 $res = mysql_query("UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid");
 
 print "{ \"return\": \"SUCCESS\", \"details\": \"The user's profile was updated\" }";

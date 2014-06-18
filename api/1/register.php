@@ -47,10 +47,14 @@ $now   = time();
 
 $res = mysql_query("INSERT INTO users VALUES(DEFAULT, $fbuid, '$name', '$email', '$mobile', '$user', '$crypt', '', '', '', $now, '', 1, 0, 0, 1, 1, 50)");
 
+$ehash = md5($email);
+$mhash = md5($mobile);
+
 $test = getUser($user);
 
 if($test) {
    $res = mysql_query("REPLACE INTO fblink VALUES($test, $fbuid, '$ftoken', '$ftoken', 1, 0)");
+   $res = mysql_query("REPLACE INTO pii_hash VALUES($test, '$mhash', '$ehash')");
    print "{ \"return\": \"SUCCESS\" }";
    exit;
 } else {

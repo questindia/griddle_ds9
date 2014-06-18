@@ -93,13 +93,19 @@ if($action == "signup") {
    // Set status to 0 because the signup is incomplete.
 
    if(!$rname) { $rname=$uname; }
+   
+
 
    $sql_line = "INSERT INTO users VALUES(DEFAULT, 0, '$rname', '$email', '$mobile', '$uname', '$crypt', '', '', '', $now, '', 0, 0, 0, 1, 1, 50)";
 
    $ins = mysql_query($sql_line);
 
    $uid = getUser($uname);
+   
+   $mhash = md5($mobile);
+   $ehash = md5($email);
 
+   $res = mysql_query("REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')");
 
    include "header.php";
    print "<body><style>
