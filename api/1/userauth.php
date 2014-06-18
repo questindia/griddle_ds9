@@ -50,7 +50,7 @@ if($attempt == $pw_crypt) {
 
 if($attempt == $pw_crypt) {
      $uid = getUser($user);
-     $res = mysql_query("REPLACE INTO fb_link VALUES($uid, $fbuid, '$fbtoken', '$fbtoken')");
+     $res = mysql_query("REPLACE INTO fb_link VALUES($uid, $fbuid, '$fbtoken', '$fbtoken', 1, 0)");
      $res = mysql_query("SELECT uid FROM mobile_device WHERE uid=$uid");
      $there = mysql_num_rows($res);
      if($there) {

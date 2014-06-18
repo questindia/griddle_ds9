@@ -776,6 +776,82 @@ function getCommentsForGriddle($bbid, $user, $LIMIT, $ptype) {
 
 }
 
+function getCommentsForBBID($user, $bbid, $LIMIT) {
+
+  GLOBAL $imgSRV;
+  
+  $res = mysql_query("SELECT uid, din, comment FROM comments_bb WHERE bbid=$bbid ORDER BY din DESC LIMIT $LIMIT");
+
+  $count = 0;
+  
+  while($prow = mysql_fetch_array($res)) {
+ 
+     $tuid = $prow{'uid'};
+     $comm = stripslashes($prow{'comment'});
+   
+     $ures = mysql_query("SELECT name, username FROM users WHERE uid=$tuid");
+     $urow = mysql_fetch_array($ures);
+     $tuser = $urow{'username'}; 
+     $tname = $urow{'name'};
+     $ago = time() - $prow{'din'};
+     $when = secondsToTime($ago);
+
+     $pimg = "$imgSRV/thumb_profiles/$tuser";
+
+     $JSON .= "{ \"n\": \"$tname\",
+               \"un\": \"$tuser\",
+               \"pimg\": \"$pimg\",
+               \"comment\": \"$comm\",
+               \"when\": \"$when\" },\n";
+         
+  }
+
+  $JSON = rtrim($JSON, ",\n");
+
+  return $JSON;
+
+}
+
+function getCommentsForPID($user, $pid, $LIMIT) {
+
+  GLOBAL $imgSRV;
+  
+  $res = mysql_query("SELECT uid, din, comment FROM comments WHERE pid=$pid ORDER BY din DESC LIMIT $LIMIT");
+
+  $count = 0;
+  
+  while($prow = mysql_fetch_array($res)) {
+ 
+     $tuid = $prow{'uid'};
+     $comm = stripslashes($prow{'comment'});
+   
+     $ures = mysql_query("SELECT name, username FROM users WHERE uid=$tuid");
+     $urow = mysql_fetch_array($ures);
+     $tuser = $urow{'username'}; 
+     $tname = $urow{'name'};
+     $ago = time() - $prow{'din'};
+     $when = secondsToTime($ago);
+
+     $pimg = "$imgSRV/thumb_profiles/$tuser";
+
+     $JSON .= "{ \"n\": \"$tname\",
+               \"un\": \"$tuser\",
+               \"pimg\": \"$pimg\",
+               \"comment\": \"$comm\",
+               \"when\": \"$when\" },\n";
+         
+  }
+
+  $JSON = rtrim($JSON, ",\n");
+
+
+
+  return $JSON;
+
+}
+
+
+
 function getFormForGriddle($bbid, $user, $ptype) {
 
   GLOBAL $imgSRV;
