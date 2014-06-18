@@ -10,10 +10,12 @@ $pass = $_POST['password'];
 if(!$pass) { $pass = $_GET['password']; }
 
 
-$pass = addslashes($pass);
-$user = addslashes($user);
-$apple_id = addslashes($_POST['apple_id']);
+$pass       = addslashes($pass);
+$user       = addslashes($user);
+$apple_id   = addslashes($_POST['apple_id']);
 $android_id = addslashes($_POST['android_id']);
+$fbtoken    = addslashes($_POST['fbtoken']);
+$fbuid      = addslashes($_POST['fbuid']);
 
 $res = mysql_query("SELECT password FROM users WHERE username='$user'");
 $pw_row = mysql_fetch_array($res);
@@ -48,6 +50,7 @@ if($attempt == $pw_crypt) {
 
 if($attempt == $pw_crypt) {
      $uid = getUser($user);
+     $res = mysql_query("REPLACE INTO fb_link VALUES($uid, $fbuid, '$fbtoken', '$fbtoken')");
      $res = mysql_query("SELECT uid FROM mobile_device WHERE uid=$uid");
      $there = mysql_num_rows($res);
      if($there) {
