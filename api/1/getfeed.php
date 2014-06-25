@@ -149,7 +149,7 @@ function getRandomFeed($uid, $count) {
 
    //$ORDER_BY = "RAND()";
    $ORDER_BY = "griddle_bb.din";
-   $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid ORDER BY $ORDER_BY DESC LIMIT $count";
+   $SQL = "SELECT griddle_bb.bbid, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid FROM relations, users, griddle_bb WHERE griddle_bb.status=1 AND (relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid AND griddle_bb.uid=users.uid) OR griddle_bb.uid=$uid ORDER BY $ORDER_BY DESC LIMIT $count";
    $res = mysql_query($SQL);
    
    while($row = mysql_fetch_array($res)) {
