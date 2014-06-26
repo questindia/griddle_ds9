@@ -35,7 +35,11 @@ if($gid) {
    $JSON .= getGIDFeed($gid, $uid, $count);
 }
 
-if(($bbid=="") && ($gid=="")) {
+if($pid) {
+   $JSON .= getPIDFeed($pid, $uid, $count);
+}
+
+if(($bbid=="") && ($gid=="") && ($pid=="")) {
    $JSON .= getRandomFeed($uid, $count);
 } 
 
@@ -88,7 +92,7 @@ function getGIDFeed($gid, $uid, $count) {
                \"bbid\": \"$bbid\",
                \"gid\": \"$gid\" },\n";
   
-  } 
+  }
    
   $JSON = rtrim($JSON, ",\n"); 
   
@@ -96,7 +100,52 @@ function getGIDFeed($gid, $uid, $count) {
 
 }
     
+function getPIDFeed($pid, $uid, $count) {
 
+        $pi    = getPostInfo($pid);
+        $puid  = $pi{'uid'};
+        $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
+        $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
+        $gid   = $pi{'gid'};
+        $gi    = getGridInfo($gid);
+        $ht    = $gi{'topic'};
+   
+        $comms = $pi{'comments'};
+        $hots  = $pi{'hots'};
+        $ui    = getUserInfo($puid);
+        $n     = $ui{'name'};
+        $un    = $ui{'username'};
+        $pimg  = "http://www.griddle.com/thumb_profiles/$un";
+   
+        if(didHot($uid, $pid)) { $didhot = "1"; } else { $didhot="0"; }
+        if(didComm($uid, $pid)) { $didcom = "1"; } else { $didcom="0"; }
+
+        $more    = "1";
+        $when    = secondsToTime(time() - $pi{'din'});
+   
+        $JSON .= "{ \"n\": \"$n\",
+               \"un\": \"$un\",
+               \"img\": \"$img\",
+               \"timg\": \"$timg\",
+               \"pimg\": \"$pimg\",
+               \"comms\": \"$comms\",
+               \"hots\": \"$hots\",
+               \"didhot\": \"$didhot\",
+               \"didcom\": \"$didcom\",
+               \"more\": \"$more\",
+               \"pid\": \"$pid\",
+               \"bbid\": \"$bbid\",
+               \"gid\": \"$gid\",
+               \"hashtag\": \"$ht\" },\n";
+  
+            
+     $JSON = rtrim($JSON, ",\n"); 
+  
+     return $JSON;
+
+
+
+}
 
 
 function getBBIDFeed($bbid, $uid, $count) {

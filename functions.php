@@ -118,6 +118,11 @@ function didHot($uid, $bbid) {
     $row = mysql_fetch_array($res);
     return $row{'uid'};
 }
+function didComm($uid, $pid) {
+    $res = mysql_query("SELECT uid FROM comments WHERE uid=$uid and pid=$pid");
+    $row = mysql_fetch_array($res);
+    return $row{'uid'};
+}   
 function didHotp($uid, $pid, $bbid) {
     $res = mysql_querY("SELECT uid FROM hots WHERE uid=$uid AND pid=$pid AND bbid=$bbid");
     $row = mysql_fetch_array($res);
@@ -1034,5 +1039,144 @@ function apiAuth($user, $pass) {
 
 }
 
+function tileGridRandom($uid, $limit, $type, $stype) {
+
+   
+
+   if($stype == "pending") {
+       $poststatus = "2";
+   } else {
+       $poststatus = "1";
+   }
+
+   $styles = array("w2", "w3", "w4", "h2", "h3", "h4");
+
+   //$res = mysql_query("SELECT uid, pid, images, hots, comments, status FROM posts WHERE $WHERE AND status=$poststatus ORDER BY din DESC LIMIT $limit"); 
+   
+   if($type == "friends") {
+      $SQL = "SELECT DISTINCT(griddle_bb.bbid), griddle_bb.hots, griddle_bb.comments, griddle_bb.uid, relations.uid, users.name, griddle_bb.gid 
+                  FROM relations, users, griddle_bb 
+                  WHERE griddle_bb.status=1 AND 
+                  (griddle_bb.uid=$uid OR (relations.friend=2 AND relations.target=$uid)) 
+                  AND users.uid=relations.uid AND griddle_bb.uid=users.uid 
+                  ORDER BY griddle_bb.din DESC LIMIT $limit";
+   } elseif($type == "world") {
+      $SQL = "SELECT bbid, hots, comments FROM griddle_bb WHERE status=1 ORDER BY din DESC LIMIT $limit";
+   } elseif($type == "person") {
+      $SQL = "SELECT bbid, hots, comments FROM griddle_bb WHERE status=1 AND uid=$uid ORDER BY din DESC LIMIT $limit";
+   }              
+   $res = mysql_query($SQL);
+
+   while($grow = mysql_fetch_array($res)) {
+   
+     $bbid  = $grow{'bbid'};
+     $hots  = $grow{'hots'};
+     $bbi   = getGriddleInfo($bbid);
+     $PPIDS = $bbi{'ppid'};
+     $PPIDS = rtrim($PPIDS, ","); 
+     $PLIST = explode(",", $PPIDS);
+   
+     $maxr  = count($PLIST) -1;
+     $picr  = rand(0, $maxr);
+     $pid   = $PLIST[$picr];
+     $gid   = $row{'gid'};
+   
+     $row   = getPostInfo($pid);
+  
+     $images = $row{'images'};
+     
+     $coms = $row{'comments'};
+     $puid = $row{'uid'};
+     $ui = getName($puid);
+     $puser = $ui{'username'};
+     $gi = getGridInfo($gid);
+     $guid = $gi{'uid'};
+     $status = $row{'status'};
+     $imgSRV = shardImg($images);
+     $r = rand(0, 10);
+
+      if ($coms == 1) {
+           $comText = "$coms";
+        } elseif ($coms > 1) {
+           $comText = "$coms";
+        } else {
+           $comText = "0";
+        }
+        $comStyle = "style=\"font-weight:bold; font-size: xx-small; color: white;\"";
+
+     if(didHot($uid, $pid)) {
+        $hotText = " $hots";
+        $style = "style=\"font-weight:bold; font-size: xx-small; color: red;\"";
+     } else {
+        $hotText = " $hots";
+        $style = "style=\"font-weight:bold; font-size: xx-small; color: white;\"";
+     }
+
+     if($r > 6) {
+        $rand = "h4";
+        $imgfolder = "mid";
+     } else {
+        $rand = "h4";
+        $imgfolder = "mid";
+     }
+     
+     $REMOVE = "";
+     
+     if($guid == $uid) {
+        if($status == 2) {
+           $REMOVE  = "<li role=\"presentation\"><a class='approveButton' role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_manage.php?action=allow&pid=$pid&gid=$gid\">Approve</a></li>";
+        }
+        $REMOVE .= "<li role=\"presentation\"><a class='removeButton' role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_remove.php?pid=$pid\">Remove</a></li>";
+        if(checkBlock($puid, $gid)) {
+          $BLOCK = "<li role=\"presentation\"><a class='blockButton' role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_block.php?action=unblock&pid=$pid\">Unblock</a></li>";
+        } else {
+          $BLOCK = "<li role=\"presentation\"><a class='blockButton' role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_block.php?action=block&pid=$pid\">Block</a></li>";
+        }
+      } else { $REMOVE = "";}
+
+     if(!$REMOVE && ($uid == $puid)) {
+        $REMOVE = "<li role=\"presentation\"><a class='removeButton' role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_remove.php?pid=$pid\">Remove</a></li>";
+     }
+
+     if(didHot(getUser($_SESSION['user']), $bbid)) {
+          $hots_img = " <span class='glyphicon glyphicon-heart'></span>";
+     } else {
+          $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
+     }
+
+
+     $hot_button = "<a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots $hots_img</span></a>";
+     $com_button = "<a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>";
+
+     $SETTINGS = "
+     <li style='list-style: none; white-space: nowrap; overflow: visible;' class='dropdown dropup'><a style='font-size: x-small; color: black;' href=# id=\"dropGrid-$gid\" role=\"button\" class=\"dropdown-toggle\" data-toggle=\"dropdown\"><i class=\"icon-share-alt icon-white\"></i></a>
+        <ul class=\"dropdown-menu\" style='min-width: 0px; left: -650%;' role=\"menu\" aria-labelledby=\"dropGrid-$gid\">
+        $REMOVE
+        $BLOCK
+        <li role=\"presentation\"><a class=gridShare role=\"menuitem\" tabindex=\"-1\" href=\"/m/do_imgshare.php?pid=$pid\">Share</a></li>
+        <li role='presentation'><a class=doRepost role='menuitem' tabindex='-1' href='/m/do_repost.php?pid=$pid'>Re-Post</a></li>
+     </ul></li>";
+     
+     $MASONRY_ROWS .= "<div class='item $rand'>
+                         <div style='position: absolute; left: 0px; top: 0px;'></div>
+                         <a href=\"/view.php?bbid=$bbid\" role=\"button\">
+                            <div class='imgBox $rand' style=\"background-image: url('$imgSRV/${imgfolder}_images/$images'); background-repeat: no-repeat; background-position: 50% 50%;\">
+                            </div>
+                         </a>
+                         <div style='position: absolute; left: 5px; bottom: 5px;'>
+                            <a href='/person.php?target=$puid'><img class='cropimgProSmall' src='$imgSRV/thumb_profiles/$puser'></a>
+                         </div>
+                         <div style='position: absolute; right: 5px; bottom: 5px;'>
+                            <table border=0>
+                               <tr><td align=left>$hot_button&nbsp;&nbsp;</td> 
+                                   <td align=left>&nbsp;&nbsp;$com_button&nbsp;&nbsp;</td>
+                               </tr>
+                            </table>
+                         </div>
+                       </div>\n";
+
+   } 
+   return $MASONRY_ROWS;
+}
 
 ?>
