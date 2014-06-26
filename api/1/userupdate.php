@@ -45,7 +45,7 @@ if($image) {
 //   system("/bin/cp /var/www/img/profile.jpg " . THUMB_DIR . "/$filename");
 //}
 
-if(!$newpass) {
+if($newpass) {
    $crypt = md5($newpass);
    $NEWPASS = ", password='$crypt'";
 }
