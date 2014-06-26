@@ -15,6 +15,11 @@ $email   = addslashes($_POST['email']);
 $mopt    = addslashes($_POST['mopt']);
 $eopt    = addslashes($_POST['eopt']);
 
+file_put_contents("/tmp/do_postfinish.log", "$_POST", FILE_APPEND);
+
+file_put_contents("/tmp/do_postfinish.log", "$user - $pass - $newpass - $name - $mobile - $email - $mopt - $eopt", FILE_APPEND);
+
+
 if(!$user || !$pass || !$email) {
    print "{ \"return\": \"ERROR\", \"details\": \"Must provide at least a username, password and email\" }";
    exit;
@@ -53,7 +58,12 @@ if($newpass) {
 $mhash = md5($mobile);
 $ehash = md5($email);
 
+
+file_put_contents("/tmp/do_postfinish.log", "REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')", FILE_APPEND);
+
 $res = mysql_query("REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')");
+
+file_put_contents("/tmp/do_postfinish.log", "UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid", FILE_APPEND);
 
 $res = mysql_query("UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid");
 
