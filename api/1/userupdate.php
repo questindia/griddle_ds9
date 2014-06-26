@@ -13,7 +13,7 @@ $name    = addslashes($_POST['name']);
 $mobile  = addslashes($_POST['mobile']);
 $email   = addslashes($_POST['email']);
 $mopt    = addslashes($_POST['mopt']);
-$eopt    = addslashes($_POST['epot']);
+$eopt    = addslashes($_POST['eopt']);
 
 if(!$user || !$pass || !$email) {
    print "{ \"return\": \"ERROR\", \"details\": \"Must provide at least a username, password and email\" }";
