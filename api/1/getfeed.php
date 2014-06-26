@@ -169,6 +169,8 @@ function getRandomFeed($uid, $count) {
      $picr  = rand(0, $maxr);
      $pid   = $PLIST[$picr];
      $gid   = $row{'gid'};
+     $gi    = getGridInfo($gid);
+     $ht    = $gi{'topic'};
   
      $pi    = getPostInfo($pid);
      $puid  = $pi{'uid'};
@@ -200,7 +202,8 @@ function getRandomFeed($uid, $count) {
                \"more\": \"$more\",
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
-               \"gid\": \"$gid\" },\n";
+               \"gid\": \"$gid\",
+               \"hashtag\": \"$ht\" },\n";
   
   } 
    
