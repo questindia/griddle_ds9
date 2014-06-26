@@ -110,6 +110,9 @@ function getBBIDFeed($bbid, $uid, $count) {
         $puid  = $pi{'uid'};
         $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
         $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
+        $gid   = $pi{'gid'};
+        $gi    = getGridInfo($gid);
+        $ht    = $gi{'topic'};
    
         $comms = $pi{'comments'};
         $hots  = $pi{'hots'};
@@ -136,7 +139,8 @@ function getBBIDFeed($bbid, $uid, $count) {
                \"more\": \"$more\",
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
-               \"gid\": \"$gid\" },\n";
+               \"gid\": \"$gid\",
+               \"hashtag\": \"$ht\" },\n";
   
      }          
      $JSON = rtrim($JSON, ",\n"); 
