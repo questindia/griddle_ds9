@@ -17,7 +17,7 @@ $eopt    = addslashes($_POST['eopt']);
 
 file_put_contents("/tmp/do_postfinish.log", "$_POST", FILE_APPEND);
 
-file_put_contents("/tmp/do_postfinish.log", "$user - $pass - $newpass - $name - $mobile - $email - $mopt - $eopt", FILE_APPEND);
+file_put_contents("/tmp/do_postfinish.log", "$user - $pass - $newpass - $name - $mobile - $email - $mopt - $eopt\n", FILE_APPEND);
 
 
 if(!$user || !$pass || !$email) {
@@ -59,11 +59,11 @@ $mhash = md5($mobile);
 $ehash = md5($email);
 
 
-file_put_contents("/tmp/do_postfinish.log", "REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')", FILE_APPEND);
+file_put_contents("/tmp/do_postfinish.log", "REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')\n", FILE_APPEND);
 
 $res = mysql_query("REPLACE INTO pii_hash VALUES($uid, '$mhash', '$ehash')");
 
-file_put_contents("/tmp/do_postfinish.log", "UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid", FILE_APPEND);
+file_put_contents("/tmp/do_postfinish.log", "UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid\n", FILE_APPEND);
 
 $res = mysql_query("UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid");
 
