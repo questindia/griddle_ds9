@@ -48,13 +48,14 @@ print "$JSON";
 
 
 function getGIDFeed($gid, $uid, $count) {
-    $SQL = "SELECT bbid FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
+    $SQL = "SELECT bbid, uid FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
     $res = mysql_query($SQL);
     while($row = mysql_fetch_array($res)) {	
-    $bbid  = $row{'bbid'};
+     $bbid  = $row{'bbid'};
+     $buid  = $row{'uid'};
      $bbi   = getGriddleInfo($bbid);
      $PLIST = explode(",", $bbi{'ppid'});
-   
+     
      $maxr  = count($PLIST);
      $picr  = rand(0, $maxr);
      $pid   = $PLIST[$picr];
@@ -80,6 +81,7 @@ function getGIDFeed($gid, $uid, $count) {
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
+               \"uid\": \"$buid\",
                \"img\": \"$img\",
                \"timg\": \"$timg\",
                \"pimg\": \"$pimg\",
@@ -125,6 +127,7 @@ function getPIDFeed($pid, $uid, $count) {
    
         $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
+               \"uid\": \"$puid\",
                \"img\": \"$img\",
                \"timg\": \"$timg\",
                \"pimg\": \"$pimg\",
@@ -178,6 +181,7 @@ function getBBIDFeed($bbid, $uid, $count) {
    
         $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
+               \"uid\": \"$puid\",
                \"img\": \"$img\",
                \"timg\": \"$timg\",
                \"pimg\": \"$pimg\",
@@ -213,6 +217,7 @@ function getRandomFeed($uid, $count) {
    while($row = mysql_fetch_array($res)) {
 
      $bbid  = $row{'bbid'};
+     $buid  = $row{'uid'};
      $bbi   = getGriddleInfo($bbid);
      $PPIDS = $bbi{'ppid'};
      $PPIDS = rtrim($PPIDS, ","); 
@@ -245,6 +250,7 @@ function getRandomFeed($uid, $count) {
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
+               \"uid\": \"$buid\",
                \"img\": \"$img\",
                \"timg\": \"$timg\",
                \"pimg\": \"$pimg\",

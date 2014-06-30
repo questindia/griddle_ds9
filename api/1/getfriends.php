@@ -36,7 +36,8 @@ while($row = mysql_fetch_array($res)) {
    $fu = $fi{'fbuid'};
 
 
-   $JSON .= "{ \"n\": \"$n\",
+   $JSON .= "{ \"uid\": \"$uid\",
+               \"n\": \"$n\",
                \"un\": \"$un\",
                \"m\": \"$m\",
                \"em\": \"$em\",
