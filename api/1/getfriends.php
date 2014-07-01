@@ -21,7 +21,7 @@ if(apiAuth($user, $pass) < 1) {
 
 $uid = getUser($user);
 
-$res = mysql_query("SELECT relations.uid, users.name, users.username, users.mobile, users.email FROM relations, users WHERE relations.friend=2 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT 2000");
+$res = mysql_query("SELECT relations.uid, users.name, users.username, users.mobile, users.email, relations.follower, relations.target FROM relations, users WHERE relations.friend=2 AND relations.uid=$uid AND users.uid=relations.target ORDER BY users.name LIMIT 2000");
 
 $JSON = "{ \"return\": \"SUCCESS\", \"friends\": [ ";
 
@@ -29,6 +29,8 @@ while($row = mysql_fetch_array($res)) {
    $u  = $row{'uid'};
    $n  = $row{'name'};
    $un = $row{'username'};
+   $fl = $row{'follower'};
+   $tg = $row{'target'};
    $m  = md5($row{'mobile'});
    $em = md5($row{'email'});
    
@@ -36,11 +38,12 @@ while($row = mysql_fetch_array($res)) {
    $fu = $fi{'fbuid'};
 
 
-   $JSON .= "{ \"uid\": \"$uid\",
+   $JSON .= "{ \"uid\": \"$tg\",
                \"n\": \"$n\",
                \"un\": \"$un\",
                \"m\": \"$m\",
                \"em\": \"$em\",
+               \"fl\": \"$fl\",
                \"fu\": \"$fu\" },\n";
 }
 
