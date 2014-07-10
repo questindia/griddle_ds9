@@ -27,6 +27,10 @@ function getCommentInfo($cid) {
   $res = mysql_query("SELECT * FROM comments_bb WHERE cid=$cid");
   return mysql_fetch_array($res);
 }
+function getPostCommentInfo($cid) {
+  $res = mysql_query("SELECT * FROM comments WHERE cid=$cid");
+  return mysql_fetch_array($res);
+}
 function getTopic($gid) {
    $res = mysql_query("SELECT topic FROM griddles WHERE gid=$gid");
    $row = mysql_fetch_array($res);
