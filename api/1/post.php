@@ -136,7 +136,9 @@ if(($gi{'public'} == 1) || ($gi{'uid'} == $uid)) {
    }
 } 
 
-print "{ \"return\": \"SUCCESS\" }";
+print "{ \"return\": \"SUCCESS\",
+         \"hits\": \"3\",
+         \"score\": \"500\" }";
    
 
 function do_griddle($ftopic, $fuid, $ftype) {
