@@ -12,6 +12,7 @@ $count  = addslashes($_POST['count']);
 $bbid   = addslashes($_POST['bbid']);
 $pid    = addslashes($_POST['pid']);
 $gid    = addslashes($_POST['gid']);
+$tuid   = addslashes($_POST['uid']);
 
 if(!$user || !$pass || !$count) {
    print "{ \"return\": \"ERROR\", \"details\": \"Must provide at least a username, password and count\" }";
@@ -39,7 +40,11 @@ if($pid) {
    $JSON .= getPIDFeed($pid, $uid, $count);
 }
 
-if(($bbid=="") && ($gid=="") && ($pid=="")) {
+if($tuid) {
+   $JSON .= getUIDFeed($tuid, $uid, $count);
+}
+
+if(($bbid=="") && ($gid=="") && ($pid=="") && ($tuid=="")) {
    $JSON .= getRandomFeed($uid, $count);
 } 
 
@@ -206,11 +211,10 @@ function getRandomFeed($uid, $count) {
 
    //$ORDER_BY = "RAND()";
    $ORDER_BY = "griddle_bb.din";
-   $SQL = "SELECT DISTINCT(griddle_bb.bbid), griddle_bb.uid, relations.uid, users.name, griddle_bb.gid 
-                  FROM relations, users, griddle_bb 
+   $SQL = "SELECT DISTINCT(griddle_bb.bbid), griddle_bb.uid, relations.uid, griddle_bb.gid 
+                  FROM relations, griddle_bb 
                   WHERE griddle_bb.status=1 AND 
                   (griddle_bb.uid=$uid OR (relations.friend=2 AND relations.target=$uid)) 
-                  AND users.uid=relations.uid AND griddle_bb.uid=users.uid 
                   ORDER BY $ORDER_BY DESC LIMIT $count";
    $res = mysql_query($SQL);
    
@@ -272,6 +276,82 @@ function getRandomFeed($uid, $count) {
 
 }
 
+function getUIDFeed($tuid, $uid, $count) {
+
+   //$ORDER_BY = "RAND()";
+   $ORDER_BY = "din";
+   /* $SQL = "SELECT DISTINCT(griddle_bb.bbid), griddle_bb.uid, relations.uid, users.name, griddle_bb.gid 
+                  FROM relations, users, griddle_bb 
+                  WHERE griddle_bb.status=1 AND 
+                  (griddle_bb.uid=$uid OR (relations.friend=2 AND relations.target=$uid)) 
+                  AND users.uid=relations.uid AND griddle_bb.uid=users.uid 
+                  ORDER BY $ORDER_BY DESC LIMIT $count"; */
+                  
+   $SQL = "SELECT bbid, gid, uid FROM griddle_bb WHERE status=1 AND uid=$tuid ORDER BY $ORDER_BY LIMIT $count";               
+   
+   
+   $ui    = getUserInfo($tuid);
+   $n     = $ui{'name'};
+   $un    = $ui{'username'};
+   $pimg  = "http://www.griddle.com/thumb_profiles/$un";
+   
+                  
+   $res = mysql_query($SQL);
+   
+   while($row = mysql_fetch_array($res)) {
+
+     $bbid  = $row{'bbid'};
+     $buid  = $row{'uid'};
+     $bbi   = getGriddleInfo($bbid);
+     $PPIDS = $bbi{'ppid'};
+     $PPIDS = rtrim($PPIDS, ","); 
+     $PLIST = explode(",", $PPIDS);
+   
+     $maxr  = count($PLIST) -1;
+     $picr  = rand(0, $maxr);
+     $pid   = $PLIST[$picr];
+     $gid   = $row{'gid'};
+     $gi    = getGridInfo($gid);
+     $ht    = $gi{'topic'};
+  
+     $pi    = getPostInfo($pid);
+     $puid  = $pi{'uid'};
+     $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
+     $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
+   
+     $comms = $pi{'comments'};
+     $hots  = $pi{'hots'};
+     
+   
+     if(didHotG($uid, $bbid)) { $didhot = "1"; } else { $didhot="0"; }
+     if(didCommG($uid, $bbid)) { $didcom = "1"; } else { $didcom="0"; }
+
+     $more    = "1";
+     $when    = secondsToTime(time() - $pi{'din'});
+   
+     $JSON .= "{ \"n\": \"$n\",
+               \"un\": \"$un\",
+               \"uid\": \"$buid\",
+               \"img\": \"$img\",
+               \"timg\": \"$timg\",
+               \"pimg\": \"$pimg\",
+               \"comms\": \"$comms\",
+               \"hots\": \"$hots\",
+               \"didhot\": \"$didhot\",
+               \"didcom\": \"$didcom\",
+               \"more\": \"$more\",
+               \"pid\": \"$pid\",
+               \"bbid\": \"$bbid\",
+               \"gid\": \"$gid\",
+               \"hashtag\": \"$ht\" },\n";
+  
+  } 
+   
+  $JSON = rtrim($JSON, ",\n"); 
+  
+  return $JSON;
+
+}
 
 
 
