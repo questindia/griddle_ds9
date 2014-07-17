@@ -42,13 +42,30 @@ if($pid) {
 
 if($tuid) {
    $JSON .= getUIDFeed($tuid, $uid, $count);
+   $ui  = getUserInfo($tuid);
+   $n   = $ui{'name'};
+   $u   = $ui{'username'};
+   $fol = $ui{'followers'};
+   $pst = $ui{'posts'};
+   $pic = "http://www.griddle.com/griddle_profiles/$u";
+   $fl  = isFollowing($uid, $tuid);
+   
+   if(!$fl) { $fl = "0"; }
+   
+   $EXTRA = ", \"name\": \"$n\",
+               \"username\": \"$u\",
+               \"followers\": \"$fol\",
+               \"posts\": \"$pst\",
+               \"pimg\": \"$pic\",
+               \"fl\": \"$fl\" ";
+   
 }
 
 if(($bbid=="") && ($gid=="") && ($pid=="") && ($tuid=="")) {
    $JSON .= getRandomFeed($uid, $count);
 } 
 
-$JSON .= " ] }";
+$JSON .= " ] $EXTRA }";
 print "$JSON";
 
 

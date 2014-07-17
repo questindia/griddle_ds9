@@ -67,7 +67,21 @@ file_put_contents("/tmp/do_postfinish.log", "UPDATE users SET name='$name', mobi
 
 $res = mysql_query("UPDATE users SET name='$name', mobile='$mobile', email='$email', mobileopt=$mopt, emailopt=$eopt $NEWPASS WHERE uid=$uid");
 
-print "{ \"return\": \"SUCCESS\", \"details\": \"The user's profile was updated\" }";
+$ui = getUserInfo($uid);
+
+$n  = $ui{'name'};
+$m  = $ui{'mobile'};
+$e  = $ui{'email'};
+$eo = $ui{'emailopt'};
+$mo = $ui{'mobileopt'};
+
+print "{ \"return\": \"SUCCESS\", 
+         \"details\": \"The user's profile was updated\",
+         \"name\", \"$n\",
+         \"mobile\", \"$m\",
+         \"email\", \"$e\",
+         \"eopt\", \"$eo\",
+         \"mopt\", \"$mo\" }";
 
 
 

@@ -41,6 +41,7 @@ while($row = mysql_fetch_array($res)) {
    $JSON .= "{ \"uid\": \"$tg\",
                \"n\": \"$n\",
                \"un\": \"$un\",
+               \"pimg\": \"http://www.griddle.com/thumb_profiles/$un\",
                \"m\": \"$m\",
                \"em\": \"$em\",
                \"fl\": \"$fl\",
