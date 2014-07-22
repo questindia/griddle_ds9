@@ -29,7 +29,7 @@ $decoded = json_decode($json);
 //print "\n$json\n";
 
 foreach ($decoded as $key => $value) {
-   print "$key = $value\n";
+   //print "$key = $value\n";
    foreach ($value as $htarg) {
         if(hashMatch($key, $htarg)) {
             $MATCHES{$key} .= " \"$htarg\", ";
