@@ -188,6 +188,14 @@ function isFriend($uid, $target) {
 
 }
 
+function isFollowing($uid, $target) {
+   $res = mysql_query("SELECT rid, following FROM relations WHERE uid=$uid AND target=$target");
+   $row = mysql_fetch_array($res);
+   
+   $fl  = $row{'following'};
+   
+   return $fl;
+}
 
 
 function getFriendRows($count, $uid) {
@@ -470,6 +478,7 @@ function getGriddlePosts($bbid) {
    }
    
    foreach ($PLIST as $pid) {
+      if($pid == "") { continue; }
       $row = getPostInfo($pid);
       $uid  = $row{'uid'};
       $img  = $row{'images'};
@@ -638,7 +647,7 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
    $tws  = $row{'twshare'};
    
    $PLIST = explode(",", $pids);
-   $pi = getPostInfo($PLIST[2]);
+   $pi = getPostInfo($PLIST[0]);
    $mess = $pi{'message'};
    $pimg = $pi{'images'};
    
@@ -705,14 +714,14 @@ function getGriddleBlock($bbid, $columnsize, $hideit) {
          $extra ="&nbsp;&nbsp;<span class='byLine'>by: $rname</span>";
          $hidethis = "hideThis";
          
-    } else { $showRelated = "showRelated"; }
+    } else { $showRelated = ""; }
    // Add  class 'hideThis' to id='hide$bbid' in order to backout 2014-04-21   
   $OUT .="
    <div class='$columnsize widePicture'>
         <div class='well well-sm narrowTop widePicture'>
-            <$HSIZE><a id='related$bbid' bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra $imgsample</$HSIZE>
+            <$HSIZE><a id='related$bbid' bbid=$bbid class='$showRelated' href='/'>$topic</a>$extra</$HSIZE>
             <div class='$hidethis' id='hide$bbid'>
-              <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/griddles/$bbid-bb-latest.jpg'></a><br>$byline
+              <a href=/view.php?bbid=$bbid$POSTDIV><img class='feedImg' src='$imgSRV/mid_images/$pimg'></a><br>$byline
               <table class='tablePro' cellpadding=5>
                 <tr>
                   <td valign=top><a href='/person.php?target=$uid'><img class='cropimgPro' src='$imgSRV/thumb_profiles/$uname'></a></td>
@@ -1046,6 +1055,7 @@ function apiAuth($user, $pass) {
 function tileGridRandom($uid, $limit, $type, $stype) {
 
    
+   global $MOBILE;
 
    if($stype == "pending") {
        $poststatus = "2";
@@ -1123,6 +1133,7 @@ function tileGridRandom($uid, $limit, $type, $stype) {
         $rand = "h4";
         $imgfolder = "mid";
      }
+    
      
      $REMOVE = "";
      
@@ -1148,6 +1159,7 @@ function tileGridRandom($uid, $limit, $type, $stype) {
           $hots_img = " <span class='glyphicon glyphicon-hand-up'></span>";         
      }
 
+     if($MOBILE) { $w3 = "w3"; $rand = "h2";} else { $SPACES = "&nbsp;&nbsp;"; }
 
      $hot_button = "<a href='/do_hot.php?bbid=$bbid&vote=up' type='button' id='aHot$bbid' class='btn btn-primary btn-xs upHot'>$hots $hots_img</span></a>";
      $com_button = "<a href='/view.php?bbid=$bbid$COMMDIV' type='button' id='aComm$bbid' class='btn btn-primary btn-xs'>$coms <span class='glyphicon glyphicon-comment'></span></a>";
@@ -1161,10 +1173,10 @@ function tileGridRandom($uid, $limit, $type, $stype) {
         <li role='presentation'><a class=doRepost role='menuitem' tabindex='-1' href='/m/do_repost.php?pid=$pid'>Re-Post</a></li>
      </ul></li>";
      
-     $MASONRY_ROWS .= "<div class='item $rand'>
+     $MASONRY_ROWS .= "<div class='item $rand $w3'>
                          <div style='position: absolute; left: 0px; top: 0px;'></div>
                          <a href=\"/view.php?bbid=$bbid\" role=\"button\">
-                            <div class='imgBox $rand' style=\"background-image: url('$imgSRV/${imgfolder}_images/$images'); background-repeat: no-repeat; background-position: 50% 50%;\">
+                            <div class='imgBox $rand $w3' style=\"background-image: url('$imgSRV/${imgfolder}_images/$images'); background-repeat: no-repeat; background-position: 50% 50%;\">
                             </div>
                          </a>
                          <div style='position: absolute; left: 5px; bottom: 5px;'>
@@ -1172,8 +1184,8 @@ function tileGridRandom($uid, $limit, $type, $stype) {
                          </div>
                          <div style='position: absolute; right: 5px; bottom: 5px;'>
                             <table border=0>
-                               <tr><td align=left>$hot_button&nbsp;&nbsp;</td> 
-                                   <td align=left>&nbsp;&nbsp;$com_button&nbsp;&nbsp;</td>
+                               <tr><td align=left>$hot_button $SPACES</td> 
+                                   <td align=left>$SPACES $com_button $SPACES</td>
                                </tr>
                             </table>
                          </div>
