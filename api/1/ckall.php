@@ -25,8 +25,8 @@ if(!$json) {
 
 $decoded = json_decode($json);
 
-print "<pre>";
-print "\n$json\n";
+//print "<pre>";
+//print "\n$json\n";
 
 foreach ($decoded as $key => $value) {
    print "$key = $value\n";
@@ -41,7 +41,7 @@ $EMATCHES = rtrim($MATCHES{"email"}, ", ");
 $MMATCHES = rtrim($MATCHES{"mobile"}, ", ");
      
      
-print "</pre><br>";
+//print "</pre><br>";
 
 
 print "{ \"return\": \"SUCCESS\", \"ematch\": [ $EMATCHES ], \"mmatch\": [ $MMATCHES ] }";
