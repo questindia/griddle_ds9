@@ -22,7 +22,7 @@ if(apiAuth($user, $pass) < 1) {
 }
 
 $uid = getUser($user);
-
+$r   = time();
 
 if($action == "friend")  {
 
