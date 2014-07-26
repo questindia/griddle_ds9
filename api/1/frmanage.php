@@ -24,6 +24,8 @@ if(apiAuth($user, $pass) < 1) {
 $uid = getUser($user);
 $r   = time();
 
+file_put_contents("/tmp/frmanage.log", "Recieved Stuff - $user pass $target $action $uid\n", FILE_APPEND);
+
 if($action == "friend")  {
 
 
