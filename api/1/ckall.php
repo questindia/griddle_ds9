@@ -22,6 +22,7 @@ if(!$json) {
      exit;
 }
 
+file_put_contents("/tmp/ckall.log", "Got JSON -------------------\n$json\n--------------------", FILE_APPEND);
 
 $decoded = json_decode($json);
 
