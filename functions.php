@@ -189,10 +189,10 @@ function isFriend($uid, $target) {
 }
 
 function isFollowing($uid, $target) {
-   $res = mysql_query("SELECT rid, following FROM relations WHERE uid=$uid AND target=$target");
+   $res = mysql_query("SELECT rid, follower FROM relations WHERE uid=$uid AND target=$target");
    $row = mysql_fetch_array($res);
    
-   $fl  = $row{'following'};
+   $fl  = $row{'follower'};
    
    return $fl;
 }
