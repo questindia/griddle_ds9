@@ -32,11 +32,21 @@ $decoded = json_decode($json);
 foreach ($decoded as $key => $value) {
    //print "$key = $value\n";
    foreach ($value as $htarg) {
-        if(hashMatch($key, $htarg)) {
+        $matchuid = hashMatch($key, $htarg);
+        if($matchuid) {
+            $JSON .= " 
+            
+             { \"type\": \"$key\",
+             \"hash\": \"$htarg\",
+             \"uid\": \"$matchuid\" }, ";          
+        
+        
             $MATCHES{$key} .= " \"$htarg\", ";
         }       
     }
 }
+
+$JSON = rtrim($JSON, ", ");
      
 $EMATCHES = rtrim($MATCHES{"email"}, ", ");
 $MMATCHES = rtrim($MATCHES{"mobile"}, ", ");
@@ -45,7 +55,9 @@ $MMATCHES = rtrim($MATCHES{"mobile"}, ", ");
 //print "</pre><br>";
 
 
-print "{ \"return\": \"SUCCESS\", \"ematch\": [ $EMATCHES ], \"mmatch\": [ $MMATCHES ] }";
+//print "{ \"return\": \"SUCCESS\", \"ematch\": [ $EMATCHES ], \"mmatch\": [ $MMATCHES ] }";
+
+print "{ \"return\": \"SUCCESS\", \"matches\": [ $JSON ] }";
 
 
 function hashMatch($type, $hash) {
@@ -57,7 +69,7 @@ function hashMatch($type, $hash) {
     $row = mysql_fetch_array($res);
     
     if($row{'uid'}) { 
-        return 1;
+        return $row{'uid'};
     } else {
         return 0;
     }
