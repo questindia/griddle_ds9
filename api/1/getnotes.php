@@ -31,7 +31,7 @@ $JSON .= getNoteRows($uid, $limit);
 
 $JSON .= " ] }";
 
-print "$limit<br><br>";
+#print "$limit<br><br>";
 
 print $JSON;  
 

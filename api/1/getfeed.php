@@ -100,6 +100,7 @@ function getGIDFeed($gid, $uid, $count) {
 
      $more    = "1";
      $when    = secondsToTime(time() - $pi{'din'});
+     $din     = $pi{'din'};
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -114,6 +115,8 @@ function getGIDFeed($gid, $uid, $count) {
                \"more\": \"$more\",
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
+               \"when\": \"$when\",
+               \"din\": \"$din\",
                \"gid\": \"$gid\" },\n";
   
   }
@@ -146,6 +149,7 @@ function getPIDFeed($pid, $uid, $count) {
 
         $more    = "1";
         $when    = secondsToTime(time() - $pi{'din'});
+        $din     = $pi{'din'};
    
         $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -161,6 +165,8 @@ function getPIDFeed($pid, $uid, $count) {
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
                \"gid\": \"$gid\",
+               \"when\": \"$when\",
+               \"din\": \"$din\",
                \"hashtag\": \"$ht\" },\n";
   
             
@@ -200,6 +206,7 @@ function getBBIDFeed($bbid, $uid, $count) {
 
         $more    = "1";
         $when    = secondsToTime(time() - $pi{'din'});
+        $din     = $pi{'din'};
    
         $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -215,6 +222,8 @@ function getBBIDFeed($bbid, $uid, $count) {
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
                \"gid\": \"$gid\",
+               \"when\": \"$when\",
+               \"din\": \"$din\",
                \"hashtag\": \"$ht\" },\n";
   
      }          
@@ -269,6 +278,7 @@ function getRandomFeed($uid, $count) {
 
      $more    = "1";
      $when    = secondsToTime(time() - $pi{'din'});
+     $din     = $pi{'din'};
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -283,6 +293,8 @@ function getRandomFeed($uid, $count) {
                \"more\": \"$more\",
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
+               \"when\": \"$when\",
+               \"din\": \"$din\",
                \"gid\": \"$gid\",
                \"hashtag\": \"$ht\" },\n";
   
@@ -346,6 +358,7 @@ function getUIDFeed($tuid, $uid, $count) {
 
      $more    = "1";
      $when    = secondsToTime(time() - $pi{'din'});
+     $din     = $pi{'din'};
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -360,6 +373,8 @@ function getUIDFeed($tuid, $uid, $count) {
                \"more\": \"$more\",
                \"pid\": \"$pid\",
                \"bbid\": \"$bbid\",
+               \"when\": \"$when\",
+               \"din\": \"$din\",
                \"gid\": \"$gid\",
                \"hashtag\": \"$ht\" },\n";
   
