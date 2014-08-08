@@ -149,7 +149,7 @@ function getNoteRows($uid, $limit) {
    $JSON .= "{ \"nid\": \"$nid\",
                \"note\": \"$JSnote\",
                \"pid\": \"$pid\",
-               \"gid\": \"$pgid\"
+               \"gid\": \"$pgid\",
                \"req\": \"$req\",
                \"ntype\": \"$ntype\",
                \"pimg\": \"http://www.griddle.com/thumb_profiles/$tuser\",
