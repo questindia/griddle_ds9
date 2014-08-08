@@ -927,7 +927,7 @@ function addCommentToGriddle($user, $bbid, $comm) {
 
 function addCommentToPost($user, $pid, $comm) {
 
-   print "into addCommentToPost\n";
+   //print "into addCommentToPost\n";
 
    $comment = addslashes($comm);
    $r = time();
@@ -939,7 +939,7 @@ function addCommentToPost($user, $pid, $comm) {
    $cCount = $row{'comments'} + 1;
    $gid = $row{'gid'};
 
-   print "INSERT INTO comments VALUES(DEFAULT, $uid, $gid, $pid, $r, '$comment')<br><br>";
+   //print "INSERT INTO comments VALUES(DEFAULT, $uid, $gid, $pid, $r, '$comment')<br><br>";
 
    $res = mysql_query("INSERT INTO comments VALUES(DEFAULT, $uid, $gid, $pid, $r, '$comment')");
    $res = mysql_query("UPDATE posts SET comments=$cCount WHERE pid=$pid");
