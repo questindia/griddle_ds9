@@ -77,11 +77,11 @@ $mo = $ui{'mobileopt'};
 
 print "{ \"return\": \"SUCCESS\", 
          \"details\": \"The user's profile was updated\",
-         \"name\", \"$n\",
-         \"mobile\", \"$m\",
-         \"email\", \"$e\",
-         \"eopt\", \"$eo\",
-         \"mopt\", \"$mo\" }";
+         \"name\": \"$n\",
+         \"mobile\": \"$m\",
+         \"email\": \"$e\",
+         \"eopt\": \"$eo\",
+         \"mopt\": \"$mo\" }";
 
 
 
