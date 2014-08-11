@@ -143,8 +143,11 @@ function getNoteRows($uid, $limit) {
    }
    
    if($image) {
-      $JSimg = "http://$imgSRV/thumb_images/$image";
+      $JSimg = "$imgSRV/thumb_images/$image";
    }
+   
+   $JSnote = preg_replace('/\n/', ' ', $JSnote);
+   $JSnote = preg_replace('/\r/', ' ', $JSnote);
    
    $JSON .= "{ \"nid\": \"$nid\",
                \"note\": \"$JSnote\",
