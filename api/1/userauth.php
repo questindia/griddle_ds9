@@ -25,7 +25,9 @@ $attempt = md5($pass);
 
 if($attempt == $pw_crypt) {
 
-     $ui   = getUserInfo(getUser($user));
+     $tuid = getUser($user);
+
+     $ui   = getUserInfo($tuid);
      $un   = $user;
      $n    = $ui{'name'};
      $pimg = "http://www.griddle.com/griddle_profiles/$user";
@@ -35,6 +37,7 @@ if($attempt == $pw_crypt) {
      $eopt = $ui{'emailopt'};
      
      $JSON = "{     \"return\": \"SUCCESS\",
+               \"uid\": \"$tuid\",
                \"n\": \"$n\",
                \"un\": \"$un\",
                \"pimg\": \"$pimg\",
