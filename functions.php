@@ -816,7 +816,9 @@ function getCommentsForBBID($user, $bbid, $LIMIT) {
 
      $pimg = "$imgSRV/thumb_profiles/$tuser";
 
-     $JSON .= "{ \"n\": \"$tname\",
+     $JSON .= "{ 
+               \"uid\": \"$tuid\",
+               \"n\": \"$tname\",
                \"un\": \"$tuser\",
                \"pimg\": \"$pimg\",
                \"comment\": \"$comm\",
@@ -852,7 +854,9 @@ function getCommentsForPID($user, $pid, $LIMIT) {
 
      $pimg = "$imgSRV/thumb_profiles/$tuser";
 
-     $JSON .= "{ \"n\": \"$tname\",
+     $JSON .= "{
+               \"uid\": \"$tuid\",
+               \"n\": \"$tname\",
                \"un\": \"$tuser\",
                \"pimg\": \"$pimg\",
                \"comment\": \"$comm\",
