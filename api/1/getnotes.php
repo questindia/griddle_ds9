@@ -149,7 +149,8 @@ function getNoteRows($uid, $limit) {
    $JSnote = preg_replace('/\n/', ' ', $JSnote);
    $JSnote = preg_replace('/\r/', ' ', $JSnote);
    
-   $JSON .= "{ \"nid\": \"$nid\",
+   $JSON .= "{ \"uid\": \"$req\",
+               \"nid\": \"$nid\",
                \"note\": \"$JSnote\",
                \"pid\": \"$pid\",
                \"gid\": \"$pgid\",
