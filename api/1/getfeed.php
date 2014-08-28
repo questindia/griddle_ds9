@@ -13,6 +13,7 @@ $bbid   = addslashes($_POST['bbid']);
 $pid    = addslashes($_POST['pid']);
 $gid    = addslashes($_POST['gid']);
 $tuid   = addslashes($_POST['uid']);
+$page   = addslashes($_POST['page']);
 
 if(!$user || !$pass || !$count) {
    print "{ \"return\": \"ERROR\", \"details\": \"Must provide at least a username, password and count\" }";
@@ -33,7 +34,7 @@ if($bbid) {
 }
 
 if($gid) {
-   $JSON .= getGIDFeed($gid, $uid, $count);
+   $JSON .= getGIDFeed($gid, $uid, $count, $page);
 }
 
 if($pid) {
@@ -41,7 +42,7 @@ if($pid) {
 }
 
 if($tuid) {
-   $JSON .= getUIDFeed($tuid, $uid, $count);
+   $JSON .= getUIDFeed($tuid, $uid, $count, $page);
    $ui  = getUserInfo($tuid);
    $n   = $ui{'name'};
    $u   = $ui{'username'};
@@ -62,14 +63,22 @@ if($tuid) {
 }
 
 if(($bbid=="") && ($gid=="") && ($pid=="") && ($tuid=="")) {
-   $JSON .= getRandomFeed($uid, $count);
+   $JSON .= getRandomFeed($uid, $count, $page);
 } 
 
 $JSON .= " ] $EXTRA }";
 print "$JSON";
 
 
-function getGIDFeed($gid, $uid, $count) {
+function getGIDFeed($gid, $uid, $count, $page) {
+
+
+    if($page) {
+      $offset = $count * $page;
+      $count = "$offset, $count";
+    }
+
+
     $SQL = "SELECT bbid, uid FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
     $res = mysql_query($SQL);
     while($row = mysql_fetch_array($res)) {	
@@ -233,7 +242,13 @@ function getBBIDFeed($bbid, $uid, $count) {
 
 }
 
-function getRandomFeed($uid, $count) {
+function getRandomFeed($uid, $count, $page) {
+
+
+   if($page) {
+      $offset = $count * $page;
+      $count = "$offset, $count";
+   }
 
    //$ORDER_BY = "RAND()";
    $ORDER_BY = "griddle_bb.din";
@@ -306,7 +321,13 @@ function getRandomFeed($uid, $count) {
 
 }
 
-function getUIDFeed($tuid, $uid, $count) {
+function getUIDFeed($tuid, $uid, $count, $page) {
+
+   if($page) {
+      $offset = $count * $page;
+      $count = "$offset, $count";
+   }
+
 
    //$ORDER_BY = "RAND()";
    $ORDER_BY = "din";
