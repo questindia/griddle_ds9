@@ -202,8 +202,8 @@ function getBBIDFeed($bbid, $uid, $count) {
         $gi    = getGridInfo($gid);
         $ht    = $gi{'topic'};
    
-        $comms = $pi{'comments'};
-        $hots  = $pi{'hots'};
+        $comms = $bbi{'comments'};
+        $hots  = $bbi{'hots'};
         $ui    = getUserInfo($puid);
         $n     = $ui{'name'};
         $un    = $ui{'username'};
