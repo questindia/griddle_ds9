@@ -79,13 +79,12 @@ function getGIDFeed($gid, $uid, $count, $page) {
     }
 
 
-    $SQL = "SELECT bbid, uid FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
+    $SQL = "SELECT * FROM griddle_bb WHERE gid=$gid AND status=1 LIMIT $count";
     $res = mysql_query($SQL);
     while($row = mysql_fetch_array($res)) {	
      $bbid  = $row{'bbid'};
      $buid  = $row{'uid'};
-     $bbi   = getGriddleInfo($bbid);
-     $PLIST = explode(",", $bbi{'ppid'});
+     $PLIST = explode(",", $row{'ppid'});
      
      $maxr  = count($PLIST);
      $picr  = rand(0, $maxr);
@@ -97,8 +96,8 @@ function getGIDFeed($gid, $uid, $count, $page) {
      $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
      $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
    
-     $comms = $pi{'comments'};
-     $hots  = $pi{'hots'};
+     $comms = $row{'comments'};
+     $hots  = $row{'hots'};
      $ui    = getUserInfo($puid);
      $n     = $ui{'name'};
      $un    = $ui{'username'};
@@ -109,7 +108,7 @@ function getGIDFeed($gid, $uid, $count, $page) {
 
      $more    = "1";
      $when    = secondsToTime(time() - $pi{'din'});
-     $din     = $pi{'din'};
+     $din     = $bbi{'din'};
    
      $JSON .= "{ \"n\": \"$n\",
                \"un\": \"$un\",
@@ -281,8 +280,8 @@ function getRandomFeed($uid, $count, $page) {
      $img   = shardImg($pi{'images'}) . "/mid_images/" . $pi{'images'};
      $timg  = shardImg($pi{'images'}) . "/thumb_images/" . $pi{'images'};
    
-     $comms = $pi{'comments'};
-     $hots  = $pi{'hots'};
+     $comms = $bbi{'comments'};
+     $hots  = $bbi{'hots'};
      $ui    = getUserInfo($puid);
      $n     = $ui{'name'};
      $un    = $ui{'username'};
