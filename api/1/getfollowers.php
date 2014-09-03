@@ -12,7 +12,7 @@ if(!$pass) { $pass = $_GET['password']; }
 
 $pass = addslashes($pass);
 $user = addslashes($user);
-
+$targ = addslashes($_POST['target']);
 
 if(apiAuth($user, $pass) < 1) { 
      print "{ \"return\": \"ERROR\" }";
@@ -21,7 +21,7 @@ if(apiAuth($user, $pass) < 1) {
 
 $uid = getUser($user);
 
-$res = mysql_query("SELECT relations.uid, users.name, users.username, users.mobile, users.email, relations.follower, relations.target FROM relations, users WHERE relations.follower=1 AND relations.target=$uid AND users.uid=relations.uid ORDER BY users.name LIMIT 2000");
+$res = mysql_query("SELECT relations.uid, users.name, users.username, users.mobile, users.email, relations.follower, relations.target FROM relations, users WHERE relations.follower=1 AND relations.target=$targ AND users.uid=relations.uid ORDER BY users.name LIMIT 2000");
 
 $JSON = "{ \"return\": \"SUCCESS\", \"followers\": [ ";
 
