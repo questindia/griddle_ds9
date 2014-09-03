@@ -74,7 +74,7 @@ function getGIDFeed($gid, $uid, $count, $page) {
 
 
     if($page) {
-      $offset = $count * $page;
+      $offset = $count * ($page - 1);
       $count = "$offset, $count";
     }
 
@@ -245,7 +245,7 @@ function getRandomFeed($uid, $count, $page) {
 
 
    if($page) {
-      $offset = $count * $page;
+      $offset = $count * ($page - 1);
       $count = "$offset, $count";
    }
 
@@ -323,7 +323,7 @@ function getRandomFeed($uid, $count, $page) {
 function getUIDFeed($tuid, $uid, $count, $page) {
 
    if($page) {
-      $offset = $count * $page;
+      $offset = $count * ($page - 1);
       $count = "$offset, $count";
    }
 
