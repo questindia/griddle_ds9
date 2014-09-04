@@ -29,7 +29,8 @@ while($row = mysql_fetch_array($res)) {
    $u  = $row{'uid'};
    $n  = $row{'name'};
    $un = $row{'username'};
-   $fl = $row{'follower'};
+   $fl = isFollowing($uid, $u);
+   if(!$fl) { $fl = "0"; }
    $tg = $row{'target'};
    
    
