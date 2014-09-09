@@ -59,14 +59,14 @@ if($action == "follow")  {
       $res = mysql_query("UPDATE relations SET follower=1 WHERE uid=$uid AND target=$target");
    }
    $tfol++;
-   $res = mysql_query("UPDATE users SET followers=$tfol WHERE uid=$target");
+   $res = mysql_query("UPDATE users SET followers=(followers + 1) WHERE uid=$target");
 
 }
  
 if($action == "unfollow")  { 
   $res = mysql_query("UPDATE relations SET follower=0 WHERE uid=$uid AND target=$target");
   $tfol--;
-  $res = mysql_query("UPDATE users SET followers=$tfol WHERE uid=$target");
+  $res = mysql_query("UPDATE users SET followers=(followers-1) WHERE uid=$target");
 }
 
 if($action == "unfriend") {

@@ -47,6 +47,7 @@ if($tuid) {
    $n   = $ui{'name'};
    $u   = $ui{'username'};
    $fol = $ui{'followers'};
+   $flg = getFollowingCount($tuid);
    $pst = $ui{'posts'};
    $pic = "http://www.griddle.com/griddle_profiles/$u";
    $fl  = isFollowing($uid, $tuid);
@@ -56,6 +57,7 @@ if($tuid) {
    $EXTRA = ", \"name\": \"$n\",
                \"username\": \"$u\",
                \"followers\": \"$fol\",
+               \"following\": \"$flg\",
                \"posts\": \"$pst\",
                \"pimg\": \"$pic\",
                \"fl\": \"$fl\" ";

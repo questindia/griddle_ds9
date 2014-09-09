@@ -233,6 +233,16 @@ function getFriendRows($count, $uid) {
 
 }
 
+function getFollowingCount($uid) {
+
+     $res = mysql_query("SELECT count(target) FROM relations WHERE follower=1 AND uid=$uid");
+     $row = mysql_fetch_array($res);
+     $count = $row{'count(target)'};
+     
+     return $count;
+
+}
+
 function getSearchFriendRows($count, $search) {
 
    global $MOBILE;
