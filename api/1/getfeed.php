@@ -58,7 +58,7 @@ if($tuid) {
                \"username\": \"$u\",
                \"followers\": \"$fol\",
                \"following\": \"$flg\",
-               \"posts\": \"$pst\",
+               \"postcount\": \"$pst\",
                \"pimg\": \"$pic\",
                \"fl\": \"$fl\" ";
    
